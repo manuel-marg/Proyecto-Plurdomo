@@ -18,6 +18,7 @@ type Query{
 
 type Mutation{
     createPropietario(nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
+    updatePropietario(id: Int!, nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
 }
 `
 module.exports = typeDefs

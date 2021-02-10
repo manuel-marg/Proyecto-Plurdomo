@@ -55,7 +55,7 @@ const Crud = ({ propietarios }) => (
             </div>
         </div>
     </div>
-{/* CREAR --> Creación de un Modal con un Formulario para agregar llama a funcion AgregarPropietario() CRUD */}
+{/* CREAR --> Creación de un Modal con un Formulario para agregar llama a funcion Agregar() CRUD */}
     <div id="AddPropietario" className="modal fade">
         <div className="modal-dialog">
             <div className="modal-content">
@@ -80,13 +80,18 @@ const Crud = ({ propietarios }) => (
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={AgregarPropietario} data-dismiss="modal" className="btn btn-success" value="Agregar" />
+                        <input type="button" onClick={Agregar} data-dismiss="modal" className="btn btn-success" value="Agregar" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
 {/* EDITAR --> Creación de un Modal con un Formulario por cada registro del CRUD */}    
+{/*   EXPLICACION:  Entonces, como se crea un modal por cada item en total seran un monton de input text 
+               por eso para saber cual input es cual se concatena el id del propietario con el nombre 
+               del campo para que luego se envie a la funcion editar el cual recibe el propietario y de ahi
+               se extrae el id y con ese id se puede saber cuales input le corresponden. Es decir, 
+                id={propietario.id + "nombre"} es lo mismo que por ejemplo id="1nombre"  */}  
 {propietarios && propietarios.map(propietario =>
     <div key={propietario.id} id={"edit" + propietario.id} className="modal fade">
         <div className="modal-dialog">
@@ -99,20 +104,20 @@ const Crud = ({ propietarios }) => (
                     <div className="modal-body">
                         <div className="form-group">
                             <label>Nombre</label>
-                            <input type="text" defaultValue={propietario.nombre} className="form-control" required />
+                            <input type="text" id={propietario.id + "nombre"} defaultValue={propietario.nombre} className="form-control" required />
                         </div>
                         <div className="form-group">
                             <label>Apellido</label>
-                            <input type="text" defaultValue={propietario.apellido} className="form-control" required />
+                            <input type="text" id={propietario.id + "apellido"} defaultValue={propietario.apellido} className="form-control" required />
                         </div>
                         <div className="form-group">
                             <label>Email</label>
-                            <input type="email" defaultValue={propietario.email} className="form-control" required />
+                            <input type="email" id={propietario.id + "email"} defaultValue={propietario.email} className="form-control" required />
                         </div>
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="submit" className="btn btn-primary" value="Modificar" />
+                        <input type="button" onClick={(e) => Modificar(e, propietario)} data-dismiss="modal" className="btn btn-primary" value="Modificar" />
                     </div>
                 </form>
             </div>
@@ -134,8 +139,8 @@ const Crud = ({ propietarios }) => (
                         <p className="text-danger text-center"><small>{propietario.email}</small></p>
                     </div>
                     <div className="modal-footer">
-                        <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="submit" className="btn btn-danger" value="Eliminar" />
+                    <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
+                        <input type="button" onClick={(e) => Eliminar(e, propietario)} data-dismiss="modal" className="btn btn-danger" value="Eliminar" />
                     </div>
                 </form>
             </div>
@@ -147,8 +152,7 @@ const Crud = ({ propietarios }) => (
 )
 
 
-function AgregarPropietario() { // Funcion para agregar un propietario
-    console.log("Ejecutando funcion: AgregarPropietario"); 
+function Agregar() { // Funcion para agregar
     var propietario = {nombre: "", apellido:"", email:"", active: true};  // Creo un Objeto propietario
     propietario.nombre = (document.getElementById("AddNombre") as HTMLInputElement).value; // Defino su nombre
     propietario.apellido = (document.getElementById("AddApellido") as HTMLInputElement).value; // Defino su apellido
@@ -171,12 +175,58 @@ function AgregarPropietario() { // Funcion para agregar un propietario
     })
     .then(res => res.json())
     .then(res => console.log(res))
-    .then(res => location.reload())
-    console.log("Se agrego con exito el siguiente propietario: " + propietario.nombre);
+    .then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
 }
 
 
-function Buscar() {
+function Modificar(e, propietario) { // Funcion para modificar
+    // Recibiendo el objeto completo entonces sabemos el id y con eso redefinimos el objeto pero con los input que les corresponden para poder editarlo
+    propietario.nombre = (document.getElementById(`${propietario.id + "nombre"}`) as HTMLInputElement).value; // Tomo los nombre de input correspondiente al propietario
+    propietario.apellido = (document.getElementById(`${propietario.id + "apellido"}`) as HTMLInputElement).value; // Tomo los apellido de input correspondiente al propietario
+    propietario.email = (document.getElementById(`${propietario.id + "email"}`) as HTMLInputElement).value; // Tomo los email de input correspondiente al propietario
+    fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    mutation{
+        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , active: true){
+          id
+          nombre
+          apellido
+          email
+          active
+        }
+      }
+    ` }),
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+}
+
+function Eliminar(e, propietario) { // Funcion para editar
+    // Recibiendo el objeto completo entonces sabemos el id y como que lo modificamos completo pero realmente sera solo el atributi active
+    fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    mutation{
+        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , active: false){
+          id
+          nombre
+          apellido
+          email
+          active
+        }
+      }
+    ` }),
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+}
+
+function Buscar() { // Esta funcion funciona como una especie de filtro en la tabla y simulamos una busqueda por nombre
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("myInput");
@@ -186,7 +236,7 @@ function Buscar() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
+    td = tr[i].getElementsByTagName("td")[1]; // Establecemos que columna buscara y inicia en 0
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
