@@ -15,7 +15,7 @@ models.sequelize.sync()//Sincronizacion de los modelos con la BD
 //Resolvers
 import resolvers from './graphQL/resolvers/resolvers'
 
-//Resolvers
+//TypeDefs
 import typeDefs from './graphQL/typeDefs/typeDefs'
 //------------------
 

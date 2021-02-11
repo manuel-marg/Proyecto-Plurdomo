@@ -2,13 +2,14 @@
 import Sequelize from 'sequelize'
 
 
-const sequelize = new Sequelize('plurdomo', 'root', '12345678', { //Modifica los datos para conectarte a la Bd
+const sequelize = new Sequelize('plurdomo', 'root', 'Mysql1234', { //Modifica los datos para conectarte a la Bd
     host: '127.0.0.1',
     dialect: 'mysql'
 })
 
 const models = {
-    propietario: sequelize.import('./propietario')
+    propietario: sequelize.import('./propietario'),
+    apto: sequelize.import('./apto'),
 }
 
 models.sequelize = sequelize

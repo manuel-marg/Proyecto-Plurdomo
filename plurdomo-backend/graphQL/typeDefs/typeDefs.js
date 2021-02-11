@@ -10,14 +10,27 @@ type Propietario{
     active: Boolean!
 }
 
+type Apto{
+    id: Int!
+    owner: String!
+    piso: Int!
+    edf: String!
+    active: Boolean!
+}
+
 type Query{
     getPropietarios: [Propietario],
     getPropietario(id: Int!): Propietario
+    
+    getAptos: [Apto],
+    getApto(id: Int!): Apto
 }
 
 
 type Mutation{
-    createPropietario(nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
+    createPropietario(nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!,
+
+    createApto(owner: String!, piso: Int!, edf: String!, active: Boolean!): Apto!
 }
 `
 module.exports = typeDefs
