@@ -33,6 +33,9 @@ const Crud = ({ propietarios }) => (
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Email</th>
+                            <th>Cedula</th>
+                            <th>Telefono</th>
+                            <th>Clave</th>
                             <th>Opciones</th>
                         </tr>
                     </thead>
@@ -43,6 +46,9 @@ const Crud = ({ propietarios }) => (
                                 <td>{propietario.nombre}</td>
                                 <td>{propietario.apellido}</td>
                                 <td>{propietario.email}</td>
+                                <td>{propietario.cedula}</td>
+                                <td>{propietario.telefono}</td>
+                                <td>{propietario.clave}</td>
                             <td>
                                 <a href={"#edit" + propietario.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
                                       |  
@@ -76,6 +82,18 @@ const Crud = ({ propietarios }) => (
                         <div className="form-group">
                             <label>Correo electronico</label>
                             <input id="AddEmail" type="email" className="form-control" required />
+                        </div>
+                        <div className="form-group">
+                            <label>Cedula</label>
+                            <input id="AddCedula" type="number" className="form-control" required />
+                        </div>
+                        <div className="form-group">
+                            <label>Telefono</label>
+                            <input id="AddTelefono" type="number" className="form-control" required />
+                        </div>
+                        <div className="form-group">
+                            <label>Clave</label>
+                            <input id="AddClave" type="text" className="form-control" required />
                         </div>
                     </div>
                     <div className="modal-footer">
@@ -114,6 +132,18 @@ const Crud = ({ propietarios }) => (
                             <label>Email</label>
                             <input type="email" id={propietario.id + "email"} defaultValue={propietario.email} className="form-control" required />
                         </div>
+                        <div className="form-group">
+                            <label>Cedula</label>
+                            <input type="number" id={propietario.id + "cedula"} defaultValue={propietario.cedula} className="form-control" required />
+                        </div>
+                        <div className="form-group">
+                            <label>Telefono</label>
+                            <input type="number" id={propietario.id + "telefono"} defaultValue={propietario.telefono} className="form-control" required />
+                        </div>
+                        <div className="form-group">
+                            <label>Clave</label>
+                            <input type="text" id={propietario.id + "clave"} defaultValue={propietario.clave} className="form-control" required />
+                        </div>
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
@@ -135,7 +165,8 @@ const Crud = ({ propietarios }) => (
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
-                        <p className="text-center">¿Estas seguro que desea eliminar este registro?</p>
+                        <p className="text-center">¿Estas seguro que desea eliminar este propietario?</p>
+                        <p className="text-danger text-center"><small>{propietario.nombre}</small></p>
                         <p className="text-danger text-center"><small>{propietario.email}</small></p>
                     </div>
                     <div className="modal-footer">
@@ -153,21 +184,27 @@ const Crud = ({ propietarios }) => (
 
 
 function Agregar() { // Funcion para agregar
-    var propietario = {nombre: "", apellido:"", email:"", active: true};  // Creo un Objeto propietario
+    var propietario = {nombre: "", apellido:"", email:"", cedula:"", telefono:"", clave:"", active: true};  // Creo un Objeto propietario
     propietario.nombre = (document.getElementById("AddNombre") as HTMLInputElement).value; // Defino su nombre
     propietario.apellido = (document.getElementById("AddApellido") as HTMLInputElement).value; // Defino su apellido
     propietario.email = (document.getElementById("AddEmail") as HTMLInputElement).value; // Defino su email
+    propietario.cedula = (document.getElementById("AddCedula") as HTMLInputElement).value; // Defino su cedula
+    propietario.telefono = (document.getElementById("AddTelefono") as HTMLInputElement).value; // Defino su telefono
+    propietario.clave = (document.getElementById("AddClave") as HTMLInputElement).value; // Defino su clave
     console.log(propietario);
     fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Crear Propietario
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
         mutation{
-            createPropietario(nombre: "${propietario.nombre}", apellido: "${propietario.apellido}", email: "${propietario.email}", active: true){
+            createPropietario(nombre: "${propietario.nombre}", apellido: "${propietario.apellido}", email: "${propietario.email}", cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", active: true){
             id
             nombre
             apellido
             email
+            cedula
+            telefono
+            clave
             active
             }
         }
@@ -184,16 +221,22 @@ function Modificar(e, propietario) { // Funcion para modificar
     propietario.nombre = (document.getElementById(`${propietario.id + "nombre"}`) as HTMLInputElement).value; // Tomo los nombre de input correspondiente al propietario
     propietario.apellido = (document.getElementById(`${propietario.id + "apellido"}`) as HTMLInputElement).value; // Tomo los apellido de input correspondiente al propietario
     propietario.email = (document.getElementById(`${propietario.id + "email"}`) as HTMLInputElement).value; // Tomo los email de input correspondiente al propietario
+    propietario.cedula = (document.getElementById(`${propietario.id + "cedula"}`) as HTMLInputElement).value; // Tomo los cedula de input correspondiente al propietario
+    propietario.telefono = (document.getElementById(`${propietario.id + "telefono"}`) as HTMLInputElement).value; // Tomo los telefono de input correspondiente al propietario
+    propietario.clave = (document.getElementById(`${propietario.id + "clave"}`) as HTMLInputElement).value; // Tomo los clave de input correspondiente al propietario
     fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , active: true){
+        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", active: true){
           id
           nombre
           apellido
           email
+          cedula
+          telefono
+          clave
           active
         }
       }
@@ -211,11 +254,14 @@ function Eliminar(e, propietario) { // Funcion para editar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , active: false){
+        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}",  active: false){
           id
           nombre
           apellido
           email
+          cedula
+          telefono
+          clave
           active
         }
       }

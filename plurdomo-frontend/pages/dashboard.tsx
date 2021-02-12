@@ -31,11 +31,14 @@ Dashboard.getInitialProps = async (ctx) => {
         body: JSON.stringify({ query: `
         query{
             getPropietarios{
-             id
-             nombre
-             apellido
-             email
-             active
+              id
+              nombre
+              apellido
+              email
+              cedula
+              telefono
+              clave
+              active
            }
         }
         ` }),
@@ -46,29 +49,5 @@ Dashboard.getInitialProps = async (ctx) => {
         return { propietarios: respuesta.data.getPropietarios}
 
 }
-
-/*  EJEMPLO QUE FUNCIONO (NO BORRAR PARA USAR A FUTURO)
-Dashboard.getInitialProps = async (ctx) => {
-        const res = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: `
-        query{
-            getPropietario(id: 2){
-              id
-              nombre
-              apellido
-              email
-              active
-            }
-          }
-        ` }),
-        }) 
-        const respuesta = await res.json()
-        console.log(respuesta)
-        console.log(respuesta.data)
-        return { propietarios:respuesta.data.getPropietario}
-
-}*/
 
 export default Dashboard

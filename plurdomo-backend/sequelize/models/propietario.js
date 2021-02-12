@@ -17,6 +17,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        cedula: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        telefono: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        clave: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false
