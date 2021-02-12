@@ -10,7 +10,7 @@ const resolvers = {
         },
 
         async getAptos(root, args, { models }) {
-            return await models.apto.findAll()
+            return await models.apto.findAll({ where: { active: true } })
         },
         async getApto(root, args, { models }) {
             return await models.apto.findByPk(args.id)
@@ -22,8 +22,8 @@ const resolvers = {
             return await models.propietario.create({ nombre, apellido, email, active })
         },
 
-        async createApto(root, { owner, piso, edf, active }, { models }) {
-            return await models.apto.create({ owner, piso, edf, active })
+        async createApto(root, { id_propietario, piso, id_edf, alicuota, saldo, gastos, active }, { models }) {
+            return await models.apto.create({ id_propietario, piso, id_edf, alicuota, saldo, gastos, active })
         },
 
         async updatePropietario(root, { id, nombre, apellido, email, active }, { models }) {

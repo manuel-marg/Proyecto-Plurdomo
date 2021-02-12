@@ -12,9 +12,12 @@ type Propietario{
 
 type Apto{
     id: Int!
-    owner: String!
+    id_propietario: Int!
     piso: Int!
-    edf: String!
+    id_edf: Int!
+    alicuota: Int!
+    saldo: Int!
+    gastos: String!
     active: Boolean!
 }
 
@@ -31,7 +34,7 @@ type Mutation{
     createPropietario(nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
     updatePropietario(id: Int!, nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
 
-    createApto(owner: String!, piso: Int!, edf: String!, active: Boolean!): Apto!
+    createApto(id_propietario: Int!, piso: Int!, id_edf: Int!, alicuota: Int!, saldo: Int!, gastos: String!, active: Boolean!): Apto!
 }
 `
 module.exports = typeDefs

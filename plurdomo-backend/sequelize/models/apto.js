@@ -6,15 +6,27 @@ module.exports = (sequelize, DataTypes) =>{
             autoIncrement: true,
             primaryKey: true
         },
-        owner: {
-            type: DataTypes.STRING,
+        id_propietario: {
+            type: DataTypes.INTEGER,
             allowNull: false
         },       
         piso: {
             type: DataTypes.INTEGER,
             allowNull: false
         },       
-        edf: {
+        id_edf: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        alicuota:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        saldo:{
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        gastos:{
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -22,7 +34,7 @@ module.exports = (sequelize, DataTypes) =>{
             type: DataTypes.BOOLEAN,
             allowNull: false
         }
-    }, );
+    }, { timestamps: false });
 
     return Apto
 }
