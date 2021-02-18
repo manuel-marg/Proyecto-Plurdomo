@@ -10,6 +10,9 @@ const sequelize = new Sequelize('plurdomo', 'root', 'Mysql1234', { //Modifica lo
 const models = {
     propietario: sequelize.import('./propietario'),
     apto: sequelize.import('./apto'),
+    inmueble: sequelize.import('./inmueble'),
+    casa: sequelize.import('./casa'),
+    edf: sequelize.import('./edf'),
 }
 
 models.sequelize = sequelize

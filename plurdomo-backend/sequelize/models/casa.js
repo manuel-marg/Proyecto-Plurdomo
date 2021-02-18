@@ -1,20 +1,15 @@
-
 module.exports = (sequelize, DataTypes) =>{
-    const Apto = sequelize.define('apto',{
+    const Casa = sequelize.define('casa',{
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
+        },       
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         nro: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },       
-        piso: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },       
-        id_edf: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -28,5 +23,5 @@ module.exports = (sequelize, DataTypes) =>{
         }
     }, { timestamps: false });
 
-    return Apto
+    return Casa
 }

@@ -1,26 +1,21 @@
-
 module.exports = (sequelize, DataTypes) =>{
-    const Apto = sequelize.define('apto',{
+    const Inmueble = sequelize.define('inmueble',{
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        nro: {
+        alicuota: {
             type: DataTypes.INTEGER,
             allowNull: false
         },       
-        piso: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },       
-        id_edf: {
+        saldo: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        id_inmueble: {
+        id_propietario: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         active: {
             type: DataTypes.BOOLEAN,
@@ -28,5 +23,5 @@ module.exports = (sequelize, DataTypes) =>{
         }
     }, { timestamps: false });
 
-    return Apto
+    return Inmueble
 }
