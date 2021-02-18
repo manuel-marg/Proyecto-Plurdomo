@@ -18,16 +18,11 @@ const resolvers = {
 
     },
     Mutation: {
-        async createPropietario(root, { nombre, apellido, email, active }, { models }) {
-            return await models.propietario.create({ nombre, apellido, email, active })
+        async createPropietario(root, { nombre, apellido, email, cedula, telefono, clave, active }, { models }) {
+            return await models.propietario.create({ nombre, apellido, email, cedula, telefono, clave, active })
         },
-
-        async createApto(root, { id_propietario, piso, id_edf, alicuota, saldo, gastos, active }, { models }) {
-            return await models.apto.create({ id_propietario, piso, id_edf, alicuota, saldo, gastos, active })
-        },
-
-        async updatePropietario(root, { id, nombre, apellido, email, active }, { models }) {
-            await models.propietario.update({ nombre, apellido, email, active }, { where: { id: id } });
+        async updatePropietario(root, { id, nombre, apellido, email, cedula, telefono, clave, active }, { models }) {
+            await models.propietario.update({ nombre, apellido, email, cedula, telefono, clave, active }, { where: { id: id } });
             return models.propietario.findByPk(id)
         },
     }

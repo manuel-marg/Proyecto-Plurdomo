@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 
-const Crud = ({ propietarios }) => (
+const InmuebleCRUD = ({ inmuebles }) => (
 <div>
     <div className="container-xl">
         <div>
@@ -30,17 +30,13 @@ const Crud = ({ propietarios }) => (
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Email</th>
-                            <th>Cedula</th>
-                            <th>Telefono</th>
-                            <th>Clave</th>
-                            <th>Opciones</th>
+                            <th>Alicuota</th>
+                            <th>Saldo</th>
+                            <th>Dirección</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {propietarios && propietarios.map(propietario =>
+{/*                     {inmuebles && inmuebles.map(propietario =>
                         <tr key={propietario.id}>
                                 <td>{propietario.id}</td>
                                 <td>{propietario.nombre}</td>
@@ -55,7 +51,7 @@ const Crud = ({ propietarios }) => (
                                 <a href={"#delete" + propietario.id} className="text-danger" data-toggle="modal"><i className="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
-                                                    )}
+                    )} */}
                     </tbody>
                 </table>
             </div>
@@ -67,46 +63,91 @@ const Crud = ({ propietarios }) => (
             <div className="modal-content">
                 <form>
                     <div className="modal-header">
-                        <h4 className="modal-title">Agregar</h4>
+                        <h4 className="modal-title">Agregar un Inmueble</h4>
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>Nombre</span>
+                                <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
                             </div>
-                            <input id="AddNombre" type="text" className="form-control" required/>
+                            <input id="AddAlicuota" type="text" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>Apellido</span>
+                                <span className="input-group-text" style={{width: '100px'}}>Saldo</span>
                             </div>
-                            <input id="AddApellido" type="text" className="form-control" required/>
+                            <input id="AddSaldo" type="text" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text">Correo electronico</span>
+                                <span className="input-group-text" style={{width: '100px'}}>Zona</span>
                             </div>
-                            <input id="AddEmail" type="email" className="form-control" required/>
+                            <input id="AddZona" type="text" className="form-control" required/>
                         </div> 
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>Cedula</span>
+                                <span className="input-group-text" style={{width: '100px'}}>Calle</span>
                             </div>
-                            <input id="AddCedula" type="text" className="form-control" required/>
+                            <input id="AddCalle" type="text" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>Telefono</span>
+                                <span className="input-group-text">Codigo Postal</span>
                             </div>
-                            <input id="AddTelefono" type="text" className="form-control" required/>
+                            <input id="AddCodigo" type="text" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>Clave</span>
+                                <span className="input-group-text" style={{width: '100px'}}>Tipo</span>
                             </div>
-                            <input id="AddClave" type="password" className="form-control" required/>
+                            <select className="custom-select" onChange={Tipo} id="AddTipo">
+                                <option selected>Seleccione...</option>
+                                <option value="Apto">Apto</option>
+                                <option value="Casa">Casa</option>
+                            </select>
                         </div>
+
+                        <div id="Apto" style={{display: 'none'}}>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Edificio</span>
+                                </div>
+                                <select className="custom-select">
+                                    <option selected>Seleccione...</option>
+                                    <option value="Avila">Avila</option>
+                                    <option value="Sol">Sol del Avila</option>
+                                </select>
+                            </div>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Piso</span>
+                                </div>
+                                <input id="AddCodigo" type="text" className="form-control" required/>
+                            </div>        
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>N° Apto</span>
+                                </div>
+                                <input id="AddCodigo" type="text" className="form-control" required/>
+                            </div> 
+                        </div>
+
+                    <div id="Casa" style={{display: 'none'}}>
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" style={{width: '100px'}}>Nombre</span>
+                            </div>
+                            <input id="AddCodigo" type="text" className="form-control" required/>
+                        </div> 
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" style={{width: '100px'}}>N° Casa</span>
+                            </div>
+                            <input id="AddCodigo" type="text" className="form-control" required/>
+                        </div> 
+                    </div>
+
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
@@ -122,7 +163,7 @@ const Crud = ({ propietarios }) => (
                del campo para que luego se envie a la funcion editar el cual recibe el propietario y de ahi
                se extrae el id y con ese id se puede saber cuales input le corresponden. Es decir, 
                 id={propietario.id + "nombre"} es lo mismo que por ejemplo id="1nombre"  */}  
-{propietarios && propietarios.map(propietario =>
+{inmuebles && inmuebles.map(propietario =>
     <div key={propietario.id} id={"edit" + propietario.id} className="modal fade">
         <div className="modal-dialog">
             <div className="modal-content">
@@ -179,7 +220,7 @@ const Crud = ({ propietarios }) => (
     </div>
 )}
 {/* ELIMINAR --> Creación de un Modal con un Formulario por cada registro del CRUD */}
-{propietarios && propietarios.map(propietario =>
+{inmuebles && inmuebles.map(propietario =>
     <div key={propietario.id} id={"delete" + propietario.id} className="modal fade">
         <div className="modal-dialog">
             <div className="modal-content">
@@ -206,6 +247,20 @@ const Crud = ({ propietarios }) => (
 
 )
 
+
+function Tipo() { // Esta funcion funciona para mostrar el resto de los inputs en agragar deppendiendo del tipo que seleccione
+    var tipo = (document.querySelector("#AddTipo")as HTMLInputElement).value;
+    // Oculto los div antes de mostrar el que corresponde 
+    (document.querySelector("#Apto")as HTMLInputElement).style.display = 'none';
+    (document.querySelector("#Casa")as HTMLInputElement).style.display = 'none';
+    // Sabiendo que en "tipo" esta el tipo que seleccionaron el formulario entonces muestro el que corresponde
+    if (tipo == "Casa"){
+        (document.querySelector("#Casa")as HTMLInputElement).style.display = 'block';
+    }else if (tipo == "Apto"){
+        (document.querySelector("#Apto")as HTMLInputElement).style.display = 'block';
+    }
+    console.log(tipo);
+}
 
 function Agregar() { // Funcion para agregar
     var propietario = {nombre: "", apellido:"", email:"", cedula:"", telefono:"", clave:"", active: true};  // Creo un Objeto propietario
@@ -320,4 +375,4 @@ function Buscar() { // Esta funcion funciona como una especie de filtro en la ta
 
 
 
-export default Crud
+export default InmuebleCRUD

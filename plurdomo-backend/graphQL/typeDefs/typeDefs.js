@@ -7,6 +7,9 @@ type Propietario{
     nombre: String!
     apellido: String!
     email: String!
+    cedula: String!
+    telefono: String!
+    clave: String!
     active: Boolean!
 }
 
@@ -31,10 +34,8 @@ type Query{
 
 
 type Mutation{
-    createPropietario(nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
-    updatePropietario(id: Int!, nombre: String!, apellido: String!, email: String!, active: Boolean!): Propietario!
-
-    createApto(id_propietario: Int!, piso: Int!, id_edf: Int!, alicuota: Int!, saldo: Int!, gastos: String!, active: Boolean!): Apto!
+    createPropietario(nombre: String!, apellido: String!, email: String!, cedula: String!, telefono: String!, clave: String!, active: Boolean!): Propietario!
+    updatePropietario(id: Int!, nombre: String!, apellido: String!, email: String!, cedula: String!, telefono: String!, clave: String!, active: Boolean!): Propietario!
 }
 `
 module.exports = typeDefs
