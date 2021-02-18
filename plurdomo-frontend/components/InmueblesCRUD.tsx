@@ -256,7 +256,7 @@ function Tipo() { // Esta funcion funciona para mostrar el resto de los inputs e
     // Sabiendo que en "tipo" esta el tipo que seleccionaron el formulario entonces muestro el que corresponde
     if (tipo == "Casa"){
         (document.querySelector("#Casa")as HTMLInputElement).style.display = 'block';
-    }else{
+    }else if (tipo == "Apto"){
         (document.querySelector("#Apto")as HTMLInputElement).style.display = 'block';
     }
     console.log(tipo);
