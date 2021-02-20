@@ -15,7 +15,7 @@ type Propietario{
 
 type Inmueble{
     id: Int!
-    alicuota: Int!
+    alicuota: Float!
     saldo: Int!
     id_propietario: Int
     active: Boolean!
@@ -66,8 +66,8 @@ type Mutation{
     createPropietario(nombre: String!, apellido: String!, email: String!, cedula: String!, telefono: String!, clave: String!, active: Boolean!): Propietario!
     updatePropietario(id: Int!, nombre: String!, apellido: String!, email: String!, cedula: String!, telefono: String!, clave: String!, active: Boolean!): Propietario!
 
-    createInmueble(alicuota: Int!, saldo: Int!, id_propietario: Int, active: Boolean!): Inmueble!
-    updateInmueble(id: Int!, alicuota: Int!, saldo: Int!, id_propietario: Int, active: Boolean!): Inmueble!
+    createInmueble(alicuota: Float!, saldo: Int!, id_propietario: Int, active: Boolean!): Inmueble!
+    updateInmueble(id: Int!, alicuota: Float!, saldo: Int!, id_propietario: Int, active: Boolean!): Inmueble!
 
     createApto(nro: Int!, piso: Int!, id_edf: Int!, id_inmueble: Int!, active: Boolean!): Apto!
     updateApto(id: Int!, nro: Int!, piso: Int!, id_edf: Int!, id_inmueble: Int!, active: Boolean!): Apto!

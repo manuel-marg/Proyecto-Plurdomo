@@ -76,8 +76,8 @@ const resolvers = {
         },
 
 //----------------EDIFICIO-----------------
-        async createEdf(root, { nombre, cantidad_aptos, active }, { models }) {
-            return await models.edf.create({ nombre, cantidad_aptos, active })
+        async createEdf(root, { nombre, active }, { models }) {
+            return await models.edf.create({ nombre, active })
         },
         async updateEdf(root, { nombre, active }, { models }) {
             await models.edf.update({ nombre, active }, { where: { id: id } });

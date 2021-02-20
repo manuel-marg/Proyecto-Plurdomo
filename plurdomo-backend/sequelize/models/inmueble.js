@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) =>{
             primaryKey: true
         },
         alicuota: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false
         },       
         saldo: {

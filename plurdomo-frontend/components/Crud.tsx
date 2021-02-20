@@ -222,17 +222,17 @@ function Agregar() { // Funcion para agregar
     body: JSON.stringify({ query: `
         mutation{
             createPropietario(nombre: "${propietario.nombre}", apellido: "${propietario.apellido}", email: "${propietario.email}", cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", active: true){
-            id
-            nombre
-            apellido
-            email
-            cedula
-            telefono
-            clave
-            active
+                id
+                nombre
+                apellido
+                email
+                cedula
+                telefono
+                clave
+                active
+                }
             }
-        }
-    ` }),
+        ` }),
     })
     .then(res => res.json())
     .then(res => console.log(res))

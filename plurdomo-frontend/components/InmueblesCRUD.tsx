@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-
+import Link from 'next/link'
 
 const InmuebleCRUD = ({ inmuebles }) => (
 <div>
@@ -18,11 +18,17 @@ const InmuebleCRUD = ({ inmuebles }) => (
                                 <input type="text" id="myInput" onKeyUp={Buscar} className="form-control" placeholder="Buscar por nombre..." />
                             </div>
                         </div>
-                        <div className="col-sm-6 text-right vertical-center">
-                            <a href="#AddPropietario" className="btn btn-success mt-1" data-toggle="modal">
+                        <div className="col-sm text-right vertical-center">
+                            <a href="#AddInmueble" className="btn btn-success mt-1 mr-4" data-toggle="modal">
                                 <i className="fas fa-plus"></i>
                                 <span> Agregar</span>
                             </a>
+                            <Link href="/edfs">
+                            <button type="button" className="btn btn-success mt-1" data-toggle="modal">
+                                <i className="fas fa-plus"></i>
+                                <span> Edificios</span>
+                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -35,30 +41,12 @@ const InmuebleCRUD = ({ inmuebles }) => (
                             <th>Dirección</th>
                         </tr>
                     </thead>
-                    <tbody>
-{/*                     {inmuebles && inmuebles.map(propietario =>
-                        <tr key={propietario.id}>
-                                <td>{propietario.id}</td>
-                                <td>{propietario.nombre}</td>
-                                <td>{propietario.apellido}</td>
-                                <td>{propietario.email}</td>
-                                <td>{propietario.cedula}</td>
-                                <td>{propietario.telefono}</td>
-                                <td>{propietario.clave}</td>
-                            <td>
-                                <a href={"#edit" + propietario.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
-                                      |  
-                                <a href={"#delete" + propietario.id} className="text-danger" data-toggle="modal"><i className="fas fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
-                    )} */}
-                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 {/* CREAR --> Creación de un Modal con un Formulario para agregar llama a funcion Agregar() CRUD */}
-    <div id="AddPropietario" className="modal fade">
+    <div id="AddInmueble" className="modal fade">
         <div className="modal-dialog">
             <div className="modal-content">
                 <form>
@@ -71,13 +59,13 @@ const InmuebleCRUD = ({ inmuebles }) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
                             </div>
-                            <input id="AddAlicuota" type="text" className="form-control" required/>
+                            <input id="AddAlicuota" type="number" step="any" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Saldo</span>
                             </div>
-                            <input id="AddSaldo" type="text" className="form-control" required/>
+                            <input id="AddSaldo" type="number" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -105,30 +93,30 @@ const InmuebleCRUD = ({ inmuebles }) => (
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>Piso</span>
                                 </div>
-                                <input id="AddCodigo" type="text" className="form-control" required/>
+                                <input id="AddPiso" type="number" className="form-control" required/>
                             </div>        
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>N° Apto</span>
                                 </div>
-                                <input id="AddCodigo" type="text" className="form-control" required/>
+                                <input id="AddApto" type="number" className="form-control" required/>
                             </div> 
                         </div>
 
-                    <div id="Casa" style={{display: 'none'}}>
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>Nombre</span>
-                            </div>
-                            <input id="AddNombre" type="text" className="form-control" required/>
-                        </div> 
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" style={{width: '100px'}}>N° Casa</span>
-                            </div>
-                            <input id="AddNcasa" type="text" className="form-control" required/>
-                        </div> 
-                    </div>
+                        <div id="Casa" style={{display: 'none'}}>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Nombre</span>
+                                </div>
+                                <input id="AddNombreCa" type="text" className="form-control" required/>
+                            </div> 
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>N° Casa</span>
+                                </div>
+                                <input id="AddCasa" type="number" className="form-control" required/>
+                            </div> 
+                        </div>
 
                     </div>
                     <div className="modal-footer">
@@ -241,10 +229,8 @@ function Tipo() { // Esta funcion funciona para mostrar el resto de los inputs e
     }else if (tipo == "Apto"){
         (document.querySelector("#Apto")as HTMLInputElement).style.display = 'block';
     }
-    console.log(tipo);
 }
-
-async function Agregar  () { // Funcion para agregar
+async function Agregar() { // Funcion para agregar
     var inmueble = {alicuota: "", saldo:"", id_propietario:"",active: true};  // Creo un Objeto propietario
     inmueble.alicuota = (document.getElementById("AddAlicuota") as HTMLInputElement).value; // Defino su nombre
     inmueble.saldo = (document.getElementById("AddSaldo") as HTMLInputElement).value; // Defino su apellido
@@ -255,7 +241,7 @@ async function Agregar  () { // Funcion para agregar
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: `
         mutation{
-            createInmueble(alicuota:${inmueble.alicuota}, saldo:${inmueble.saldo}, active: true){
+            createInmueble(alicuota:${inmueble.alicuota}, saldo:${inmueble.saldo}, id_propietario:${inmueble.id_propietario}, active: true){
                 id
                 saldo
                 alicuota
@@ -271,12 +257,15 @@ async function Agregar  () { // Funcion para agregar
 
         var tipo = (document.querySelector("#AddTipo")as HTMLInputElement).value;
         if(tipo == "Casa"){
+            var casa = {nombre: "", nro:"",active: true};
+            casa.nombre = (document.getElementById("AddNombreCa") as HTMLInputElement).value;
+            casa.nro = (document.getElementById("AddCasa") as HTMLInputElement).value;
             const resp = await fetch('http://localhost:4000/graphql', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
             mutation{
-                createCasa(nombre:"Paez",nro: 5, id_inmueble:${respuesta.data.createInmueble.id}, active:true){
+                createCasa(nombre:${casa.nombre},nro:${casa.nro}, id_inmueble:${respuesta.data.createInmueble.id}, active:true){
                   id
                   nombre
                   nro
@@ -289,13 +278,16 @@ async function Agregar  () { // Funcion para agregar
             const respu = await resp.json()
             console.log(respuesta)
             console.log(respuesta.data.createInmueble.id)
-        }else if(tipo == "Apto"){
+        } else if(tipo == "Apto"){
+            var apto = {nro: "", piso:"",active: true};
+            apto.piso = (document.getElementById("AddPiso") as HTMLInputElement).value;
+            apto.nro = (document.getElementById("AddApto") as HTMLInputElement).value;
             const resp = await fetch('http://localhost:4000/graphql', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
             mutation{
-                createApto(nro: 6,piso: 3, id_edf:2, id_inmueble: ${respuesta.data.createInmueble.id}, active:true){
+                createApto(nro: ${apto.nro},piso: ${apto.piso}, id_edf:2, id_inmueble: ${respuesta.data.createInmueble.id}, active:true){
                   id
                   nro
                   piso
@@ -310,10 +302,8 @@ async function Agregar  () { // Funcion para agregar
             console.log(respuesta)
             console.log(respuesta.data.createInmueble.id)
         }
-        
     //.then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
 }
-
 
 function Modificar(e, propietario) { // Funcion para modificar
     // Recibiendo el objeto completo entonces sabemos el id y con eso redefinimos el objeto pero con los input que les corresponden para poder editarlo
