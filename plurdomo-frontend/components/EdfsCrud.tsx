@@ -29,15 +29,15 @@ const EdfCrud = ({ edfs }) => (
                 <table className="table table-striped table-hover table-sm" id="myTable">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Opciones</th>
+                            <th className="text-center">Nombre</th>
+                            <th className="text-center">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                     {edfs && edfs.map(edf =>
                         <tr key={edf.id}>
-                                <td>{edf.nombre}</td>
-                            <td>
+                                <td className="text-center">{edf.nombre}</td>
+                            <td className="text-center">
                                 <a href={"#edit" + edf.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
                                       |  
                                 <a href={"#delete" + edf.id} className="text-danger" data-toggle="modal"><i className="fas fa-trash-alt"></i></a>
@@ -142,7 +142,7 @@ function AgregarEdf() { // Funcion para agregar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
         mutation{
-            createEdf(nombre: ${edf.nombre}, active:true){
+            createEdf(nombre: "${edf.nombre}", active:true){
                 id
                 nombre
                 active
@@ -206,7 +206,7 @@ function Buscar() { // Esta funcion funciona como una especie de filtro en la ta
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1]; // Establecemos que columna buscara y inicia en 0
+    td = tr[i].getElementsByTagName("td")[0]; // Establecemos que columna buscara y inicia en 0
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
