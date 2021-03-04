@@ -7,15 +7,35 @@ module.exports = (sequelize, DataTypes) =>{
         },
         alicuota: {
             type: DataTypes.FLOAT,
-            allowNull: false
-        },       
-        saldo: {
+            allowNull: true
+        },
+        numero: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
+        },
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }, 
+        piso: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },      
+        saldo: {
+            type: DataTypes.FLOAT,
+            allowNull: true
         },
         id_propietario: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        id_inmueble: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        tipo: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         active: {
             type: DataTypes.BOOLEAN,

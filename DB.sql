@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS propietarios (
     cedula varchar(255) not null,
     telefono varchar(255) not null,
     clave varchar(255) not null,
+    administrador boolean,
     active boolean,
     primary key(id)
 );
@@ -19,7 +20,7 @@ CREATE TABLE IF NOT EXISTS inmuebles (
     id int auto_increment,
     alicuota int,
     numero int,
-    nombre varchar(255) not null,
+    nombre varchar(255),
     piso int,
     saldo int,
     id_propietario int,
@@ -28,6 +29,5 @@ CREATE TABLE IF NOT EXISTS inmuebles (
     active boolean,
     primary key(id)
 );
-
 
 ALTER TABLE inmuebles ADD foreign key(id_propietario) references propietarios(id);
