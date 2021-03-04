@@ -38,9 +38,10 @@ Propietarios.getInitialProps = async (ctx) => {
               cedula
               telefono
               clave
+              administrador
               active
-           }
-        }
+            }
+          }
         ` }),
         }) 
         const respuesta = await res.json()

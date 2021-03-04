@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) =>{
-    const Inmueble = sequelize.define('inmueble',{
+module.exports = (sequelize, DataTypes) => {
+    const Inmueble = sequelize.define('inmueble', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -16,11 +16,11 @@ module.exports = (sequelize, DataTypes) =>{
         nombre: {
             type: DataTypes.STRING,
             allowNull: true
-        }, 
+        },
         piso: {
             type: DataTypes.INTEGER,
             allowNull: true
-        },      
+        },
         saldo: {
             type: DataTypes.FLOAT,
             allowNull: true
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) =>{
         },
         tipo: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         active: {
             type: DataTypes.BOOLEAN,

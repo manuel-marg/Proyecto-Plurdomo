@@ -221,7 +221,7 @@ function Agregar() { // Funcion para agregar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
         mutation{
-            createPropietario(nombre: "${propietario.nombre}", apellido: "${propietario.apellido}", email: "${propietario.email}", cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", active: true){
+            createPropietario(nombre: "${propietario.nombre}", apellido: "${propietario.apellido}", email: "${propietario.email}", cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", administrador: false, active: true){
                 id
                 nombre
                 apellido
@@ -253,7 +253,7 @@ function Modificar(e, propietario) { // Funcion para modificar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", active: true){
+        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", administrador: false, active: true){
           id
           nombre
           apellido
@@ -278,7 +278,7 @@ function Eliminar(e, propietario) { // Funcion para editar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}",  active: false){
+        updatePropietario(id: ${propietario.id} , nombre: "${propietario.nombre}" , apellido: "${propietario.apellido}" , email: "${propietario.email}" , cedula: "${propietario.cedula}", telefono: "${propietario.telefono}", clave: "${propietario.clave}", administrador: false, active: false){
           id
           nombre
           apellido

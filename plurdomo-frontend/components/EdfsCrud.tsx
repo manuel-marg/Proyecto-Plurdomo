@@ -94,12 +94,12 @@ const EdfCrud = ({ edfs }) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Nombre</span>
                             </div>
-                            <input id={edf.id + "nombre"} defaultValue={edf.nombre} type="text" className="form-control" required/>
+                            <input id={edf.id + "NombreEdf"} defaultValue={edf.nombre} type="text" className="form-control" required/>
                         </div>
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={(e) => Modificar(e, edf)} data-dismiss="modal" className="btn btn-primary" value="Modificar" />
+                        <input type="button" onClick={(e) => Modificar(edf)} data-dismiss="modal" className="btn btn-primary" value="Modificar" />
                     </div>
                 </form>
             </div>
@@ -122,7 +122,7 @@ const EdfCrud = ({ edfs }) => (
                     </div>
                     <div className="modal-footer">
                     <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={(e) => Eliminar(e, edf)} data-dismiss="modal" className="btn btn-danger" value="Eliminar" />
+                        <input type="button" onClick={(e) => Eliminar(edf)} data-dismiss="modal" className="btn btn-danger" value="Eliminar" />
                     </div>
                 </form>
             </div>
@@ -142,12 +142,19 @@ function AgregarEdf() { // Funcion para agregar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
         mutation{
-            createEdf(nombre: "${edf.nombre}", active:true){
-                id
-                nombre
-                active
-                }
+            createInmueble(nombre: "${edf.nombre}", tipo: "edificio" , active:true){
+            id
+            alicuota
+            numero
+            nombre
+            piso
+            saldo
+            id_propietario
+            id_inmueble
+            tipo
+            active
             }
+        }
         ` }),
     })
     .then(res => res.json())
@@ -155,17 +162,24 @@ function AgregarEdf() { // Funcion para agregar
     .then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
 }
 
-function Modificar(e, edf) { // Funcion para modificar
+function Modificar(edf) { // Funcion para modificar
     // Recibiendo el objeto completo entonces sabemos el id y con eso redefinimos el objeto pero con los input que les corresponden para poder editarlo
-    edf.nombre = (document.getElementById("AddNombreEdf") as HTMLInputElement).value;
+    edf.nombre = (document.getElementById(`${edf.id + 'NombreEdf'}`) as HTMLInputElement).value;
     fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateEdf(nombre: ${edf.nombre}, active:true){
+        updateInmueble(id: ${edf.id} , nombre: "${edf.nombre}", tipo: "edificio" , active:true){
             id
+            alicuota
+            numero
             nombre
+            piso
+            saldo
+            id_propietario
+            id_inmueble
+            tipo
             active
             }
         }
@@ -176,16 +190,23 @@ function Modificar(e, edf) { // Funcion para modificar
     .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
 }
 
-function Eliminar(e, edf) { // Funcion para editar
+function Eliminar(edf) { // Funcion para editar
     // Recibiendo el objeto completo entonces sabemos el id y como que lo modificamos completo pero realmente sera solo el atributi active
     fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateEdf(nombre: ${edf.nombre}, active:false){
+        updateInmueble(id: ${edf.id} , nombre: "${edf.nombre}", tipo: "edificio" , active:false){
             id
+            alicuota
+            numero
             nombre
+            piso
+            saldo
+            id_propietario
+            id_inmueble
+            tipo
             active
         }
       }

@@ -31,11 +31,18 @@ Inmuebles.getInitialProps = async (ctx) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     query{
-        getEdfs{
-            id
-            nombre
-            active
-       }
+      getEdfs{
+        id
+        alicuota
+        numero
+        nombre
+        piso
+        saldo
+        id_propietario
+        id_inmueble
+        tipo
+        active
+      }
     }
     ` }),
     }) 
@@ -50,10 +57,15 @@ Inmuebles.getInitialProps = async (ctx) => {
       query{
         getAptos{
           id
-          nro
+          alicuota
+          numero
+          nombre
           piso
-          id_edf
+          saldo
+          id_propietario
           id_inmueble
+          tipo
+          active
         }
       }
       ` }),
@@ -69,9 +81,15 @@ Inmuebles.getInitialProps = async (ctx) => {
       query{
         getCasas{
           id
+          alicuota
+          numero
           nombre
-          nro
+          piso
+          saldo
+          id_propietario
           id_inmueble
+          tipo
+          active
         }
       }
       ` }),

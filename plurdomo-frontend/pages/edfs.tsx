@@ -31,11 +31,18 @@ Edfs.getInitialProps = async (ctx) => {
         body: JSON.stringify({ query: `
         query{
             getEdfs{
-                id
-                nombre
-                active
-           }
-        }
+              id
+              alicuota
+              numero
+              nombre
+              piso
+              saldo
+              id_propietario
+              id_inmueble
+              tipo
+              active
+            }
+          }
         ` }),
         }) 
         const respuesta = await res.json()
