@@ -30,6 +30,16 @@ CREATE TABLE IF NOT EXISTS inmuebles (
     primary key(id)
 );
 
+CREATE TABLE IF NOT EXISTS condominio (
+    id int auto_increment,
+    nombre varchar(255) not null,
+    municipio varchar(255) not null,
+    estado varchar(255) not null,
+    codigo_urb varchar(255) not null,
+    active boolean,
+    primary key(id)
+);
+
 ALTER TABLE inmuebles ADD foreign key(id_propietario) references propietarios(id);
 
 -- DROP DATABASE plurdomo; 

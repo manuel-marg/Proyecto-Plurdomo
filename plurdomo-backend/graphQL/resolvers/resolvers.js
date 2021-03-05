@@ -28,6 +28,13 @@ const resolvers = {
             return await models.inmueble.findAll({ where: { active: true, tipo: "edificio" } })
         },
 
+        async getCondominios(root, args, { models }) {
+            return await models.condominio.findAll({ where: { active: true } })
+        },
+        async getCondominio(root, args, { models }) {
+            return await models.condominio.findByPk(args.id)
+        },
+
     },
     Mutation: {
         //---------------PROPIETARIO--------------
@@ -46,6 +53,15 @@ const resolvers = {
         async updateInmueble(root, { id, alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, tipo, active }, { models }) {
             await models.inmueble.update({ alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, tipo, active }, { where: { id: id } });
             return models.inmueble.findByPk(id)
+        },
+
+        //---------------CONDOMINIO------------------
+        async createCondominio(root, { nombre, municipio, estado, codigo_urb, active }, { models }) {
+            return await models.condominio.create({ nombre, municipio, estado, codigo_urb, active })
+        },
+        async updateCondominio(root, { id, nombre, municipio, estado, codigo_urb, active }, { models }) {
+            await models.condominio.update({ nombre, municipio, estado, codigo_urb, active }, { where: { id: id } });
+            return models.condominio.findByPk(id)
         },
 
     }

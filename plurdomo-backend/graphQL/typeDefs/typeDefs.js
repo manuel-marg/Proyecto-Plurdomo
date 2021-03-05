@@ -27,22 +27,31 @@ type Inmueble{
     active: Boolean!
 }
 
+type Condominio{
+    id: Int!
+    nombre: String!
+    municipio: String!
+    estado: String!
+    codigo_urb: String!
+    active: Boolean!
+}
+
 
 type Query{
     getPropietarios: [Propietario],
     getPropietario(id: Int!): Propietario
     
-    getAptos: [Inmueble],
-    getApto(id: Int!): Inmueble
+    getAptos: [Inmueble]
 
     getInmuebles: [Inmueble],
     getInmueble(id: Int!): Inmueble
 
-    getCasas: [Inmueble],
-    getCasa(id: Int!): Inmueble
+    getCasas: [Inmueble]
 
-    getEdfs: [Inmueble],
-    getEdf(id: Int!): Inmueble
+    getEdfs: [Inmueble]
+
+    getCondominios: [Condominio],
+    getCondominio(id: Int!): Inmueble
 }
 
 
@@ -52,6 +61,9 @@ type Mutation{
 
     createInmueble(alicuota: Float, numero: Int, nombre: String, piso:Int, saldo: Float, id_propietario: Int, id_inmueble: Int, tipo: String!, active: Boolean!): Inmueble!
     updateInmueble(id: Int!,alicuota: Float, numero: Int, nombre: String, piso:Int, saldo: Float, id_propietario: Int, id_inmueble: Int, tipo: String, active: Boolean!): Inmueble!
+
+    createCondominio(nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
+    updateCondominio(id: Int!, nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
 }
 `
 module.exports = typeDefs
