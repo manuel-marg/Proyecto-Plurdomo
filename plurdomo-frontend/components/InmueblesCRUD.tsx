@@ -141,7 +141,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                                     <span className="input-group-text" style={{width: '120px'}}>Propietario</span>
                                 </div>
                                 <select className="custom-select" id="AddPropietario">
-                                    <option value="null" selected>Seleccione...</option>
+                                    <option value="null" selected>Ninguno</option>
                                         {/* Imprimiendo los los propiertarios */}  
                                         {propietarios && propietarios.map(propietario =>
                                             <option value={propietario.id}>{propietario.cedula} - {propietario.nombre} {propietario.apellido}</option>
@@ -540,7 +540,7 @@ async function Agregar() { // Funcion para agregar
             })
             .then(res => res.json())
             .then(res => console.log(res))
-            //.then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
+            .then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
     }
     }
     
