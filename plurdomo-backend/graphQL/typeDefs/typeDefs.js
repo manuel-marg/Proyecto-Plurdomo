@@ -51,7 +51,7 @@ type Query{
     getEdfs: [Inmueble]
 
     getCondominios: [Condominio],
-    getCondominio(id: Int!): Inmueble
+    getCondominio(id: Int!): Condominio
 }
 
 
