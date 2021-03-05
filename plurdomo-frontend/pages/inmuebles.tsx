@@ -3,12 +3,12 @@ import InmuebleCRUD from '../components/InmueblesCRUD'
 import { render } from 'react-dom'
 
 // VISTA DE LA PAGINA HTML Y LUEGO ALGUNOS CSS
-const Inmuebles = ({ edificios , aptos ,  casas }) => (
+const Inmuebles = ({ edificios , aptos ,  casas , propietarios }) => (
 <Layout title="Plurdomo">
     <div className="card border-secondary mb-3 mw-500">
         <div className="card-header"><h3 className="text-center">Inmuebles</h3></div>
         <div className="card-body">
-            <InmuebleCRUD edificios = {edificios} aptos = {aptos} casas = {casas}/>
+            <InmuebleCRUD edificios = {edificios} aptos = {aptos} casas = {casas} propietarios = {propietarios} />
         </div>
     </div>
     <style jsx>
@@ -97,7 +97,30 @@ Inmuebles.getInitialProps = async (ctx) => {
       const respuestaCasas = await getCasas.json()
       const casas = await respuestaCasas.data.getCasas
 
-      return { edificios: edificios , aptos: aptos , casas: casas }
+    // Obtener todos los propietarios
+    const getPropietarios = await fetch('http://localhost:4000/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: `
+      query{
+        getPropietarios{
+          id
+          nombre
+          apellido
+          email
+          cedula
+          telefono
+          clave
+          administrador
+          active
+        }
+      }
+      ` }),
+      }) 
+      const respuestaPropietarios = await getPropietarios.json()
+      const propietarios = await respuestaPropietarios.data.getPropietarios
+
+      return { edificios: edificios , aptos: aptos , casas: casas , propietarios: propietarios}
 }
   
 export default Inmuebles

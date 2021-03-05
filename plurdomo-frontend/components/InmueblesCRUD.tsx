@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import Link from 'next/link'
 
-const InmuebleCRUD = ({ edificios , aptos ,  casas }) => (
+const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
 <div>
     <div className="container-xl">
         <div>
@@ -63,7 +63,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas }) => (
                             <td className="text-center">{casa.numero}</td>
                             <td className="text-center">{casa.alicuota}</td>
                             <td className="text-center">{casa.saldo}</td>
-                            <td className="text-center">{casa.propietario}</td>
+                            <td className="text-center">{casa.id_propietario}</td>
                             <td className="text-center">
                                 <a href={"#EditarCasa" + casa.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
                                       |  
@@ -111,7 +111,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas }) => (
             <td className="text-center">{apto.id_inmueble}</td>
             <td className="text-center">{apto.alicuota}</td>
             <td className="text-center">{apto.saldo}</td>
-            <td className="text-center">{apto.propietario}</td>
+            <td className="text-center">{apto.id_propietario}</td>
             <td className="text-center">
                 <a href={"#EditarApto" + apto.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
                       |  
@@ -136,6 +136,18 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas }) => (
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
+                        <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '120px'}}>Propietario</span>
+                                </div>
+                                <select className="custom-select" id="AddPropietario">
+                                    <option value="null" selected>Seleccione...</option>
+                                        {/* Imprimiendo los los propiertarios */}  
+                                        {propietarios && propietarios.map(propietario =>
+                                            <option value={propietario.id}>{propietario.cedula} - {propietario.nombre} {propietario.apellido}</option>
+                                        )}
+                                </select>
+                            </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
@@ -222,6 +234,18 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas }) => (
                     </div>
                     <div className="modal-body">
                     <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '120px'}}>Propietario</span>
+                                </div>
+                                <select className="custom-select" id={casa.id + "propietario"}>
+                                    <option value="null" selected>Seleccione...</option>
+                                        {/* Imprimiendo los los propiertarios */}  
+                                        {propietarios && propietarios.map(propietario =>
+                                            <option value={propietario.id}>{propietario.cedula} - {propietario.nombre} {propietario.apellido}</option>
+                                        )}
+                                </select>
+                            </div>
+                    <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Nombre</span>
                             </div>
@@ -266,6 +290,18 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas }) => (
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
+                    <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '120px'}}>Propietario</span>
+                                </div>
+                                <select className="custom-select" id={apto.id + "propietario"}>
+                                    <option value="null" selected>Seleccione...</option>
+                                        {/* Imprimiendo los los propiertarios */}  
+                                        {propietarios && propietarios.map(propietario =>
+                                            <option value={propietario.id}>{propietario.cedula} - {propietario.nombre} {propietario.apellido}</option>
+                                        )}
+                                </select>
+                            </div>
                     <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
@@ -390,29 +426,6 @@ function TipoTabla() { // Esta funcion funciona para mostrar la tabla de casas o
     }
 }
 
-async function getDatos(ID) { // Esta funcion funciona para mostrar la tabla de casas o aptos
-    console.log("Ejecutando funcion getDatos()" + ID)
-    // Obtener los datos del inmuble que selecciono
-    const getInmueble = await fetch('http://localhost:4000/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: `
-      query{
-        getInmueble(id: ${ID}){
-          id
-          alicuota
-          saldo
-          id_propietario
-        }
-      }
-      ` }),
-      }) 
-      const respuestaInmueble = await getInmueble.json()
-      const inmueble = await respuestaInmueble.data.getInmueble
-      document.getElementById(ID + 'Alicuota').setAttribute('value',`${inmueble.alicuota}`);
-      document.getElementById(ID + 'Saldo').setAttribute('value',`${inmueble.alicuota}`);
-
-}
 
 async function Agregar() { // Funcion para agregar
     var inmueble = {alicuota: "", saldo:"", id_propietario:"", nombreCasa: "", numeroCasa: "" ,pisoApto: "", numeroApto: "" , id_inmueble: "" , active: true};  // Creo un Objeto propietario
@@ -424,7 +437,61 @@ async function Agregar() { // Funcion para agregar
     inmueble.pisoApto = (document.getElementById("AddPisoApto") as HTMLInputElement).value;
     inmueble.numeroApto = (document.getElementById("AddNumeroApto") as HTMLInputElement).value;
     inmueble.id_inmueble = (document.getElementById("AddEdificioApto") as HTMLInputElement).value;
+    inmueble.id_propietario = (document.getElementById("AddPropietario") as HTMLInputElement).value;
     var tipo = (document.querySelector("#AddTipo")as HTMLInputElement).value; // Puede ser Casa o Apto
+    if( inmueble.id_propietario == "null"){
+        // Sabiendo que en "tipo" esta el tipo que seleccionaron el formulario entonces muestro el que corresponde
+        if (tipo == "Casa"){
+            fetch('http://localhost:4000/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: `
+                    mutation{
+                        createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, tipo: "casa" , saldo: ${inmueble.saldo}, active:true){
+                        id
+                        alicuota
+                        numero
+                        nombre
+                        piso
+                        saldo
+                        id_propietario
+                        id_inmueble
+                        tipo
+                        active
+                        }
+                    }
+                    ` }),
+                })
+                .then(res => res.json())
+                .then(res => console.log(res))
+                .then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
+        }else if (tipo == "Apto"){
+            fetch('http://localhost:4000/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: `
+                    mutation{
+                        createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_inmueble: ${inmueble.id_inmueble}, active:true){
+                        id
+                        alicuota
+                        numero
+                        nombre
+                        piso
+                        saldo
+                        id_propietario
+                        id_inmueble
+                        tipo
+                        active
+                        }
+                    }
+                    ` }),
+                })
+                .then(res => res.json())
+                .then(res => console.log(res))
+                .then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
+        }
+    }else{
+        
     // Sabiendo que en "tipo" esta el tipo que seleccionaron el formulario entonces muestro el que corresponde
     if (tipo == "Casa"){
         fetch('http://localhost:4000/graphql', {
@@ -432,7 +499,7 @@ async function Agregar() { // Funcion para agregar
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
                 mutation{
-                    createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, tipo: "casa" , saldo: ${inmueble.saldo}, active:true){
+                    createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, id_propietario: ${inmueble.id_propietario} , tipo: "casa" , saldo: ${inmueble.saldo}, active:true){
                     id
                     alicuota
                     numero
@@ -456,7 +523,7 @@ async function Agregar() { // Funcion para agregar
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
                 mutation{
-                    createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_inmueble: ${inmueble.id_inmueble}, active:true){
+                    createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_propietario: ${inmueble.id_propietario}, id_inmueble: ${inmueble.id_inmueble}, active:true){
                     id
                     alicuota
                     numero
@@ -473,25 +540,111 @@ async function Agregar() { // Funcion para agregar
             })
             .then(res => res.json())
             .then(res => console.log(res))
-            .then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
+            //.then(res => location.reload()) // Refrescar para que se vean los cambios en la Tabla
     }
+    }
+    
 
 }
 
 function ModificarApto(id) { // Funcion para modificar
-    var apto = {alicuota:"", saldo:"", edificio:"" , piso: "", numero: ""};
+    var apto = {alicuota:"", saldo:"", edificio:"" , piso: "", numero: "" , id_propietario:""};
     apto.alicuota = (document.getElementById(`${id + "alicuota"}`) as HTMLInputElement).value; 
     apto.saldo = (document.getElementById(`${id + "saldo"}`) as HTMLInputElement).value; 
     apto.edificio = (document.getElementById(`${id + "edificio"}`) as HTMLInputElement).value; 
     apto.piso = (document.getElementById(`${id + "piso"}`) as HTMLInputElement).value; 
     apto.numero = (document.getElementById(`${id + "numero"}`) as HTMLInputElement).value; 
-    console.log(apto , id)
+    apto.id_propietario = (document.getElementById(`${id + "propietario"}`) as HTMLInputElement).value; 
+    console.log(apto.id_propietario)
+    if( apto.id_propietario == "null"){
     fetch('http://localhost:4000/graphql', { 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateInmueble(id: ${id} , alicuota: ${apto.alicuota}, saldo: ${apto.saldo} , id_inmueble: ${apto.edificio} , tipo: "apto" , active:true){
+        updateInmueble(id: ${id} , alicuota: ${apto.alicuota}, saldo: ${apto.saldo} , id_propietario: null , id_inmueble: ${apto.edificio} , tipo: "apto" , active:true){
+        id
+        alicuota
+        numero
+        nombre
+        piso
+        saldo
+        id_propietario
+        id_inmueble
+        tipo
+        active
+        }
+    }
+    ` }),
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+    }else{
+        fetch('http://localhost:4000/graphql', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    mutation{
+        updateInmueble(id: ${id} , alicuota: ${apto.alicuota}, saldo: ${apto.saldo} , id_propietario: ${apto.id_propietario} , id_inmueble: ${apto.edificio} , tipo: "apto" , active:true){
+        id
+        alicuota
+        numero
+        nombre
+        piso
+        saldo
+        id_propietario
+        id_inmueble
+        tipo
+        active
+        }
+    }
+    ` }),
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+    }
+}
+
+function ModificarCasa(id) { // Funcion para modificar
+    var casa = {alicuota:"", saldo:"", nombre: "", numero: "" ,  id_propietario:""};
+    casa.alicuota = (document.getElementById(`${id + "alicuota"}`) as HTMLInputElement).value; 
+    casa.saldo = (document.getElementById(`${id + "saldo"}`) as HTMLInputElement).value; 
+    casa.nombre = (document.getElementById(`${id + "nombre"}`) as HTMLInputElement).value; 
+    casa.numero = (document.getElementById(`${id + "numero"}`) as HTMLInputElement).value; 
+    casa.id_propietario = (document.getElementById(`${id + "propietario"}`) as HTMLInputElement).value; 
+    if( casa.id_propietario == "null"){
+    fetch('http://localhost:4000/graphql', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    mutation{
+        updateInmueble(id: ${id} , alicuota: ${casa.alicuota}, saldo: ${casa.saldo} , nombre: "${casa.nombre}" , id_propietario: null , tipo: "casa" , active:true){
+        id
+        alicuota
+        numero
+        nombre
+        piso
+        saldo
+        id_propietario
+        id_inmueble
+        tipo
+        active
+        }
+    }
+    ` }),
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+}else{
+    fetch('http://localhost:4000/graphql', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    mutation{
+        updateInmueble(id: ${id} , alicuota: ${casa.alicuota}, saldo: ${casa.saldo} , nombre: "${casa.nombre}" ,  id_propietario: ${casa.id_propietario} , tipo: "casa" , active:true){
         id
         alicuota
         numero
@@ -510,37 +663,6 @@ function ModificarApto(id) { // Funcion para modificar
     .then(res => console.log(res))
     .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
 }
-
-function ModificarCasa(id) { // Funcion para modificar
-    var casa = {alicuota:"", saldo:"", nombre: "", numero: ""};
-    casa.alicuota = (document.getElementById(`${id + "alicuota"}`) as HTMLInputElement).value; 
-    casa.saldo = (document.getElementById(`${id + "saldo"}`) as HTMLInputElement).value; 
-    casa.nombre = (document.getElementById(`${id + "nombre"}`) as HTMLInputElement).value; 
-    casa.numero = (document.getElementById(`${id + "numero"}`) as HTMLInputElement).value; 
-    console.log(casa , id)
-    fetch('http://localhost:4000/graphql', { 
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: `
-    mutation{
-        updateInmueble(id: ${id} , alicuota: ${casa.alicuota}, saldo: ${casa.saldo} , nombre: "${casa.nombre}" , tipo: "casa" , active:true){
-        id
-        alicuota
-        numero
-        nombre
-        piso
-        saldo
-        id_propietario
-        id_inmueble
-        tipo
-        active
-        }
-    }
-    ` }),
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
-    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
 }
 
 function Eliminar(id) { // Funcion para editar
