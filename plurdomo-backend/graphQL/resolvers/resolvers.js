@@ -96,7 +96,7 @@ const resolvers = {
             return await models.gasto.create({ monto, dia, mes, anio, concepto, active })
         },
         async updateGasto(root, { id, monto, dia, mes, anio, concepto, active }, { models }) {
-            await models.gasto.update({ nombre, monto, dia, mes, anio, concepto, active }, { where: { id: id } });
+            await models.gasto.update({ monto, dia, mes, anio, concepto, active }, { where: { id: id } });
             return models.gasto.findByPk(id)
         },
 
@@ -114,8 +114,8 @@ const resolvers = {
         async createPago(root, { dia, mes, anio, id_factura, active }, { models }) {
             return await models.pago.create({ dia, mes, anio, id_factura, active })
         },
-        async updatePago(root, { id,  dia, mes, anio, id_factura, active }, { models }) {
-            await models.pago.update({  dia, mes, anio, id_factura, active }, { where: { id: id } });
+        async updatePago(root, { id, dia, mes, anio, id_factura, active }, { models }) {
+            await models.pago.update({ dia, mes, anio, id_factura, active }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
 

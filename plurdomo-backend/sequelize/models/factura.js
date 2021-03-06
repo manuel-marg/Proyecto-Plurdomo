@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         id_inmueble: {
-            type: DataTypes.INT,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         dia_em: {

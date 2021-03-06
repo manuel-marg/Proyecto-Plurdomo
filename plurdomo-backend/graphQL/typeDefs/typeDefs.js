@@ -79,7 +79,7 @@ type Factura{
     mes_em: Int!
     anio_em: Int!
     n_factura: Int!
-    active: Bolean!
+    active: Boolean!
 }
 
 
@@ -132,8 +132,8 @@ type Mutation{
     createPago(dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
     updatePago(id: Int!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
 
-    createFactura(nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Bolean!): Factura!
-    updateFactura(id: Int!, nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Bolean!): Factura!    
+    createFactura(nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!
+    updateFactura(id: Int!, nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!    
 }
 `
 module.exports = typeDefs
