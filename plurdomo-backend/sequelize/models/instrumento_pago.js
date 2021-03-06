@@ -1,40 +1,38 @@
 module.exports = (sequelize, DataTypes) => {
-    const Inmueble = sequelize.define('inmueble', {
+    const Instrumento_pago = sequelize.define('Instrumento_pago', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        alicuota: {
+        tipo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        referencia: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        monto: {
             type: DataTypes.FLOAT,
             allowNull: false
         },
-        numero: {
+        dia: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         },
-        nombre: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        piso: {
+        
+        mes: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         },
-        saldo: {
-            type: DataTypes.FLOAT,
-            allowNull: true
-        },
-        id_propietario: {
+        
+        anio: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         },
-        id_inmueble: {
+        id_pago: {
             type: DataTypes.INTEGER,
-            allowNull: true
-        },
-        tipo: {
-            type: DataTypes.STRING,
             allowNull: false
         },
         active: {
@@ -42,6 +40,5 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     }, { timestamps: false });
-
-    return Inmueble
+    return Instrumento_pago
 }

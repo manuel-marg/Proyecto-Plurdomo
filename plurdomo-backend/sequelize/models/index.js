@@ -11,6 +11,9 @@ const models = {
     propietario: sequelize.import('./propietario'),
     inmueble: sequelize.import('./inmueble'),
     condominio: sequelize.import('./condominio'),
+    instrumento_pago: sequelize.import('./instrumento_pago'),
+    pago: sequelize.import('./pago'),
+    gasto: sequelize.import('./gasto'),
 
 }
 
