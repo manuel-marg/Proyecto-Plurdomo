@@ -93,7 +93,7 @@ const resolvers = {
 
         //---------------GASTOS------------------
         async createGasto(root, { monto, dia, mes, anio, concepto, active }, { models }) {
-            return await models.gasto.create({ monto, dia, mes, anio, concepto, codigo_gasto, active })
+            return await models.gasto.create({ monto, dia, mes, anio, concepto, active })
         },
         async updateGasto(root, { id, monto, dia, mes, anio, concepto, active }, { models }) {
             await models.gasto.update({ nombre, monto, dia, mes, anio, concepto, active }, { where: { id: id } });
