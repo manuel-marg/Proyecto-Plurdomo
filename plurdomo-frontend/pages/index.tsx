@@ -8,7 +8,7 @@ const IndexPage = () => (
   <meta charSet="utf-8" />
   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/litera/bootstrap.min.css" />
-  <link rel="icon" href="building.svg"/>
+  <link rel="icon" href="https://icons.getbootstrap.com/icons/building.svg"/>
   </Head>
 <main className="form-signin">
   <form>
