@@ -36,6 +36,15 @@ type Condominio{
     active: Boolean!
 }
 
+type Gasto{
+    id: Int!
+    monto: Float
+    dia: Int!
+    mes: Int!
+    anio: Int!
+    concepto: String!
+    active: Boolean!
+}
 
 type Query{
     getPropietarios: [Propietario],
@@ -52,6 +61,9 @@ type Query{
 
     getCondominios: [Condominio],
     getCondominio(id: Int!): Condominio
+
+    getGastos: [Gasto],
+    getGasto(id: Int!): Gasto
 }
 
 
@@ -64,6 +76,9 @@ type Mutation{
 
     createCondominio(nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
     updateCondominio(id: Int!, nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
+
+    createGasto(monto: Float, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
+    updateGasto(id: Int!, monto: Float, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
 }
 `
 module.exports = typeDefs

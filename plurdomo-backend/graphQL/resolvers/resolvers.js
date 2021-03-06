@@ -35,6 +35,13 @@ const resolvers = {
             return await models.condominio.findByPk(args.id)
         },
 
+        async getGastos(root, args, { models }) {
+            return await models.condominio.findAll({ where: { active: true } })
+        },
+        async getGasto(root, args, { models }) {
+            return await models.condominio.findByPk(args.id)
+        },
+
     },
     Mutation: {
         //---------------PROPIETARIO--------------
@@ -63,6 +70,16 @@ const resolvers = {
             await models.condominio.update({ nombre, municipio, estado, codigo_urb, active }, { where: { id: id } });
             return models.condominio.findByPk(id)
         },
+
+        //---------------GASTOS------------------
+        async createGasto(root, { monto, dia, mes, anio, concepto, active }, { models }) {
+            return await models.condominio.create({ monto, dia, mes, anio, concepto, codigo_gasto, active })
+        },
+        async updateGasto(root, { id, monto, dia, mes, anio, concepto, active }, { models }) {
+            await models.condominio.update({ nombre, monto, dia, mes, anio, concepto, active }, { where: { id: id } });
+            return models.condominio.findByPk(id)
+        },
+
 
     }
 }
