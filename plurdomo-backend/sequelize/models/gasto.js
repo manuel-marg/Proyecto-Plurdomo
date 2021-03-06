@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Condominio = sequelize.define('Condominio', {
+    const Gasto = sequelize.define('Gasto', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -30,5 +30,5 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         }
     }, { timestamps: false });
-    return Condominio
+    return Gasto
 }

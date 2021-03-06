@@ -67,6 +67,21 @@ type Pago{
     active: Boolean!
 }
 
+type Factura{
+    nombre: String! 
+    gastos_comunes: Float
+    gastos_nocomunes: Float
+    deuda_total: Float
+    alicuota: Float 
+    saldo: Float
+    id_inmueble: Int!
+    dia_em: Int!
+    mes_em: Int!
+    anio_em: Int!
+    n_factura: Int!
+    active: Bolean!
+}
+
 
 type Query{
     getPropietarios: [Propietario],
@@ -92,6 +107,9 @@ type Query{
 
     getPagos: [Pago],
     getPago(id: Int!): Pago
+
+    getFacturas: [Factura],
+    getFactura(id: Int!): Factura
 }
 
 
@@ -113,6 +131,9 @@ type Mutation{
 
     createPago(dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
     updatePago(id: Int!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
+
+    createFactura(nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Bolean!): Factura!
+    updateFactura(id: Int!, nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Bolean!): Factura!    
 }
 `
 module.exports = typeDefs

@@ -118,6 +118,16 @@ const resolvers = {
             await models.pago.update({  dia, mes, anio, id_factura, active }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
+
+        //---------------FACTURA------------------
+        async createFactura(root, { nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { models }) {
+            return await models.gasto.create({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active })
+        },
+        async updateFactura(root, { id, nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { models }) {
+            await models.gasto.update({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { where: { id: id } });
+            return models.gasto.findByPk(id)
+        },
+
     }
 }
 module.exports = resolvers
