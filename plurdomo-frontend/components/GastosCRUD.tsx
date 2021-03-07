@@ -313,28 +313,27 @@ async function Agregar() { // Funcion para agregar
     gasto.año = parseInt(fechaArray[0]);;
     gasto.tipo = (document.getElementById("tipo") as HTMLInputElement).value;
     gasto.concepto = (document.getElementById("concepto") as HTMLInputElement).value;
-    console.log(gasto);
     
-    fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Crear Propietario
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: `
-    mutation{
-        createGasto(monto: ${gasto.monto}, tipo: ${gasto.tipo}, dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.año}, concepto: "${gasto.concepto}", active: true){
-          id
-          monto
-          dia
-          mes
-          anio
-          concepto
-          active
-        }
-      }
+    const createGasto = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            createGasto(monto: ${gasto.monto}, tipo: "${gasto.tipo}", dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.año}, concepto: "${gasto.concepto}", active: true){
+              id
+              monto
+              dia
+              mes
+              anio
+              concepto
+              active
+            }
+          }
         ` }),
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
-    .then(res => location.reload()) 
+        }) 
+        const respuestaGasto = await createGasto.json()
+        const gastoCreado = await respuestaGasto.data.createGasto
+        console.log(gastoCreado)
     
     if (gasto.tipo == "Comun"){
         const getInmuebles = await fetch('http://localhost:4000/graphql', {
@@ -342,23 +341,64 @@ async function Agregar() { // Funcion para agregar
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
             query{
-              getCasas{
-                id
-                alicuota
-                numero
-                nombre
-                piso
-                saldo
-                id_propietario
-                id_inmueble
-                tipo
-                active
+                getInmuebles{
+                  id
+                  alicuota
+                  numero
+                  nombre
+                  piso
+                  saldo
+                  id_propietario
+                  id_inmueble
+                  tipo
+                  active
+                }
               }
-            }
             ` }),
             }) 
             const respuestaInmuebles = await getInmuebles.json()
-            const inmuebles = await respuestaInmuebles.data.getCasas
+            const inmuebles = await respuestaInmuebles.data.getInmuebles
+            inmuebles.forEach(function(inmueble) {
+                fetch('http://localhost:4000/graphql', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: `
+                mutation{
+                    generarGasto(id_gasto: ${gastoCreado.id}, id_inmueble: ${inmueble.id}, active: true){
+                      id_gasto
+                      id_inmueble
+                      active
+                    }
+                  }
+                    ` }),
+                })
+                //.then(res => res.json())
+                //.then(res => console.log(res))
+                .then(res => location.reload()) 
+            }); 
+    }else if (gasto.tipo == "No Comun"){
+        var id_inmueble = "";
+        if( (document.getElementById("tipoInmueble") as HTMLInputElement).value == "Apto"){
+            id_inmueble = (document.getElementById("apto") as HTMLInputElement).value;
+        }else if( (document.getElementById("tipoInmueble") as HTMLInputElement).value == "Casa"){
+            id_inmueble = (document.getElementById("casa") as HTMLInputElement).value;
+        }
+        fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            generarGasto(id_gasto: ${gastoCreado.id}, id_inmueble: ${id_inmueble}, active: true){
+              id_gasto
+              id_inmueble
+              active
+            }
+          }
+        ` }),
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
     }
 
 }
@@ -402,7 +442,7 @@ function Eliminar(gasto) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.anio} , concepto:   "${gasto.concepto}" , active: false){
+        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.anio} , concepto:   "${gasto.concepto}" , tipo: "${gasto.tipo}", active: false){
           id
           monto
           dia

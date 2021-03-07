@@ -101,11 +101,11 @@ const resolvers = {
         },
 
         //---------------GASTOS------------------
-        async createGasto(root, { monto, dia, mes, anio, concepto, active }, { models }) {
-            return await models.gasto.create({ monto, dia, mes, anio, concepto, active })
+        async createGasto(root, { monto, dia, mes, anio, concepto, tipo, active }, { models }) {
+            return await models.gasto.create({ monto, dia, mes, anio, concepto, tipo, active })
         },
-        async updateGasto(root, { id, monto, dia, mes, anio, concepto, active }, { models }) {
-            await models.gasto.update({ monto, dia, mes, anio, concepto, active }, { where: { id: id } });
+        async updateGasto(root, { id, monto, dia, mes, anio, concepto, tipo, active }, { models }) {
+            await models.gasto.update({ monto, dia, mes, anio, concepto, tipo, active }, { where: { id: id } });
             return models.gasto.findByPk(id)
         },
 

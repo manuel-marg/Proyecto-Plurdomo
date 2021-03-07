@@ -36,6 +36,7 @@ Gastos.getInitialProps = async (ctx) => {
               mes
               anio
               concepto
+              tipo
               active
             }
           }
