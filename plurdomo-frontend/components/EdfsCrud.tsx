@@ -142,7 +142,7 @@ function AgregarEdf() { // Funcion para agregar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
         mutation{
-            createInmueble(nombre: "${edf.nombre}", tipo: "edificio" , active:true){
+            createInmueble(nombre: "${edf.nombre}", tipo: "edificio" , alicuota: 100 , active:true){
             id
             alicuota
             numero
