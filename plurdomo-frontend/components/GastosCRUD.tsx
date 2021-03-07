@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { getStaticProps } from '../pages/users/[id]';
 
 
-const Crud = ({ gastos , casas , aptos , edificios }) => (
+const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
 <div>
     <div className="container-xl">
         <div>
@@ -27,6 +27,9 @@ const Crud = ({ gastos , casas , aptos , edificios }) => (
                         </div>
                     </div>
                 </div>
+                {aptosDelEdificio && aptosDelEdificio.map(apto =>
+                <p key={apto.id}>{apto.id}></p>
+                )}
                 <table className="table table-striped table-hover table-sm" id="myTable">
                     <thead>
                         <tr>
@@ -122,7 +125,7 @@ const Crud = ({ gastos , casas , aptos , edificios }) => (
                                     <span className="input-group-text" style={{width: '100px'}}>Edificio</span>
                                 </div>
                                 <select className="custom-select" onChange={AptosEdificio} id="edificio">
-                                    <option selected>Seleccione...</option>
+                                    <option value="null" selected>Seleccione...</option>
                                         {/* Imprimiendo los edificios que hay en la tabla de edificios*/}  
                                         {edificios && edificios.map(edificio =>
                                             <option value={edificio.id}>{edificio.nombre}</option>
@@ -133,11 +136,10 @@ const Crud = ({ gastos , casas , aptos , edificios }) => (
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>Apto</span>
                                 </div>
-                                <select className="custom-select" id="inmueble">
+                                <select className="custom-select" id="apto">
                                     <option selected>Seleccione...</option>
-                                        {/* Imprimiendo los edificios que hay en la tabla de edificios*/}  
-                                        {aptos && aptos.map(apto =>
-                                            <option value={apto.id}>Edificio: {apto.id_inmueble} - Piso: {apto.piso} - N°: {apto.numero}</option>
+                                        {aptosDelEdificio && aptosDelEdificio.map(apto =>
+                                            <option value={apto.id}>Piso: {apto.piso} - N°: {apto.numero}</option>
                                         )}
                                 </select>
                             </div>
@@ -148,7 +150,7 @@ const Crud = ({ gastos , casas , aptos , edificios }) => (
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>Casa</span>
                                 </div>
-                                <select className="custom-select" id="inmueble">
+                                <select className="custom-select" id="casa">
                                     <option selected>Seleccione...</option>
                                         {/* Imprimiendo los edificios que hay en la tabla de edificios*/}  
                                         {casas && casas.map(casa =>
@@ -264,13 +266,43 @@ function TipoInmueble() {
     }
 }
 
-function AptosEdificio() {
-    var tipo = (document.querySelector("#edificio")as HTMLInputElement).value;
-   
-    if (tipo == "Apto"){
-        (document.querySelector("#Apto")as HTMLInputElement).style.display = 'block';
-    }else if (tipo == "Casa"){
-        (document.querySelector("#Casa")as HTMLInputElement).style.display = 'block';
+async function AptosEdificio() {
+    var id_inmueble = (document.querySelector("#edificio")as HTMLInputElement).value;
+    if(id_inmueble != "null"){
+    const res = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        query{
+            getAptosEdificio(id_inmueble: ${id_inmueble}){
+              id
+              alicuota
+              numero
+              nombre
+              piso
+              saldo
+              id_propietario
+              id_inmueble
+              tipo
+              active
+            }
+          }
+        ` }),
+        }) 
+        const respuesta = await res.json()
+        console.log(respuesta.data.getAptosEdificio)
+        var aptos = respuesta.data.getAptosEdificio;
+        
+        var x = document.getElementById("apto");
+        var option = document.createElement("option");
+
+        aptos.forEach(function(apto) {
+            console.log(apto);
+            option.value = `${apto.id}`;
+            option.text = `${"N°: " + apto.numero + " -  Piso: " + apto.piso }`;
+            x.add(option);
+        });         
+
     }
 }
 
