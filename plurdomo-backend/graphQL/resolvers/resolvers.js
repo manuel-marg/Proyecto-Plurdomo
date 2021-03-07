@@ -141,6 +141,10 @@ const resolvers = {
         async generarGasto(root, { id_gasto, id_inmueble, active }, { models }) {
             return await models.genera_gasto.create({ id_gasto, id_inmueble, active })
         },
+        async deleteGenerar_Gasto(root, { id }, { models }) {
+            await models.genera_gasto.update({ active:false }, { where: { id_gasto: id } });
+            return models.genera_gasto.findByPk(id)
+        },
     }
 }
 module.exports = resolvers

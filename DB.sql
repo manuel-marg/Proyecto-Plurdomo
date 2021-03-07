@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS inmuebles (
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS condominio (
+CREATE TABLE IF NOT EXISTS condominios (
     id int auto_increment,
     nombre varchar(255) not null,
     municipio varchar(255) not null,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS condominio (
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS instrumento_pago (
+CREATE TABLE IF NOT EXISTS instrumento_pagos (
     id int auto_increment,
     tipo varchar(255) not null,
     referencia varchar(255) not null,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS instrumento_pago (
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS pago (
+CREATE TABLE IF NOT EXISTS pagos (
     id int auto_increment,
     monto float not null,
     dia int not null,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS pago (
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS gasto (
+CREATE TABLE IF NOT EXISTS gastos (
     id int auto_increment,
     monto float not null,
     dia int not null,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS gasto (
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS factura (
+CREATE TABLE IF NOT EXISTS facturas (
     id int auto_increment,
     n_factura int not null,
     nombre varchar(255) not null,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS factura (
     primary key(id)
 );
 
-CREATE TABLE IF NOT EXISTS otorga (
+CREATE TABLE IF NOT EXISTS otorgas (
     id_gasto int not null,
     id_factura int not null,
     monto_alicouta float not null,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS otorga (
     primary key(id_gasto, id_factura)
 );
 
-CREATE TABLE IF NOT EXISTS genera (
+CREATE TABLE IF NOT EXISTS generas (
     id_gasto int not null,
     id_inmueble int not null,
     active boolean not null,

@@ -149,6 +149,7 @@ type Mutation{
     updateFactura(id: Int!, nombre: String!,gastos_comunes: String,gastos_nocomunes: String,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!    
 
     generarGasto(id_gasto: Int!, id_inmueble: Int!, active: Boolean!): Genera_gasto!
+    deleteGenerar_Gasto(id: Int!): Genera_gasto!
 }
 `
 module.exports = typeDefs
