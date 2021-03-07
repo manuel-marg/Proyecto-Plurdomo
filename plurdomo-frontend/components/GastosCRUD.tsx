@@ -27,9 +27,6 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                         </div>
                     </div>
                 </div>
-                {aptosDelEdificio && aptosDelEdificio.map(apto =>
-                <p key={apto.id}>{apto.id}></p>
-                )}
                 <table className="table table-striped table-hover table-sm" id="myTable">
                     <thead>
                         <tr>
@@ -306,14 +303,15 @@ async function AptosEdificio() {
     }
 }
 
-function Agregar() { // Funcion para agregar
-    var gasto = {monto: "", fecha: "", dia: 0, mes: 0, año: 0, concepto:"", active: true}; 
+async function Agregar() { // Funcion para agregar
+    var gasto = {monto: "", fecha: "", dia: 0, mes: 0, año: 0, tipo: "", concepto:"", active: true}; 
     gasto.monto = (document.getElementById("monto") as HTMLInputElement).value;
     gasto.fecha = (document.getElementById("fecha") as HTMLInputElement).value;
     var fechaArray = gasto.fecha.split("-");
     gasto.dia = parseInt(fechaArray[2]);
     gasto.mes = parseInt(fechaArray[1]);;
     gasto.año = parseInt(fechaArray[0]);;
+    gasto.tipo = (document.getElementById("tipo") as HTMLInputElement).value;
     gasto.concepto = (document.getElementById("concepto") as HTMLInputElement).value;
     console.log(gasto);
     
@@ -322,8 +320,8 @@ function Agregar() { // Funcion para agregar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        createGasto(monto: ${gasto.monto}, dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.año}, concepto: "${gasto.concepto}", active: true){
-            id
+        createGasto(monto: ${gasto.monto}, tipo: ${gasto.tipo}, dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.año}, concepto: "${gasto.concepto}", active: true){
+          id
           monto
           dia
           mes
@@ -338,6 +336,31 @@ function Agregar() { // Funcion para agregar
     .then(res => console.log(res))
     .then(res => location.reload()) 
     
+    if (gasto.tipo == "Comun"){
+        const getInmuebles = await fetch('http://localhost:4000/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: `
+            query{
+              getCasas{
+                id
+                alicuota
+                numero
+                nombre
+                piso
+                saldo
+                id_propietario
+                id_inmueble
+                tipo
+                active
+              }
+            }
+            ` }),
+            }) 
+            const respuestaInmuebles = await getInmuebles.json()
+            const inmuebles = await respuestaInmuebles.data.getCasas
+    }
+
 }
 
 
