@@ -139,7 +139,7 @@ type Mutation{
     updateGasto(id: Int!, monto: Float, tipo: String!, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
     
     createInstrumento(tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
-    deleteInstrumento(id: Int!, tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
+    deleteInstrumento(id: Int!): Instrumento_pago!
 
     createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
     updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!

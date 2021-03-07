@@ -114,8 +114,8 @@ const resolvers = {
         async createInstrumento(root, { tipo, referencia, monto, dia, mes, anio, id_pago, active }, { models }) {
             return await models.instrumento_pago.create({ tipo, referencia, monto, dia, mes, anio, id_pago, active })
         },
-        async deleteInstrumento(root, { id, tipo, referencia, monto, dia, mes, anio, id_pago, active }, { models }) {
-            await models.instrumento_pago.update({ active }, { where: { id: id } });
+        async deleteInstrumento(root, { id }, { models }) {
+            await models.instrumento_pago.update({ active:false }, { where: { id: id } });
             return models.instrumento_pago.findByPk(id)
         },
 
