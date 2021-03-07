@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { getStaticProps } from '../pages/users/[id]';
 
 
-const Crud = ({ gastos }) => (
+const Crud = ({ gastos , casas , aptos , edificios }) => (
 <div>
     <div className="container-xl">
         <div>
@@ -32,6 +32,7 @@ const Crud = ({ gastos }) => (
                         <tr>
                             <th>ID</th>
                             <th>Concepto</th>
+                            <th>Tipo</th>
                             <th>Dia</th>
                             <th>Mes</th>
                             <th>Año</th>
@@ -44,6 +45,7 @@ const Crud = ({ gastos }) => (
                         <tr key={gasto.id}>
                                 <td>{gasto.id}</td>
                                 <td>{gasto.concepto}</td>
+                                <td>{gasto.tipo}</td>
                                 <td>{gasto.dia}</td>
                                 <td>{gasto.mes}</td>
                                 <td>{gasto.anio}</td>
@@ -87,7 +89,75 @@ const Crud = ({ gastos }) => (
                                 <span className="input-group-text">Concepto</span>
                             </div>
                             <input id="concepto" type="text" className="form-control" required/>
+                        </div>
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" style={{width: '100px'}}>Tipo</span>
+                            </div>
+                            <select className="custom-select" onChange={TipoGasto} id="tipo">
+                                <option value="Null" selected>Seleccione...</option>
+                                <option value="Comun">Comun</option>
+                                <option value="No Comun">No comun</option>
+                            </select>
                         </div> 
+                        <div id="Comun" style={{display: 'none'}} className="text-center fs-6">
+                            <p className="text-muted">
+                             Se cargara a todos los inmuebles del condominio.
+                            </p>
+                        </div>
+                        <div id="NoComun" style={{display: 'none'}}>
+                        <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Forma</span>
+                                </div>
+                                <select className="custom-select" onChange={TipoInmueble} id="tipoInmueble">
+                                    <option selected>Seleccione...</option>
+                                    <option value="Apto">Apto</option>
+                                    <option value="Casa">Casa</option>
+                                </select>
+                            </div>
+                            <div id="Apto" style={{display: 'none'}}>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Edificio</span>
+                                </div>
+                                <select className="custom-select" onChange={AptosEdificio} id="edificio">
+                                    <option selected>Seleccione...</option>
+                                        {/* Imprimiendo los edificios que hay en la tabla de edificios*/}  
+                                        {edificios && edificios.map(edificio =>
+                                            <option value={edificio.id}>{edificio.nombre}</option>
+                                        )}
+                                </select>
+                            </div>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Apto</span>
+                                </div>
+                                <select className="custom-select" id="inmueble">
+                                    <option selected>Seleccione...</option>
+                                        {/* Imprimiendo los edificios que hay en la tabla de edificios*/}  
+                                        {aptos && aptos.map(apto =>
+                                            <option value={apto.id}>Edificio: {apto.id_inmueble} - Piso: {apto.piso} - N°: {apto.numero}</option>
+                                        )}
+                                </select>
+                            </div>
+                            </div>
+                            </div>
+                            <div id="Casa" style={{display: 'none'}}>
+                            <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '100px'}}>Casa</span>
+                                </div>
+                                <select className="custom-select" id="inmueble">
+                                    <option selected>Seleccione...</option>
+                                        {/* Imprimiendo los edificios que hay en la tabla de edificios*/}  
+                                        {casas && casas.map(casa =>
+                                            <option value={casa.id}>Nombre de la casa: {casa.nombre} - N°: {casa.numero}</option>
+                                        )}
+                                </select>
+                            </div>
+                            </div>
+                           
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
@@ -168,6 +238,41 @@ const Crud = ({ gastos }) => (
 
 )
 
+function TipoGasto() {
+    var tipo = (document.querySelector("#tipo")as HTMLInputElement).value;
+
+    (document.querySelector("#Comun")as HTMLInputElement).style.display = 'none';
+    (document.querySelector("#NoComun")as HTMLInputElement).style.display = 'none';
+   
+    if (tipo == "Comun"){
+        (document.querySelector("#Comun")as HTMLInputElement).style.display = 'block';
+    }else if (tipo == "No Comun"){
+        (document.querySelector("#NoComun")as HTMLInputElement).style.display = 'block';
+    }
+}
+
+function TipoInmueble() {
+    var tipo = (document.querySelector("#tipoInmueble")as HTMLInputElement).value;
+
+    (document.querySelector("#Apto")as HTMLInputElement).style.display = 'none';
+    (document.querySelector("#Casa")as HTMLInputElement).style.display = 'none';
+   
+    if (tipo == "Apto"){
+        (document.querySelector("#Apto")as HTMLInputElement).style.display = 'block';
+    }else if (tipo == "Casa"){
+        (document.querySelector("#Casa")as HTMLInputElement).style.display = 'block';
+    }
+}
+
+function AptosEdificio() {
+    var tipo = (document.querySelector("#edificio")as HTMLInputElement).value;
+   
+    if (tipo == "Apto"){
+        (document.querySelector("#Apto")as HTMLInputElement).style.display = 'block';
+    }else if (tipo == "Casa"){
+        (document.querySelector("#Casa")as HTMLInputElement).style.display = 'block';
+    }
+}
 
 function Agregar() { // Funcion para agregar
     var gasto = {monto: "", fecha: "", dia: 0, mes: 0, año: 0, concepto:"", active: true}; 
