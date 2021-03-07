@@ -66,6 +66,11 @@ const resolvers = {
             return await models.pago.findByPk(args.id)
         },
 
+        //------------GENERAR GASTOS--------------
+        async getGenerados(root, args, { models }) {
+            return await models.genera_gasto.findAll({ where: { active: true } })
+        },
+
     },
     Mutation: {
         //---------------PROPIETARIO--------------
@@ -132,6 +137,10 @@ const resolvers = {
             return models.gasto.findByPk(id)
         },
 
+        //------------GENERAR GASTOS--------------
+        async generarGasto(root, { id_gasto, id_inmueble, active }, { models }) {
+            return await models.genera_gasto.create({ id_gasto, id_inmueble, active })
+        },
     }
 }
 module.exports = resolvers

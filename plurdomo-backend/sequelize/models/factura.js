@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true
         },
         gastos_comunes: {
-            type: DataTypes.FLOAT,
-            allowNull: false
+            type: DataTypes.STRING,
+            allowNull: true
         },
         gastos_nocomunes: {
-            type: DataTypes.FLOAT,
-            allowNull: false
+            type: DataTypes.STRING,
+            allowNull: true
         },
         deuda_total: {
             type: DataTypes.FLOAT,

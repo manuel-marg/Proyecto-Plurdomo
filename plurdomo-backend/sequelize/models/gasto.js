@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.FLOAT,
             allowNull: true
         },
+        tipo: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         dia: {
             type: DataTypes.INTEGER,
             allowNull: false

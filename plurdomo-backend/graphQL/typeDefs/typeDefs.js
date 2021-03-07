@@ -39,6 +39,7 @@ type Condominio{
 type Gasto{
     id: Int!
     monto: Float
+    tipo: String!
     dia: Int!
     mes: Int!
     anio: Int!
@@ -70,8 +71,8 @@ type Pago{
 
 type Factura{
     nombre: String! 
-    gastos_comunes: Float
-    gastos_nocomunes: Float
+    gastos_comunes: String
+    gastos_nocomunes: String
     deuda_total: Float
     alicuota: Float 
     saldo: Float
@@ -80,6 +81,12 @@ type Factura{
     mes_em: Int!
     anio_em: Int!
     n_factura: Int!
+    active: Boolean!
+}
+
+type Genera_gasto{
+    id_gasto: Int!
+    id_inmueble: Int!
     active: Boolean!
 }
 
@@ -112,6 +119,9 @@ type Query{
 
     getFacturas: [Factura],
     getFactura(id: Int!): Factura
+
+    getGenerados: [Genera_gasto],
+    
 }
 
 
@@ -125,7 +135,7 @@ type Mutation{
     createCondominio(nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
     updateCondominio(id: Int!, nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
 
-    createGasto(monto: Float, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
+    createGasto(monto: Float, tipo: String!, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
     updateGasto(id: Int!, monto: Float, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
     
     createInstrumento(tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
@@ -135,8 +145,10 @@ type Mutation{
     updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
     
 
-    createFactura(nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!
-    updateFactura(id: Int!, nombre: String!,gastos_comunes: Float,gastos_nocomunes: Float,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!    
+    createFactura(nombre: String!,gastos_comunes: String, gastos_nocomunes: String, deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!
+    updateFactura(id: Int!, nombre: String!,gastos_comunes: String,gastos_nocomunes: String,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!    
+
+    generarGasto(id_gasto: Int!, id_inmueble: Int!, active: Boolean!): Genera_gasto!
 }
 `
 module.exports = typeDefs
