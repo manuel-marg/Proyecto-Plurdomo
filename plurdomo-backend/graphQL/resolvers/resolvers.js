@@ -93,10 +93,10 @@ const resolvers = {
 
         //---------------GASTOS------------------
         async createGasto(root, { monto, dia, mes, anio, concepto, active }, { models }) {
-            return await models.gasto.create({ monto, dia, mes, anio, concepto, codigo_gasto, active })
+            return await models.gasto.create({ monto, dia, mes, anio, concepto, active })
         },
         async updateGasto(root, { id, monto, dia, mes, anio, concepto, active }, { models }) {
-            await models.gasto.update({ nombre, monto, dia, mes, anio, concepto, active }, { where: { id: id } });
+            await models.gasto.update({ monto, dia, mes, anio, concepto, active }, { where: { id: id } });
             return models.gasto.findByPk(id)
         },
 
@@ -118,6 +118,16 @@ const resolvers = {
             await models.pago.update({ monto, dia, mes, anio, id_factura, active }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
+
+        //---------------FACTURA------------------
+        async createFactura(root, { nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { models }) {
+            return await models.gasto.create({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active })
+        },
+        async updateFactura(root, { id, nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { models }) {
+            await models.gasto.update({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { where: { id: id } });
+            return models.gasto.findByPk(id)
+        },
+
     }
 }
 module.exports = resolvers

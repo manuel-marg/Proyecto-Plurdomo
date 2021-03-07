@@ -14,6 +14,7 @@ const models = {
     instrumento_pago: sequelize.import('./instrumento_pago'),
     pago: sequelize.import('./pago'),
     gasto: sequelize.import('./gasto'),
+    factura: sequelize.import('./factura'),
 
 }
 

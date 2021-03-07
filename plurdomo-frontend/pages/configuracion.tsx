@@ -44,6 +44,28 @@ Propietarios.getInitialProps = async (ctx) => {
         const respuesta = await res.json()
         console.log(respuesta)
         console.log(respuesta.data)
+        // Si es la primera vez que se usa el sistema se llena el codominio como vacio
+        if (respuesta.data.getCondominios.length === 0){
+          fetch('http://localhost:4000/graphql', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: `
+          mutation{
+              createCondominio(nombre: "" , municipio: "" , estado: "" , codigo_urb: "" , active: true){
+                id
+                nombre
+                municipio
+                estado
+                codigo_urb
+                active
+              }
+          }    
+          ` }),
+          })
+          .then(res => res.json())
+          .then(res => console.log(res))
+        }
+
         return { condominios: respuesta.data.getCondominios}
 
 }
