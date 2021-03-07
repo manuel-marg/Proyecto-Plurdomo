@@ -14,6 +14,10 @@ const resolvers = {
             return await models.inmueble.findAll({ where: { active: true, tipo: "apto" } })
         },
 
+        async getAptosEdificio(root, args, { models }) {
+            return await models.inmueble.findAll({ where: { active: true, tipo: "apto", id_inmueble: args.id_inmueble } })
+        },
+
         //------------INMUEBLES---------------
         async getInmuebles(root, args, { models }) {
             return await models.inmueble.findAll({ where: { active: true } })

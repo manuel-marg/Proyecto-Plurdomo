@@ -89,6 +89,7 @@ type Query{
     getPropietario(id: Int!): Propietario
     
     getAptos: [Inmueble]
+    getAptosEdificio(id_inmueble: Int!): [Inmueble] 
 
     getInmuebles: [Inmueble],
     getInmueble(id: Int!): Inmueble
