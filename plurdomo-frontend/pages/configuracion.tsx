@@ -64,6 +64,26 @@ Propietarios.getInitialProps = async (ctx) => {
           })
           .then(res => res.json())
           .then(res => console.log(res))
+
+          const res = await fetch('http://localhost:4000/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: `
+            query{
+                getCondominios{
+                  id
+                  nombre
+                  municipio
+                  estado
+                  codigo_urb
+                  active
+                }
+              }
+            ` }),
+            }) 
+            const respuesta = await res.json()
+            console.log(respuesta)
+            console.log(respuesta.data)
         }
 
         return { condominios: respuesta.data.getCondominios}
