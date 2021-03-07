@@ -2,12 +2,12 @@ import Layout from '../components/Layout'
 import GastosCRUD from '../components/GastosCRUD'
 
 // VISTA DE LA PAGINA HTML Y LUEGO ALGUNOS CSS
-const Gastos = ({ gastos , casas , aptos , edificios }) => (
+const Gastos = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
 <Layout title="Plurdomo">
     <div className="card border-secondary mb-3 mw-500">
         <div className="card-header"><h3 className="text-center">Gastos</h3></div>
         <div className="card-body">
-            <GastosCRUD gastos = { gastos } casas = { casas } aptos = { aptos } edificios = { edificios }/>
+            <GastosCRUD gastos = { gastos } casas = { casas } aptos = { aptos } edificios = { edificios } aptosDelEdificio = { aptosDelEdificio }/>
         </div>
     </div>
     <style jsx>
@@ -117,7 +117,7 @@ Gastos.getInitialProps = async (ctx) => {
       const respuestaCasas = await getCasas.json()
       const casas = await respuestaCasas.data.getCasas
 
-
+    var aptosDelEdificio = [];
 
 
       return { gastos: respuesta.data.getGastos , casas: casas , aptos: aptos , edificios: edificios }
