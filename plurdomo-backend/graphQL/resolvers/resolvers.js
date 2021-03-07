@@ -111,11 +111,11 @@ const resolvers = {
         },
 
         //----------------PAGO-----------------------
-        async createPago(root, { dia, mes, anio, id_factura, active }, { models }) {
-            return await models.pago.create({ dia, mes, anio, id_factura, active })
+        async createPago(root, { monto, dia, mes, anio, id_factura, active }, { models }) {
+            return await models.pago.create({ monto, dia, mes, anio, id_factura, active })
         },
-        async updatePago(root, { id,  dia, mes, anio, id_factura, active }, { models }) {
-            await models.pago.update({  dia, mes, anio, id_factura, active }, { where: { id: id } });
+        async updatePago(root, { id, monto, dia, mes, anio, id_factura, active }, { models }) {
+            await models.pago.update({ monto, dia, mes, anio, id_factura, active }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
     }

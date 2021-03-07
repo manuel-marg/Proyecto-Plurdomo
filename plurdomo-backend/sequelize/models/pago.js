@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
+        monto: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
         dia: {
             type: DataTypes.INTEGER,
             allowNull: false

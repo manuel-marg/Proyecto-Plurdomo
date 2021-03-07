@@ -60,6 +60,7 @@ type Instrumento_pago{
 
 type Pago{
     id: Int!
+    monto: Float!
     dia: Int!
     mes: Int!
     anio: Int!
@@ -111,8 +112,8 @@ type Mutation{
     createInstrumento(tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
     deleteInstrumento(id: Int!, tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
 
-    createPago(dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
-    updatePago(id: Int!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
+    createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
+    updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
 }
 `
 module.exports = typeDefs

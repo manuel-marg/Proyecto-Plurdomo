@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS instrumento_pago (
 
 CREATE TABLE IF NOT EXISTS pago (
     id int auto_increment,
+    monto float not null,
     dia int not null,
     mes int not null,
     anio int not null,
