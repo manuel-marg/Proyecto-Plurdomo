@@ -201,7 +201,7 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={(e) => Modificar(gasto)} data-dismiss="modal" className="btn btn-primary" value="Modificar" />
+                        <input type="button" data-dismiss="modal" className="btn btn-primary" value="Modificar" />
                     </div>
                 </form>
             </div>
@@ -316,7 +316,7 @@ async function Agregar() { // Funcion para agregar
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: `
         mutation{
-            createGasto(monto: ${gasto.monto}, tipo: "${gasto.tipo}", dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.año}, concepto: "${gasto.concepto}", active: true){
+            createGasto(monto: ${gasto.monto}, tipo: "${gasto.tipo}", dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.año}, concepto: "${gasto.concepto}",  historico: false, active: true){
               id
               monto
               dia
@@ -401,35 +401,6 @@ async function Agregar() { // Funcion para agregar
 }
 
 
-function Modificar(gasto) { // Funcion para modificar
-    gasto.monto = (document.getElementById(`${gasto.id + "monto"}`) as HTMLInputElement).value;
-    gasto.fecha = (document.getElementById(`${gasto.id + "fecha"}`) as HTMLInputElement).value;
-    var fechaArray = gasto.fecha.split("-");
-    gasto.dia = parseInt(fechaArray[2]);
-    gasto.mes = parseInt(fechaArray[1]);;
-    gasto.año = parseInt(fechaArray[0]);;
-    gasto.concepto = (document.getElementById(`${gasto.id + "concepto"}`) as HTMLInputElement).value;
-    fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: `
-    mutation{
-        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.año} , concepto:   "${gasto.concepto}" , active: true){
-          id
-          monto
-          dia
-          mes
-          anio
-          concepto
-          active
-        }
-      }
-    ` }),
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
-    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
-}
 
 function Eliminar(gasto) { 
     console.log(gasto)
@@ -439,7 +410,7 @@ function Eliminar(gasto) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.anio} , concepto:   "${gasto.concepto}" , tipo: "${gasto.tipo}", active: false){
+        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.anio} , concepto:   "${gasto.concepto}" , tipo: "${gasto.tipo}", historico: false, active: false){
           id
           monto
           dia
