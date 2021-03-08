@@ -371,7 +371,7 @@ async function Agregar() { // Funcion para agregar
                 })
                 //.then(res => res.json())
                 //.then(res => console.log(res))
-                .then(res => location.reload()) 
+                //.then(res => location.reload()) 
             }); 
     }else if (gasto.tipo == "No Comun"){
         var id_inmueble = "";
@@ -395,7 +395,7 @@ async function Agregar() { // Funcion para agregar
         })
         .then(res => res.json())
         .then(res => console.log(res))
-        .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+        //.then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
     }
 
 }
