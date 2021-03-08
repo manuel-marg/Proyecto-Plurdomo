@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS pagos (
 CREATE TABLE IF NOT EXISTS gastos (
     id int auto_increment,
     monto float not null,
+    tipo varchar(255) not null,
     dia int not null,
     mes int not null,
     anio int not null,

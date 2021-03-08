@@ -138,8 +138,8 @@ type Mutation{
     createCondominio(nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
     updateCondominio(id: Int!, nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
 
-    createGasto(monto: Float, tipo: String!, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
-    updateGasto(id: Int!, monto: Float, tipo: String!, dia: Int!, mes: Int!, anio: Int!, concepto: String!, active: Boolean!): Gasto!
+    createGasto(monto: Float, tipo: String!, dia: Int!, mes: Int!, anio: Int!, concepto: String!, historico: Boolean!, active: Boolean!): Gasto!
+    updateGasto(id: Int!, monto: Float, tipo: String!, dia: Int!, mes: Int!, anio: Int!, concepto: String!, historico: Boolean!, active: Boolean!): Gasto!
     
     createInstrumento(tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
     deleteInstrumento(id: Int!): Instrumento_pago!
@@ -151,7 +151,7 @@ type Mutation{
     createFactura(nombre: String!,gastos_comunes: String, gastos_nocomunes: String, deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, historico: Boolean!, active: Boolean!): Factura!
     updateFactura(id: Int!, nombre: String!,gastos_comunes: String,gastos_nocomunes: String,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, historico: Boolean!, active: Boolean!): Factura!    
 
-    generarGasto(id_gasto: Int!, id_inmueble: Int!, historico: Boolean!, active: Boolean!): Genera_gasto!
+    generarGasto(id_gasto: Int!, id_inmueble: Int!, active: Boolean!): Genera_gasto!
     deleteGenerar_Gasto(id: Int!): Genera_gasto!
 }
 `
