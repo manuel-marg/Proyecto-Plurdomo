@@ -287,19 +287,18 @@ async function AptosEdificio() {
         ` }),
         }) 
         const respuesta = await res.json()
-        console.log(respuesta.data.getAptosEdificio)
+        //console.log(respuesta.data.getAptosEdificio)
         var aptos = respuesta.data.getAptosEdificio;
         
-        var x = document.getElementById("apto");
-        var option = document.createElement("option");
-
         aptos.forEach(function(apto) {
-            console.log(apto);
+            var x = document.getElementById("apto");
+            var option = document.createElement("option");
             option.value = `${apto.id}`;
             option.text = `${"N°: " + apto.numero + " -  Piso: " + apto.piso }`;
             x.add(option);
-        });         
+        });  
 
+      
     }
 }
 
@@ -437,6 +436,26 @@ function Modificar(gasto) { // Funcion para modificar
 function Eliminar(gasto) { 
     console.log(gasto)
     // Recibiendo el objeto completo entonces sabemos el id y como que lo modificamos completo pero realmente sera solo el atributi active
+    fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    mutation{
+        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.anio} , concepto:   "${gasto.concepto}" , tipo: "${gasto.tipo}", active: false){
+          id
+          monto
+          dia
+          mes
+          anio
+          concepto
+          active
+        }
+      }
+    ` }),
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+
     fetch('http://localhost:4000/graphql', { // Envio POST al backend con el query para Editar Propietario
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
