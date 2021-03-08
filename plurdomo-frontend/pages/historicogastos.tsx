@@ -47,7 +47,7 @@ HistoricodeGastos.getInitialProps = async (ctx) => {
         //console.log(respuesta)
         var gastosRes = respuesta.data.getGastos
         let gastosHis = gastosRes.filter((gasto)=>{
-            if(gasto.historico == true){
+            if(gasto.historico == true && gasto.active == true){
               return gasto;
             }
         });

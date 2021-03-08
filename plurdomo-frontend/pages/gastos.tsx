@@ -37,6 +37,7 @@ Gastos.getInitialProps = async (ctx) => {
               anio
               concepto
               tipo
+              historico
               active
             }
           }
@@ -118,10 +119,16 @@ Gastos.getInitialProps = async (ctx) => {
       const respuestaCasas = await getCasas.json()
       const casas = await respuestaCasas.data.getCasas
 
-    var aptosDelEdificio = [];
+      var aptosDelEdificio = [];
 
+      var gastosRes = respuesta.data.getGastos
+      let gastosNor = gastosRes.filter((gasto)=>{
+          if(gasto.historico == false && gasto.active == true){
+            return gasto;
+          }
+      });
 
-      return { gastos: respuesta.data.getGastos , casas: casas , aptos: aptos , edificios: edificios }
+      return { gastos: gastosNor , casas: casas , aptos: aptos , edificios: edificios }
 
 }
 
