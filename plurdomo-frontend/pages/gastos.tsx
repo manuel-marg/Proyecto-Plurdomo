@@ -21,7 +21,7 @@ const Gastos = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
               `}
     </style>
 </Layout>
-)sadas
+)
   
 Gastos.getInitialProps = async (ctx) => {
         const res = await fetch('http://localhost:4000/graphql', {
