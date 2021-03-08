@@ -114,8 +114,8 @@ const resolvers = {
         async createInstrumento(root, { tipo, referencia, monto, dia, mes, anio, id_pago, active }, { models }) {
             return await models.instrumento_pago.create({ tipo, referencia, monto, dia, mes, anio, id_pago, active })
         },
-        async deleteInstrumento(root, { id, tipo, referencia, monto, dia, mes, anio, id_pago, active }, { models }) {
-            await models.instrumento_pago.update({ active }, { where: { id: id } });
+        async deleteInstrumento(root, { id }, { models }) {
+            await models.instrumento_pago.update({ active:false }, { where: { id: id } });
             return models.instrumento_pago.findByPk(id)
         },
 
@@ -140,6 +140,10 @@ const resolvers = {
         //------------GENERAR GASTOS--------------
         async generarGasto(root, { id_gasto, id_inmueble, active }, { models }) {
             return await models.genera_gasto.create({ id_gasto, id_inmueble, active })
+        },
+        async deleteGenerar_Gasto(root, { id }, { models }) {
+            await models.genera_gasto.update({ active:false }, { where: { id_gasto: id } });
+            return models.genera_gasto.findByPk(id)
         },
     }
 }
