@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS pagos (
     anio int not null,
     id_factura int not null,
     pendiente boolean not null,
+    pagado boolean not null,
     active boolean not null,
     primary key(id)
 );

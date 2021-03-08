@@ -144,7 +144,7 @@ function Buscar() { // Esta funcion funciona como una especie de filtro en la ta
   }
 
 async function Agregar() { // Funcion para agregar
-    var pago = {monto: "", fecha: "", dia: 0, mes: 0, año: 0, id_factura:0, pendiente:true, active: true}; 
+    var pago = {monto: "", fecha: "", dia: 0, mes: 0, año: 0, id_factura:0, pendiente:true, pagado:false, active: true}; 
     pago.monto = (document.getElementById("monto") as HTMLInputElement).value;
     pago.fecha = (document.getElementById("fecha") as HTMLInputElement).value;
     var fechaArray = pago.fecha.split("-");
@@ -157,7 +157,7 @@ async function Agregar() { // Funcion para agregar
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: `
         mutation{
-            createPago(monto: ${pago.monto}, dia: ${pago.dia}, mes: ${pago.mes}, anio: ${pago.año}, id_factura: ${pago.id_factura},  pendiente: true, active: true){
+            createPago(monto: ${pago.monto}, dia: ${pago.dia}, mes: ${pago.mes}, anio: ${pago.año}, id_factura: ${pago.id_factura},  pendiente: true, pagado:false, active: true){
               id
               monto
               dia
@@ -165,6 +165,7 @@ async function Agregar() { // Funcion para agregar
               anio
               id_factura
               pendiente
+              pagado
               active
             }
           }
