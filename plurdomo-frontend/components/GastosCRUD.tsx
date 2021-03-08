@@ -37,7 +37,7 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Monto</th>
-                            <th>Opciones</th>
+                            <th className="text-center">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,9 +50,7 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                                 <td>{gasto.mes}</td>
                                 <td>{gasto.anio}</td>
                                 <td>{gasto.monto}</td>
-                            <td>
-                                <a href={"#edit" + gasto.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
-                                      |  
+                            <td className="text-center">
                                 <a href={"#delete" + gasto.id} className="text-danger" data-toggle="modal"><i className="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
@@ -461,21 +459,17 @@ function Eliminar(gasto) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateGasto(id:  ${gasto.id} , monto:  ${gasto.monto} , dia:  ${gasto.dia} , mes:  ${gasto.mes} , anio:  ${gasto.anio} , concepto:   "${gasto.concepto}" , tipo: "${gasto.tipo}", active: false){
-          id
-          monto
-          dia
-          mes
-          anio
-          concepto
-          active
-        }
-      }
+        deleteGenerar_Gasto(id: ${gasto.id}){
+         id_gasto
+         id_inmueble
+         active
+       }
+     }
     ` }),
     })
     .then(res => res.json())
     .then(res => console.log(res))
-    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+    //.then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
 }
 
 function Buscar() { // Esta funcion funciona como una especie de filtro en la tabla y simulamos una busqueda por nombre
