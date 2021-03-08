@@ -20,7 +20,7 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                             </div>
                         </div>
                         <div className="col-sm-6 text-right vertical-center">
-                            <a href="#AddPropietario" className="btn btn-outline-secondary m-1">
+                            <a href="historicogastos" className="btn btn-outline-secondary m-1">
                                 <i className="fas fa-history"></i>
                                 <span> Historico</span>
                             </a>
