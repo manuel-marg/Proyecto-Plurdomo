@@ -49,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        historico: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false

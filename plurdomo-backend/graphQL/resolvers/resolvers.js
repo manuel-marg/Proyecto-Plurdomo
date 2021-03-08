@@ -101,11 +101,11 @@ const resolvers = {
         },
 
         //---------------GASTOS------------------
-        async createGasto(root, { monto, dia, mes, anio, concepto, tipo, active }, { models }) {
-            return await models.gasto.create({ monto, dia, mes, anio, concepto, tipo, active })
+        async createGasto(root, { monto, dia, mes, anio, concepto, tipo, historico, active }, { models }) {
+            return await models.gasto.create({ monto, dia, mes, anio, concepto, tipo, historico, active })
         },
-        async updateGasto(root, { id, monto, dia, mes, anio, concepto, tipo, active }, { models }) {
-            await models.gasto.update({ monto, dia, mes, anio, concepto, tipo, active }, { where: { id: id } });
+        async updateGasto(root, { id, monto, dia, mes, anio, concepto, tipo, historico, active }, { models }) {
+            await models.gasto.update({ monto, dia, mes, anio, concepto, tipo, historico, active }, { where: { id: id } });
             return models.gasto.findByPk(id)
         },
 
@@ -120,20 +120,20 @@ const resolvers = {
         },
 
         //----------------PAGO-----------------------
-        async createPago(root, { monto, dia, mes, anio, id_factura, active }, { models }) {
-            return await models.pago.create({ monto, dia, mes, anio, id_factura, active })
+        async createPago(root, { monto, dia, mes, anio, id_factura, pendiente, active }, { models }) {
+            return await models.pago.create({ monto, dia, mes, anio, id_factura, pendiente, active })
         },
-        async updatePago(root, { id, monto, dia, mes, anio, id_factura, active }, { models }) {
-            await models.pago.update({ monto, dia, mes, anio, id_factura, active }, { where: { id: id } });
+        async updatePago(root, { id, monto, dia, mes, anio, id_factura, pendiente, active }, { models }) {
+            await models.pago.update({ monto, dia, mes, anio, id_factura, pendiente, active }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
 
         //---------------FACTURA------------------
-        async createFactura(root, { nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { models }) {
-            return await models.gasto.create({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active })
+        async createFactura(root, { nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { models }) {
+            return await models.gasto.create({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active })
         },
-        async updateFactura(root, { id, nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { models }) {
-            await models.gasto.update({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, active }, { where: { id: id } });
+        async updateFactura(root, { id, nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { models }) {
+            await models.gasto.update({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { where: { id: id } });
             return models.gasto.findByPk(id)
         },
 
