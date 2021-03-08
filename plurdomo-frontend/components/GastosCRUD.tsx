@@ -74,7 +74,7 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Monto</span>
                             </div>
-                            <input id="monto" type="text" className="form-control" required/>
+                            <input id="monto" type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">

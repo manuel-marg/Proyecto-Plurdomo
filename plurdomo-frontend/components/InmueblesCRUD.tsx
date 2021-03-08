@@ -152,13 +152,13 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
                             </div>
-                            <input id="AddAlicuota" type="number" step="any" className="form-control" required/>
+                            <input id="AddAlicuota" type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Saldo</span>
                             </div>
-                            <input id="AddSaldo" type="number" className="form-control" required/>
+                            <input id="AddSaldo" type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -188,13 +188,13 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>Piso</span>
                                 </div>
-                                <input id="AddPisoApto" type="number" className="form-control" required/>
+                                <input id="AddPisoApto" type="number" min="0" className="form-control" required/>
                             </div>        
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>N° Apto</span>
                                 </div>
-                                <input id="AddNumeroApto" type="number" className="form-control" required/>
+                                <input id="AddNumeroApto" type="number" min="0" className="form-control" required/>
                             </div> 
                         </div>
 
@@ -209,7 +209,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                                 <div className="input-group-prepend">
                                     <span className="input-group-text" style={{width: '100px'}}>N° Casa</span>
                                 </div>
-                                <input id="AddNumeroCasa" type="number" className="form-control" required/>
+                                <input id="AddNumeroCasa" type="number" min="0" className="form-control" required/>
                             </div> 
                         </div>
 
@@ -255,19 +255,19 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
                             </div>
-                            <input id={casa.id + "alicuota"} defaultValue={casa.alicuota} type="text" className="form-control" required/>
+                            <input id={casa.id + "alicuota"} defaultValue={casa.alicuota} type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Saldo</span>
                             </div>
-                            <input id={casa.id + "saldo"} defaultValue={casa.saldo} type="text" className="form-control" required/>
+                            <input id={casa.id + "saldo"} defaultValue={casa.saldo} type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>N° Casa</span>
                             </div>
-                            <input id={casa.id + "numero"} defaultValue={casa.numero} type="text" className="form-control" required/>
+                            <input id={casa.id + "numero"} defaultValue={casa.numero} type="number" className="form-control" required/>
                         </div>
                     </div>
                     <div className="modal-footer">
@@ -306,13 +306,13 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Alicuota</span>
                             </div>
-                            <input id={apto.id + "alicuota"} defaultValue={apto.alicuota} type="text" className="form-control" required/>
+                            <input id={apto.id + "alicuota"} defaultValue={apto.alicuota} type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Saldo</span>
                             </div>
-                            <input id={apto.id + "saldo"} defaultValue={apto.saldo} type="text" className="form-control" required/>
+                            <input id={apto.id + "saldo"} defaultValue={apto.saldo} type="number" min="0" step="0.1" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                                 <div className="input-group-prepend">
@@ -330,13 +330,13 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Piso</span>
                             </div>
-                            <input id={apto.id + "piso"} defaultValue={apto.piso} type="text" className="form-control" required/>
+                            <input id={apto.id + "piso"} defaultValue={apto.piso} type="number" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>N° Apto</span>
                             </div>
-                            <input id={apto.id + "numero"} defaultValue={apto.numero} type="text" className="form-control" required/>
+                            <input id={apto.id + "numero"} defaultValue={apto.numero} type="number" className="form-control" required/>
                         </div>
                     </div>
                     <div className="modal-footer">
@@ -359,7 +359,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
-                        <p className="text-center">¿Estas seguro que desea eliminar?</p>
+                        <p className="text-center">¿Estas seguro que deseas eliminar este apartamento?</p>
                     </div>
                     <div className="modal-footer">
                     <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
@@ -382,7 +382,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
-                        <p className="text-center">¿Estas seguro que desea eliminar?</p>
+                        <p className="text-center">¿Estas seguro que desea eliminar esta casa?</p>
                     </div>
                     <div className="modal-footer">
                     <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />

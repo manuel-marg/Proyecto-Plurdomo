@@ -93,13 +93,13 @@ const Crud = ({ propietarios }) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Cedula</span>
                             </div>
-                            <input id="AddCedula" type="text" className="form-control" required/>
+                            <input id="AddCedula" type="number" min="0" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Telefono</span>
                             </div>
-                            <input id="AddTelefono" type="text" className="form-control" required/>
+                            <input id="AddTelefono" type="number" min="0" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -154,13 +154,13 @@ const Crud = ({ propietarios }) => (
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Cedula</span>
                             </div>
-                            <input id={propietario.id + "cedula"} defaultValue={propietario.cedula} type="text" className="form-control" required/>
+                            <input id={propietario.id + "cedula"} defaultValue={propietario.cedula} type="number" min="0" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Telefono</span>
                             </div>
-                            <input id={propietario.id + "telefono"} defaultValue={propietario.telefono} type="text" className="form-control" required/>
+                            <input id={propietario.id + "telefono"} defaultValue={propietario.telefono} type="number" min="0" max="11" className="form-control" required/>
                         </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
