@@ -72,6 +72,7 @@ type Pago{
 }
 
 type Factura{
+    id: Int!
     nombre: String! 
     gastos_comunes: String
     gastos_nocomunes: String

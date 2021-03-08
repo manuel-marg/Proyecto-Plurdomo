@@ -71,6 +71,14 @@ const resolvers = {
             return await models.genera_gasto.findAll({ where: { active: true } })
         },
 
+        //-----------------FACTURA---------------
+        async getFacturas(root, args, { models }) {
+            return await models.factura.findAll({ where: { active: true } })
+        },
+        async getFactura(root, args, { models }) {
+            return await models.factura.findByPk(args.id)
+        },
+
     },
     Mutation: {
         //---------------PROPIETARIO--------------
@@ -130,11 +138,11 @@ const resolvers = {
 
         //---------------FACTURA------------------
         async createFactura(root, { nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { models }) {
-            return await models.gasto.create({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active })
+            return await models.factura.create({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active })
         },
         async updateFactura(root, { id, nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { models }) {
-            await models.gasto.update({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { where: { id: id } });
-            return models.gasto.findByPk(id)
+            await models.factura.update({ nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { where: { id: id } });
+            return models.factura.findByPk(id)
         },
 
         //------------GENERAR GASTOS--------------
