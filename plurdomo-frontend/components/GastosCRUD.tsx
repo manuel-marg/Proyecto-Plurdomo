@@ -20,7 +20,11 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                             </div>
                         </div>
                         <div className="col-sm-6 text-right vertical-center">
-                            <a href="#AddPropietario" className="btn btn-success mt-1" data-toggle="modal">
+                            <a href="#AddPropietario" className="btn btn-outline-secondary m-1">
+                                <i className="fas fa-history"></i>
+                                <span> Historico</span>
+                            </a>
+                            <a href="#AddPropietario" className="btn btn-success m-1" data-toggle="modal">
                                 <i className="fas fa-plus"></i>
                                 <span> Agregar</span>
                             </a>
@@ -333,6 +337,7 @@ async function Agregar() { // Funcion para agregar
         console.log(gastoCreado)
     
     if (gasto.tipo == "Comun"){
+        console.log("Gasto Comun")
         const getInmuebles = await fetch('http://localhost:4000/graphql', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -369,8 +374,8 @@ async function Agregar() { // Funcion para agregar
                   }
                     ` }),
                 })
-                //.then(res => res.json())
-                //.then(res => console.log(res))
+                .then(res => res.json())
+                .then(res => console.log(res))
                 //.then(res => location.reload()) 
             }); 
     }else if (gasto.tipo == "No Comun"){
@@ -397,7 +402,7 @@ async function Agregar() { // Funcion para agregar
         .then(res => console.log(res))
         //.then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
     }
-
+    location.reload();
 }
 
 
@@ -440,7 +445,7 @@ function Eliminar(gasto) {
     })
     .then(res => res.json())
     .then(res => console.log(res))
-    //.then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
+    .then(res => location.reload()) // Refresco para que se vean los cambios en la Tabla
 }
 
 function Buscar() { // Esta funcion funciona como una especie de filtro en la tabla y simulamos una busqueda por nombre

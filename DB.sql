@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS otorgas (
     primary key(id_gasto, id_factura)
 );
 
-CREATE TABLE IF NOT EXISTS generas (
+CREATE TABLE IF NOT EXISTS genera_gastos (
     id_gasto int not null,
     id_inmueble int not null,
     active boolean not null,
