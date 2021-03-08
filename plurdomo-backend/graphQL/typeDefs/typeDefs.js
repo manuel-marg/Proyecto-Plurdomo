@@ -44,6 +44,7 @@ type Gasto{
     mes: Int!
     anio: Int!
     concepto: String!
+    historico: Boolean!
     active: Boolean!
 }
 
@@ -66,6 +67,7 @@ type Pago{
     mes: Int!
     anio: Int!
     id_factura: Int!
+    pendiente: Boolean!
     active: Boolean!
 }
 
@@ -81,6 +83,7 @@ type Factura{
     mes_em: Int!
     anio_em: Int!
     n_factura: Int!
+    historico: Boolean!
     active: Boolean!
 }
 
@@ -141,14 +144,14 @@ type Mutation{
     createInstrumento(tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
     deleteInstrumento(id: Int!): Instrumento_pago!
 
-    createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
-    updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, active: Boolean!): Pago!
+    createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, active: Boolean!): Pago!
+    updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, active: Boolean!): Pago!
     
 
-    createFactura(nombre: String!,gastos_comunes: String, gastos_nocomunes: String, deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!
-    updateFactura(id: Int!, nombre: String!,gastos_comunes: String,gastos_nocomunes: String,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, active: Boolean!): Factura!    
+    createFactura(nombre: String!,gastos_comunes: String, gastos_nocomunes: String, deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, historico: Boolean!, active: Boolean!): Factura!
+    updateFactura(id: Int!, nombre: String!,gastos_comunes: String,gastos_nocomunes: String,deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, historico: Boolean!, active: Boolean!): Factura!    
 
-    generarGasto(id_gasto: Int!, id_inmueble: Int!, active: Boolean!): Genera_gasto!
+    generarGasto(id_gasto: Int!, id_inmueble: Int!, historico: Boolean!, active: Boolean!): Genera_gasto!
     deleteGenerar_Gasto(id: Int!): Genera_gasto!
 }
 `

@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS pagos (
     mes int not null,
     anio int not null,
     id_factura int not null,
+    pendiente boolean not null,
     active boolean not null,
     primary key(id)
 );
@@ -71,6 +72,7 @@ CREATE TABLE IF NOT EXISTS gastos (
     mes int not null,
     anio int not null,
     concepto varchar(255) not null,
+    historico boolean not null,
     active boolean not null,
     primary key(id)
 );
@@ -88,6 +90,7 @@ CREATE TABLE IF NOT EXISTS facturas (
     mes_em int not null,
     anio_em int not null,
     id_inmueble int not null,
+    historico boolean not null,
     active boolean not null,
     primary key(id)
 );

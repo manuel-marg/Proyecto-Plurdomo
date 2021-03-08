@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        pendiente: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         active: {
             type: DataTypes.BOOLEAN,
             allowNull: false
