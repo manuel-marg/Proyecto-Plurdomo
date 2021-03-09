@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { getStaticProps } from '../pages/users/[id]';
 
 
-const FacturaCrud = ({ facturas }) => (
+const FacturaCrud = ({ facturas,condominios }) => (
 <div>
     <div className="container-xl">
         <div>
@@ -62,10 +62,10 @@ const FacturaCrud = ({ facturas }) => (
     </div>
 
 
-{/* ELIMINAR --> Creación de un Modal con un Formulario por cada registro del CRUD */}
+{/* DETALLES --> Creación de un Modal con los detalles por cada factura del CRUD */}
 {facturas && facturas.map(factura =>
     <div key={factura.id} id={"detalles" + factura.id} className="modal fade">
-        <div className="modal-dialog modal-lg">
+        <div className="modal-dialog modal-xl">
             <div className="modal-content">
                 <form>
                     <div className="modal-header">
@@ -77,48 +77,43 @@ const FacturaCrud = ({ facturas }) => (
 
                     <div className="modal-body">
                         <div className="col-xs-5 col-xs-offset-2 text-left">
-                            <div className="panel panel-default">
-                                <div>Nombre condominio</div>
-                                <div>Dirección condominio</div>
+                            <div className="panel panel-default font-weight-bold">
+                                <div>
+                                    <div key={condominios.id}>
+                                        <div>{condominios.nombre}</div>
+                                        <div>{condominios.municipio}, {condominios.estado}</div>
+                                    </div>
+                                </div>
                                 <div>Fecha: {factura.dia_em}/{factura.mes_em}/{factura.anio_em}</div>
                                 <div>ID Inmueble: {factura.id_inmueble}</div>
                             </div>
                         </div>
 
-                        <table className="table table-striped table-hover table-sm mt-3 mb-3" id="myTable">
-                            <thead>
-                                <tr>
-                                    <th>ID Gasto</th>
-                                    <th>Concepto</th>
-                                    <th>Tipo de Gasto</th>
-                                    <th>Monto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div className="col-xs-5 col-xs-offset-2 text-left mt-3">
                             {facturas && facturas.map(factura =>
-                                <tr key={factura.id}>
-                                    <td>ID</td>
-                                    <td>Texto </td>
-                                    <td>Tipo </td>
-                                    <td>Monto </td>
-                                </tr>
-                                                            )}
-                            </tbody>
-                        </table>
+                                <div key={factura.id}>
+                                    <div>{factura.nombre}</div>
+                                    <div className="font-weight-bold">Gastos Comunes</div>
+                                    <div>{factura.gastos_comunes}</div>
+                                    <div className="font-weight-bold">Gastos No Comunes</div>
+                                    <div>{factura.gastos_nocomunes}</div>
+                                </div>
+                            )}
+                        </div>
 
 
                         <div className="panel panel-default mr-1 text-right">
                             <div className="row">
                                 <div className="font-weight-bold col">Saldo:</div>
-                                <div className="col col-lg-2">1,200.00 €</div>
+                                <div className="col col-lg-2">{factura.saldo}</div>
                             </div>
                             <div className="row">
                                 <div className="font-weight-bold col">Alícuota:</div>
-                                <div className="col col-lg-2">1,200.00 €</div>
+                                <div className="col col-lg-2">{factura.alicuota}</div>
                             </div>
                             <div className="row">
                                 <div className="font-weight-bold col">Deuda total:</div>
-                                <div className="col col-lg-2">1,452.00 €</div>
+                                <div className="col col-lg-2">{factura.deuda_total}</div>
                             </div>
                         </div>
 
@@ -128,7 +123,6 @@ const FacturaCrud = ({ facturas }) => (
 
                     <div className="modal-footer">
                     <input type="button" className="btn btn-outline-primary" data-dismiss="modal" defaultValue="Salir" />
-                        {/*<input type="button" onClick={(e) => Eliminar(e, factura)} data-dismiss="modal" className="btn btn-danger" value="Eliminar" />*/}
                     </div>
                 </form>
             </div>
