@@ -19,7 +19,7 @@ const CrudPagar = ({ pagos}) =>(
                             </div>
                         </div>
                         <div className="col-sm-6 text-right vertical-center">
-                            <a href="historicopagos" className="btn btn-outline-secondary m-1">
+                            <a href="historicopagados" className="btn btn-outline-secondary m-1">
                                 <i className="fas fa-history"></i>
                                 <span> Historico</span>
                             </a>
