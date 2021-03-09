@@ -545,7 +545,54 @@ async function createFactura(Factura) {
         ` }),
         }) 
         const respuesta = await res.json()
-        return { gasto: respuesta.data.getGasto}
+        const facturaGuardada = await respuesta.data.createFactura
+
+        const resPago = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            createPago(monto: ${Factura.deuda_total} , dia: ${Factura.dia_em}, mes: ${Factura.mes_em}, anio: ${Factura.anio_em}, id_factura: ${facturaGuardada.id},  pendiente: true, pagado:false, active: true){
+              id
+              monto
+              dia
+              mes
+              anio
+              id_factura
+              pendiente
+              pagado
+              active
+            }
+          }
+        ` }),
+        }) 
+        const respuestaPago = await resPago.json()
+        return { respuestaFinal: respuesta.data.createPago}
+}
+
+
+async function createPago(Factura) {
+    const res = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            createPago(monto: ${Factura.deuda_total} , dia: ${Factura.dia_em}, mes: ${Factura.mes_em}, anio: ${Factura.anio_em}, id_factura: ${Factura.numero},  pendiente: true, pagado:false, active: true){
+              id
+              monto
+              dia
+              mes
+              anio
+              id_factura
+              pendiente
+              pagado
+              active
+            }
+          }
+        ` }),
+        }) 
+        const respuesta = await res.json()
+        return { respuestaFinal: respuesta.data.createPago}
 }
 
 
@@ -621,7 +668,7 @@ async function GenerarFacturas(gastos , casas , aptos) {
             deuda = deuda + gasto.monto*casa.alicuota;
         });
 
-        Factura.numero = casa.id + mes + año; // Numero factura sera id_inmueble + mes + año
+        Factura.numero = parseInt(`${casa.id}${mes}${año}`); // Numero factura sera id_inmueble + mes + año
         Factura.nombre = "Propietario: " + nombrePropietario;
         Factura.gastos_comunes = Comunes;
         Factura.gastos_nocomunes = NoComunes;
@@ -701,7 +748,7 @@ async function GenerarFacturas(gastos , casas , aptos) {
             deuda = deuda + gasto.monto*apto.alicuota;
         });
 
-        Factura.numero = apto.id + mes + año; // Numero factura sera id_inmueble + mes + año
+        Factura.numero = parseInt(`${apto.id}${mes}${año}`); // Numero factura sera id_inmueble + mes + año
         Factura.nombre = "Propietario: " + nombrePropietario;
         Factura.gastos_comunes = Comunes;
         Factura.gastos_nocomunes = NoComunes;
@@ -714,7 +761,12 @@ async function GenerarFacturas(gastos , casas , aptos) {
         Factura.id_inmueble = apto.id;
 
         createFactura(Factura)
+
     });
+
+
+
+
 
 }
 
