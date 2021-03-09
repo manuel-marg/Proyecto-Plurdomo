@@ -39,7 +39,7 @@ const Crud = ({ pagos}) =>(
                             <th>Mes</th>
                             <th>Año</th>
                             <th>Estado</th>
-                            <th className="text-center">Opciones</th>
+                            <th className="text-center">Confirmar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,7 +52,7 @@ const Crud = ({ pagos}) =>(
                                 <td>{pago.anio}</td>
                                 <td>Pendiente</td>
                             <td className="text-center">
-                                <a href={"#delete" + pago.id} className="text-success" data-toggle="modal"><i className="fas fa-check"></i></a>
+                                <a href={"#delete" + pago.id} className="text-success" data-toggle="modal"><i className="fas fa-check-circle"></i></a>
                             </td>
                         </tr>
                                                     )}

@@ -36,6 +36,7 @@ const HistoricoPagos = ({ pagos }) => (
                                 <th>Monto</th>
                                 <th>Fecha</th>
                                 <th>Estado</th>
+                                <th className="text-center">Desaprobar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,6 +46,9 @@ const HistoricoPagos = ({ pagos }) => (
                                     <td>{pago.monto}</td>
                                     <td>{pago.dia}-{pago.mes}-{pago.anio}</td>
                                     <td>Confirmado</td>
+                                    <td className="text-center">
+                                <a href={"#delete" + pago.id} className="text-danger" data-toggle="modal"><i className="fas fa-minus-circle"></i></a>
+                            </td>
                             </tr>
                                                         )}
                         </tbody>
@@ -52,6 +56,29 @@ const HistoricoPagos = ({ pagos }) => (
                 </div>
             </div>
         </div>
+        {pagos && pagos.map(pago =>
+    <div key={pago.id} id={"delete" + pago.id} className="modal fade">
+        <div className="modal-dialog">
+            <div className="modal-content">
+                <form>
+                    <div className="modal-header">
+                        <h4 className="modal-title">Alerta de confirmación</h4>
+                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div className="modal-body">
+                        <p className="text-center">¿Estas seguro que desea confirmar este pago?</p>
+                        <p className="text-center"><small>Id:{pago.id}</small></p>
+                        <p className="text-center"><small>Monto:{pago.monto}</small></p>
+                    </div>
+                    <div className="modal-footer">
+                    <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
+                        <input type="button" onClick={(e) => Uncheckear( pago.id )} data-dismiss="modal" className="btn btn-primary" value="Confirmar" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+)}    
     </div>
     
     )
@@ -99,4 +126,28 @@ const HistoricoPagos = ({ pagos }) => (
           }
         }
       }
+      function Uncheckear(id){
+        fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            uncheckPago(id:${id}){
+                id
+                monto
+                dia
+                mes
+                anio
+                id_factura
+                pendiente
+                pagado
+                active
+              }
+          }
+        ` }),
+        }) 
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .then(res => location.reload())
+    }
 export default HistoricoPagos

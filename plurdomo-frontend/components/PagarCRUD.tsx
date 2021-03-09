@@ -71,6 +71,16 @@ const CrudPagar = ({ pagos}) =>(
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
+                    <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text" style={{width: '150px'}}>Forma de pago</span>
+                                </div>
+                                <select className="custom-select" id="AddTipoPago">
+                                    <option value="null" selected>Efectivo</option>
+                                    <option value="null">Zelle</option>
+                                        
+                                </select>
+                    </div>
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" style={{width: '100px'}}>Monto</span>
@@ -82,7 +92,13 @@ const CrudPagar = ({ pagos}) =>(
                                 <span className="input-group-text" style={{width: '100px'}}>Fecha</span>
                             </div>
                             <input id="fecha" type="date" className="form-control" required/>
-                        </div>           
+                        </div>  
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" style={{width: '180px'}}>Número Referencia</span>
+                            </div>
+                            <input id="referencia" type="number" min="0" step="0.1" className="form-control" required/>
+                        </div>         
                            
                     </div>
                     <div className="modal-footer">
