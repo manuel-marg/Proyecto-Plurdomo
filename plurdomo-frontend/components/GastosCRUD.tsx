@@ -525,7 +525,7 @@ async function createFactura(Factura) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: `
         mutation{
-            createFactura(nombre: "${Factura.nombre}", gastos_comunes: "${Factura.gastos_comunes}", gastos_nocomunes: "${Factura.gastos_nocomunes}", deuda_total: ${Factura.deuda_total} , alicuota: ${Factura.alicuota} , saldo: ${Factura.saldo}, id_inmueble: ${Factura.id_inmueble},dia_em: ${Factura.dia_em},mes_em: ${Factura.mes_em}, anio_em: ${Factura.anio_em}, n_factura: ${Factura.numero}, historico: true, active: true){
+            createFactura(nombre: "${Factura.nombre}", gastos_comunes: "${Factura.gastos_comunes}", gastos_nocomunes: "${Factura.gastos_nocomunes}", deuda_total: ${Factura.deuda_total} , alicuota: ${Factura.alicuota} , saldo: ${Factura.saldo}, id_inmueble: ${Factura.id_inmueble},dia_em: ${Factura.dia_em},mes_em: ${Factura.mes_em}, anio_em: ${Factura.anio_em}, n_factura: ${Factura.numero}, historico: false, active: true){
               id
               nombre
               gastos_comunes
@@ -661,13 +661,13 @@ async function GenerarFacturas(gastos , casas , aptos) {
 
         var Comunes = "";
         GastosComunes.forEach( function(gasto) {
-            Comunes =  Comunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*casa.alicuota + "<br>";
+            Comunes =  Comunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*casa.alicuota + "; ";
             deuda = deuda + gasto.monto*casa.alicuota;
         });
 
         var NoComunes = "";
         GastosNoComunes.forEach( function(gasto) {
-            NoComunes =  NoComunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*casa.alicuota + "<br>";
+            NoComunes =  NoComunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*casa.alicuota + "; ";
             deuda = deuda + gasto.monto*casa.alicuota;
         });
 
@@ -741,13 +741,13 @@ async function GenerarFacturas(gastos , casas , aptos) {
 
         var Comunes = "";
         GastosComunes.forEach( function(gasto) {
-            Comunes =  Comunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*apto.alicuota + "<br>";
+            Comunes =  Comunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*apto.alicuota + "; ";
             deuda = deuda + gasto.monto*apto.alicuota;
         });
 
         var NoComunes = "";
         GastosNoComunes.forEach( function(gasto) {
-            NoComunes =  NoComunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*apto.alicuota + "<br>";
+            NoComunes =  NoComunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*apto.alicuota + "; ";
             deuda = deuda + gasto.monto*apto.alicuota;
         });
 
