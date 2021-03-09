@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { getStaticProps } from '../pages/users/[id]';
 
 
-const FacturaCrud = ({ facturas }) => (
+const HistoricoFacturaCrud = ({ facturas }) => (
 <div>
     <div className="container-xl">
         <div>
@@ -20,9 +20,9 @@ const FacturaCrud = ({ facturas }) => (
                             </div>
                         </div>
                         <div className="col-sm-6 text-right vertical-center">
-                            <a href="historicofacturas" className="btn btn-outline-secondary m-1">
-                                <i className="fas fa-history"></i>
-                                <span> Historico</span>
+                            <a href="facturas" className="btn btn-outline-secondary m-1">
+                                <i className="fas fa-chevron-left"></i>
+                                <span> Volver</span>
                             </a>
                         </div>
                     </div>
@@ -62,81 +62,7 @@ const FacturaCrud = ({ facturas }) => (
     </div>
 
 
-{/* ELIMINAR --> Creación de un Modal con un Formulario por cada registro del CRUD */}
-{facturas && facturas.map(factura =>
-    <div key={factura.id} id={"detalles" + factura.id} className="modal fade">
-        <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-                <form>
-                    <div className="modal-header">
-                        <h4 className="modal-title">Factura N° {factura.n_factura}</h4>
-                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-
-
-
-                    <div className="modal-body">
-                        <div className="col-xs-5 col-xs-offset-2 text-left">
-                            <div className="panel panel-default">
-                                <div>Nombre condominio</div>
-                                <div>Dirección condominio</div>
-                                <div>Fecha: {factura.dia_em}/{factura.mes_em}/{factura.anio_em}</div>
-                                <div>ID Inmueble: {factura.id_inmueble}</div>
-                            </div>
-                        </div>
-
-                        <table className="table table-striped table-hover table-sm mt-3 mb-3" id="myTable">
-                            <thead>
-                                <tr>
-                                    <th>ID Gasto</th>
-                                    <th>Concepto</th>
-                                    <th>Tipo de Gasto</th>
-                                    <th>Monto</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {facturas && facturas.map(factura =>
-                                <tr key={factura.id}>
-                                    <td>ID</td>
-                                    <td>Texto </td>
-                                    <td>Tipo </td>
-                                    <td>Monto </td>
-                                </tr>
-                                                            )}
-                            </tbody>
-                        </table>
-
-
-                        <div className="panel panel-default mr-1 text-right">
-                            <div className="row">
-                                <div className="font-weight-bold col">Saldo:</div>
-                                <div className="col col-lg-2">1,200.00 €</div>
-                            </div>
-                            <div className="row">
-                                <div className="font-weight-bold col">Alícuota:</div>
-                                <div className="col col-lg-2">1,200.00 €</div>
-                            </div>
-                            <div className="row">
-                                <div className="font-weight-bold col">Deuda total:</div>
-                                <div className="col col-lg-2">1,452.00 €</div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-                    <div className="modal-footer">
-                    <input type="button" className="btn btn-outline-primary" data-dismiss="modal" defaultValue="Salir" />
-                        {/*<input type="button" onClick={(e) => Eliminar(e, factura)} data-dismiss="modal" className="btn btn-danger" value="Eliminar" />*/}
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-)}    
 </div>
-
 )
 
 async function Agregar() { // Funcion para agregar
@@ -207,4 +133,4 @@ function Buscar() { // Esta funcion funciona como una especie de filtro en la ta
 
 
 
-export default FacturaCrud
+export default HistoricoFacturaCrud

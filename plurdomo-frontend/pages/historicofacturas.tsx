@@ -1,5 +1,5 @@
 import Layout from '../components/Layout'
-import FacturasCRUD from '../components/FacturasCRUD'
+import HistoricoFacturaCrud from '../components/HistoricoFacturas'
 
 // VISTA DE LA PAGINA HTML Y LUEGO ALGUNOS CSS
 const Facturas = ({ facturas }) => (
@@ -7,7 +7,7 @@ const Facturas = ({ facturas }) => (
     <div className="card border-secondary mb-3 mw-500">
         <div className="card-header"><h3 className="text-center">Facturas</h3></div>
         <div className="card-body">
-            <FacturasCRUD facturas = { facturas }/>
+            <HistoricoFacturaCrud facturas = { facturas }/>
         </div>
     </div>
     <style jsx>
@@ -55,7 +55,7 @@ Facturas.getInitialProps = async (ctx) => {
 
         var facturasRes = respuesta.data.getFacturas
         let facturasNor = facturasRes.filter((factura)=>{
-            if(factura.historico == false && factura.active == true){
+            if(factura.historico == true && factura.active == true){
               return factura;
             }
         });
