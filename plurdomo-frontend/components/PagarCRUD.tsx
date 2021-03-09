@@ -23,10 +23,7 @@ const CrudPagar = ({ pagos}) =>(
                                 <i className="fas fa-history"></i>
                                 <span> Historico</span>
                             </a>
-                            <a href="#AddPropietario" className="btn btn-success m-1" data-toggle="modal">
-                                <i className="fas fa-plus"></i>
-                                <span> Agregar</span>
-                            </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -52,7 +49,8 @@ const CrudPagar = ({ pagos}) =>(
                                 <td>{pago.anio}</td>
                                 <td>Pendiente</td>
                             <td className="text-center">
-                                <a href={"#delete" + pago.id} className="text-danger" data-toggle="modal"><i className="fas fa-trash-alt"></i></a>
+                               
+                            <a href={"#pagar" + pago.id} className="text-success" data-toggle="modal">Pagar</a> 
                             </td>
                         </tr>
                                                     )}
@@ -62,12 +60,13 @@ const CrudPagar = ({ pagos}) =>(
         </div>
     </div>
 {/* CREAR --> Creación de un Modal con un Formulario para agregar llama a funcion Agregar() CRUD */}
-    <div id="AddPropietario" className="modal fade">
+{pagos && pagos.map(pago =>
+    <div key={pago.id} id={"pagar" + pago.id} className="modal fade">
         <div className="modal-dialog">
             <div className="modal-content">
                 <form>
                     <div className="modal-header">
-                        <h4 className="modal-title">Agregar</h4>
+                        <h4 className="modal-title">Pagar</h4>
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div className="modal-body">
@@ -103,36 +102,14 @@ const CrudPagar = ({ pagos}) =>(
                     </div>
                     <div className="modal-footer">
                         <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={Agregar} data-dismiss="modal" className="btn btn-success" value="Agregar" />
+                        <input type="button" onClick={(e) => irPagando( pago.id, pago.monto )} data-dismiss="modal" className="btn btn-success" value="Hacer Pago" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
-{/* ELIMINAR --> Creación de un Modal con un Formulario por cada registro del CRUD */}
-{pagos && pagos.map(pago =>
-    <div key={pago.id} id={"delete" + pago.id} className="modal fade">
-        <div className="modal-dialog">
-            <div className="modal-content">
-                <form>
-                    <div className="modal-header">
-                        <h4 className="modal-title">Alerta de confirmación</h4>
-                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <div className="modal-body">
-                        <p className="text-center">¿Estas seguro que desea confirmar este pago?</p>
-                        <p className="text-center"><small>Id:{pago.id}</small></p>
-                        <p className="text-center"><small>Monto:{pago.monto}</small></p>
-                    </div>
-                    <div className="modal-footer">
-                    <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={(e) => Pagar( pago.id )} data-dismiss="modal" className="btn btn-primary" value="Confirmar" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-)}    
+)}
+  
 </div>
 )
 
@@ -218,5 +195,71 @@ function Pagar(id){
     .then(res => console.log(res))
     .then(res => location.reload())
 }
+
+async function irPagando(id, monto) { // Funcion para agregar
+    var instrumento_pago = {tipo:"", monto: "", fecha: "", dia: 0, mes: 0, año: 0, id_pago:0, referencia:"", active: true}; 
+    instrumento_pago.tipo = (document.getElementById("AddTipoPago") as HTMLInputElement).value;
+    instrumento_pago.monto = (document.getElementById("monto") as HTMLInputElement).value;
+    instrumento_pago.fecha = (document.getElementById("fecha") as HTMLInputElement).value;
+    var fechaArray = instrumento_pago.fecha.split("-");
+    instrumento_pago.dia = parseInt(fechaArray[2]);
+    instrumento_pago.mes = parseInt(fechaArray[1]);;
+    instrumento_pago.año = parseInt(fechaArray[0]);;
+    instrumento_pago.referencia = (document.getElementById("referencia") as HTMLInputElement).value;
+
+    const createInstrumento = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            createInstrumento(tipo:"${instrumento_pago.tipo}", monto: ${instrumento_pago.monto}, dia: ${instrumento_pago.dia}, mes: ${instrumento_pago.mes}, anio: ${instrumento_pago.año}, id_pago: ${id}, referencia:"${instrumento_pago.referencia}", active: true){
+                id
+                tipo
+                referencia
+                monto
+                dia
+                mes
+                anio
+                id_pago
+                active
+            }
+          }
+        ` }),
+        }) 
+        const respuestaPago = await createInstrumento.json()
+        const pagoCreado = await respuestaPago.data.createInstrumento
+        console.log(pagoCreado.id)
+        
+        if(instrumento_pago.monto == monto){
+            Pagar(id)
+        }else if(instrumento_pago.monto < monto){
+            monto = monto - parseInt(instrumento_pago.monto)
+
+        const updatePago = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            updatePago(id: ${id}, monto:${monto}){
+                id
+                monto
+                dia
+                mes
+                anio
+                id_factura
+                pendiente
+                pagado
+                active
+            }
+          }
+        ` }),
+        }).then(res => res.json())
+        .then(res => console.log(res))
+        .then(res => location.reload()) 
+        }
+
+        location.reload();
+}
+
 
 export default CrudPagar

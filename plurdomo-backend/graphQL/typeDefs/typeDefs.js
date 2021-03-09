@@ -150,7 +150,7 @@ type Mutation{
     deleteInstrumento(id: Int!): Instrumento_pago!
 
     createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, pagado: Boolean!, active: Boolean!): Pago!
-    updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, pagado: Boolean!, active: Boolean!): Pago!
+    updatePago(id: Int!, monto: Float!): Pago!
     checkPago(id: Int!): Pago!
     uncheckPago(id: Int!): Pago!
     Pagar(id: Int!): Pago!
