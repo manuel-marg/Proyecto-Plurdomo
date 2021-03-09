@@ -1,20 +1,3 @@
-CREATE DATABASE IF NOT EXISTS plurdomo;
-
-USE plurdomo;
-
-CREATE TABLE IF NOT EXISTS propietarios (
-    id int auto_increment,
-    nombre varchar(255) not null,
-    apellido varchar(255) not null,
-    email varchar(255) not null,
-    cedula varchar(255) not null,
-    telefono varchar(255) not null,
-    clave varchar(255) not null,
-    administrador boolean not null,
-    active boolean not null,
-    primary key(id)
-);
-
 
 CREATE TABLE IF NOT EXISTS inmuebles (
     id int auto_increment,
@@ -113,5 +96,7 @@ CREATE TABLE IF NOT EXISTS genera_gastos (
 );
 
 ALTER TABLE inmuebles ADD foreign key(id_propietario) references propietarios(id);
-
+ALTER TABLE instrumento_pagos ADD foreign key(id_pago) references pagos(id);
+ALTER TABLE pagos ADD foreign key(id_factura) references facturas(id);
+ALTER TABLE facturas ADD foreign key(id_inmueble) references inmuebles(id);
 -- DROP DATABASE plurdomo; 
