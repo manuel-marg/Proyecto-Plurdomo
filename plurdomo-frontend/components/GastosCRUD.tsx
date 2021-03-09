@@ -571,28 +571,31 @@ async function createFactura(Factura) {
 }
 
 
-async function createPago(Factura) {
-    const res = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: `
-        mutation{
-            createPago(monto: ${Factura.deuda_total} , dia: ${Factura.dia_em}, mes: ${Factura.mes_em}, anio: ${Factura.anio_em}, id_factura: ${Factura.numero},  pendiente: true, pagado:false, active: true){
-              id
-              monto
-              dia
-              mes
-              anio
-              id_factura
-              pendiente
-              pagado
-              active
-            }
-          }
-        ` }),
-        }) 
-        const respuesta = await res.json()
-        return { respuestaFinal: respuesta.data.createPago}
+async function pasarGastosAHistorico(gastos) {
+    gastos.forEach( function(gasto) {
+        fetch('http://localhost:4000/graphql', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: `
+            mutation{
+                updateGasto(id: ${gasto.id}, monto: ${gasto.monto}, tipo: "${gasto.tipo}", dia: ${gasto.dia}, mes: ${gasto.mes}, anio: ${gasto.anio}, concepto: "${gasto.concepto}", historico: true, active: true){
+                  id
+                  monto
+                  tipo
+                  dia
+                  mes
+                  anio
+                  concepto
+                  historico
+                  active
+                }
+              }
+            ` }),
+            })
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .then(res => location.reload())
+    });
 }
 
 
@@ -761,12 +764,10 @@ async function GenerarFacturas(gastos , casas , aptos) {
         Factura.id_inmueble = apto.id;
 
         createFactura(Factura)
-
     });
 
-
-
-
+    // Finalmente colocamos los gastos con historico true
+    pasarGastosAHistorico(gastos)
 
 }
 
