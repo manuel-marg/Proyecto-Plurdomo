@@ -1,13 +1,13 @@
 import Layout from '../components/Layout'
-import PagosCRUD from '../components/PagosCRUD'
+import PagarCRUD from '../components/PagarCRUD'
 
 // VISTA DE LA PAGINA HTML Y LUEGO ALGUNOS CSS
-const Pagos = ({ pagos }) => (
+const PorPagar = ({ pagos }) => (
     <Layout title="Plurdomo">
         <div className="card border-secondary mb-3 mw-500">
-            <div className="card-header"><h3 className="text-center">Pagos</h3></div>
+            <div className="card-header"><h3 className="text-center">Por pagar</h3></div>
             <div className="card-body">
-                <PagosCRUD pagos = { pagos } />
+                <PagarCRUD pagos = { pagos } />
             </div>
         </div>
         <style jsx>
@@ -22,14 +22,13 @@ const Pagos = ({ pagos }) => (
         </style>
     </Layout>
     )
-
-Pagos.getInitialProps = async (ctx) => {
+PorPagar.getInitialProps = async (ctx) => {
         const res = await fetch('http://localhost:4000/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: `
         query{
-            getPagos{
+            getPagosPen{
                 id
                 monto
                 dia
@@ -46,8 +45,7 @@ Pagos.getInitialProps = async (ctx) => {
         const respuesta = await res.json()
         console.log(respuesta)
         console.log(respuesta.data)
-        return { pagos: respuesta.data.getPagos}
+        return { pagos: respuesta.data.getPagosPen}
 
 }
-
-    export default Pagos
+    export default PorPagar

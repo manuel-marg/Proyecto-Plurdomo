@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { getStaticProps } from '../pages/users/[id]';
 
-const Crud = ({ pagos}) =>(
+const CrudPagar = ({ pagos}) =>(
     <div>
     <div className="container-xl">
         <div>
@@ -52,7 +52,7 @@ const Crud = ({ pagos}) =>(
                                 <td>{pago.anio}</td>
                                 <td>Pendiente</td>
                             <td className="text-center">
-                                <a href={"#delete" + pago.id} className="text-success" data-toggle="modal"><i className="fas fa-check"></i></a>
+                                <a href={"#delete" + pago.id} className="text-danger" data-toggle="modal"><i className="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
                                                     )}
@@ -110,7 +110,7 @@ const Crud = ({ pagos}) =>(
                     </div>
                     <div className="modal-footer">
                     <input type="button" className="btn btn-default" data-dismiss="modal" defaultValue="Cancel" />
-                        <input type="button" onClick={(e) => Checkear( pago.id )} data-dismiss="modal" className="btn btn-primary" value="Confirmar" />
+                        <input type="button" onClick={(e) => Pagar( pago.id )} data-dismiss="modal" className="btn btn-primary" value="Confirmar" />
                     </div>
                 </form>
             </div>
@@ -178,13 +178,13 @@ async function Agregar() { // Funcion para agregar
         location.reload();
 }
 
-function Checkear(id){
+function Pagar(id){
     fetch('http://localhost:4000/graphql', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        checkPago(id:${id}){
+        Pagar(id:${id}){
             id
             monto
             dia
@@ -203,4 +203,4 @@ function Checkear(id){
     .then(res => location.reload())
 }
 
-export default Crud
+export default CrudPagar

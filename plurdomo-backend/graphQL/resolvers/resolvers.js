@@ -65,6 +65,12 @@ const resolvers = {
         async getHistoricoPagos(root, args, { models }) {
             return await models.pago.findAll({ where: { active: true, pagado: true } })
         },
+        async getPagosPen(root, args, { models }) {
+            return await models.pago.findAll({ where: { active: true, pendiente: true } })
+        },
+        async getPagados(root, args, { models }) {
+            return await models.pago.findAll({ where: { active: true, pendiente: false } })
+        },
         async getPago(root, args, { models }) {
             return await models.pago.findByPk(args.id)
         },
@@ -144,6 +150,10 @@ const resolvers = {
         },
         async uncheckPago(root, { id }, { models }) {
             await models.pago.update({ pagado: false }, { where: { id: id } });
+            return models.pago.findByPk(id)
+        },
+        async Pagar(root, { id }, { models }) {
+            await models.pago.update({ pendiente: false }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
 
