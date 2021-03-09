@@ -35,7 +35,21 @@ const Dashboard = () => (
                 <br></br>
                 Facturas
             </button>
-        </Link>                            
+        </Link>
+        <Link href="/pagos">
+            <button type="button" className="btn btn-light m-1">
+                <i className="fas fa-credit-card"></i>
+                <br></br>
+                Pagos
+            </button>
+        </Link>
+        <Link href="/porpagar">
+            <button type="button" className="btn btn-light m-1">
+                <i className="fas fa-file"></i>
+                <br></br>
+                Por pagar
+            </button>
+        </Link>                             
         </div>
     </div>
     <style jsx>
