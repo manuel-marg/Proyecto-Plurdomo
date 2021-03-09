@@ -31,7 +31,7 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                         </div>
                     </div>
                 </div>
-                <table className="table table-striped table-hover table-sm" id="myTable">
+                <table className="table table-striped table-hover table-sm mb-5" id="myTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -61,6 +61,12 @@ const Crud = ({ gastos , casas , aptos , edificios , aptosDelEdificio}) => (
                                                     )}
                     </tbody>
                 </table>
+                <div className="text-center m-3">
+                <a href="#" onClick={()=>GenerarFacturas(gastos , casas , aptos)} className="btn btn-outline-secondary m-1">
+                    <i className="fas fa-print"></i>
+                    <span>  Generar Facturas</span>
+                </a>
+                </div>
             </div>
         </div>
     </div>
@@ -470,6 +476,247 @@ function Buscar() { // Esta funcion funciona como una especie de filtro en la ta
   }
 }
 
+
+async function getRelacionGastoInmueble() {
+const res = await fetch('http://localhost:4000/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: `
+    query{
+        getGenerados{
+          id_gasto
+          id_inmueble
+          active
+        }
+      }
+    ` }),
+    }) 
+    const respuesta = await res.json()
+    return { gastosPorInmueble: respuesta.data.getGenerados}
+}
+
+async function getPropietarios() {
+    const res = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        query{
+            getPropietarios{
+              id
+              nombre
+              apellido
+              email
+              cedula
+              telefono
+              clave
+              administrador
+              active
+            }
+          }
+        ` }),
+        }) 
+        const respuesta = await res.json()
+        return { propietarios: respuesta.data.getPropietarios}
+}
+
+async function createFactura(Factura) {
+    const res = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: `
+        mutation{
+            createFactura(nombre: "${Factura.nombre}", gastos_comunes: "${Factura.gastos_comunes}", gastos_nocomunes: "${Factura.gastos_nocomunes}", deuda_total: ${Factura.deuda_total} , alicuota: ${Factura.alicuota} , saldo: ${Factura.saldo}, id_inmueble: ${Factura.id_inmueble},dia_em: ${Factura.dia_em},mes_em: ${Factura.mes_em}, anio_em: ${Factura.anio_em}, n_factura: ${Factura.numero}, historico: true, active: true){
+              id
+              nombre
+              gastos_comunes
+              gastos_nocomunes
+              deuda_total
+              alicuota
+              saldo
+              id_inmueble
+              dia_em
+              mes_em
+              anio_em
+              n_factura
+              historico
+              active
+            }
+          }
+        ` }),
+        }) 
+        const respuesta = await res.json()
+        return { gasto: respuesta.data.getGasto}
+}
+
+
+async function GenerarFacturas(gastos , casas , aptos) {
+    console.clear();
+    //console.log(gastos);
+    const gastosPorInmueble = await getRelacionGastoInmueble();
+    //console.log(gastosPorInmueble)
+    const propietarios = await getPropietarios();
+    //console.log(propietarios)
+
+    casas.forEach( function(casa) { // Por casa casa hacer lo siguiente
+        // Genero la Factura
+        var Factura = new Object();
+        // Creo un numero de factura
+        var d = new Date();
+        var dia = d.getDate();
+        var mes = d.getMonth() + 1;
+        var año = d.getFullYear();
+        
+        // Busco el nombre del propietario y lo creo en factura.nombre
+        let propietarioDelInmueble = propietarios.propietarios.find((propietario)=>{
+            if( propietario.id == casa.id_propietario ){
+              return propietario;
+            }
+        });
+        var nombrePropietario = "";
+        if (propietarioDelInmueble === null || propietarioDelInmueble === undefined){
+            nombrePropietario = "No tiene Propietario";
+        }else{
+            nombrePropietario = propietarioDelInmueble.nombre + " " + propietarioDelInmueble.apellido;
+        }
+        
+
+        // Tengo los gastos del inmueble
+         let gastosDelInmueble = gastosPorInmueble.gastosPorInmueble.filter((gasto)=>{
+             if( gasto.id_inmueble == casa.id ){
+                return gasto;
+             }
+         });
+         // Busco la info de esos gastos
+         var GastosComunes = [];
+         var GastosNoComunes = [];
+         gastosDelInmueble.forEach( function(gastoID) {
+            gastos.forEach( function(gastoInfo) {
+                if(gastoID.id_gasto == gastoInfo.id){
+                    // Comun
+                    if(gastoInfo.tipo == "Comun"){
+                        GastosComunes.push(gastoInfo)
+                    }
+                    // No Comun
+                    if(gastoInfo.tipo == "No Comun"){
+                        GastosNoComunes.push(gastoInfo)
+                    }
+                        
+                }
+            });
+        });
+        console.log("GASTOS COMUNES" + casa.id , GastosComunes);
+        console.log("GASTOS NO COMUNES" + casa.id , GastosNoComunes);
+
+        var deuda = 0;
+
+        var Comunes = "";
+        GastosComunes.forEach( function(gasto) {
+            Comunes =  Comunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*casa.alicuota + "<br>";
+            deuda = deuda + gasto.monto*casa.alicuota;
+        });
+
+        var NoComunes = "";
+        GastosNoComunes.forEach( function(gasto) {
+            NoComunes =  NoComunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*casa.alicuota + "<br>";
+            deuda = deuda + gasto.monto*casa.alicuota;
+        });
+
+        Factura.numero = casa.id + mes + año; // Numero factura sera id_inmueble + mes + año
+        Factura.nombre = "Propietario: " + nombrePropietario;
+        Factura.gastos_comunes = Comunes;
+        Factura.gastos_nocomunes = NoComunes;
+        Factura.deuda_total = deuda;
+        Factura.alicuota = casa.alicuota;
+        Factura.saldo = casa.saldo;
+        Factura.dia_em = dia;
+        Factura.mes_em = mes;
+        Factura.anio_em = año;
+        Factura.id_inmueble = casa.id;
+
+        createFactura(Factura)
+    });
+
+
+    aptos.forEach( function(apto) { // Por apto apto hacer lo siguiente
+        // Genero la Factura
+        var Factura = new Object();
+        // Creo un numero de factura
+        var d = new Date();
+        var dia = d.getDate();
+        var mes = d.getMonth() + 1;
+        var año = d.getFullYear();
+        
+        // Busco el nombre del propietario y lo creo en factura.nombre
+        let propietarioDelInmueble = propietarios.propietarios.find((propietario)=>{
+            if( propietario.id == apto.id_propietario ){
+              return propietario;
+            }
+        });
+        var nombrePropietario = "";
+        if (propietarioDelInmueble === null || propietarioDelInmueble === undefined){
+            nombrePropietario = "No tiene Propietario";
+        }else{
+            nombrePropietario = propietarioDelInmueble.nombre + " " + propietarioDelInmueble.apellido;
+        }
+        
+
+        // Tengo los gastos del inmueble
+         let gastosDelInmueble = gastosPorInmueble.gastosPorInmueble.filter((gasto)=>{
+             if( gasto.id_inmueble == apto.id ){
+                return gasto;
+             }
+         });
+         // Busco la info de esos gastos
+         var GastosComunes = [];
+         var GastosNoComunes = [];
+         gastosDelInmueble.forEach( function(gastoID) {
+            gastos.forEach( function(gastoInfo) {
+                if(gastoID.id_gasto == gastoInfo.id){
+                    // Comun
+                    if(gastoInfo.tipo == "Comun"){
+                        GastosComunes.push(gastoInfo)
+                    }
+                    // No Comun
+                    if(gastoInfo.tipo == "No Comun"){
+                        GastosNoComunes.push(gastoInfo)
+                    }
+                        
+                }
+            });
+        });
+        console.log("GASTOS COMUNES" + apto.id , GastosComunes);
+        console.log("GASTOS NO COMUNES" + apto.id , GastosNoComunes);
+
+        var deuda = 0;
+
+        var Comunes = "";
+        GastosComunes.forEach( function(gasto) {
+            Comunes =  Comunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*apto.alicuota + "<br>";
+            deuda = deuda + gasto.monto*apto.alicuota;
+        });
+
+        var NoComunes = "";
+        GastosNoComunes.forEach( function(gasto) {
+            NoComunes =  NoComunes + "Concepto: " + gasto.concepto + " - Monto Total: " + gasto.monto + " - Fecha:" + gasto.dia + "/" + gasto.mes + "/" + gasto.anio + " - Monto a pagar: " + gasto.monto*apto.alicuota + "<br>";
+            deuda = deuda + gasto.monto*apto.alicuota;
+        });
+
+        Factura.numero = apto.id + mes + año; // Numero factura sera id_inmueble + mes + año
+        Factura.nombre = "Propietario: " + nombrePropietario;
+        Factura.gastos_comunes = Comunes;
+        Factura.gastos_nocomunes = NoComunes;
+        Factura.deuda_total = deuda;
+        Factura.alicuota = apto.alicuota;
+        Factura.saldo = apto.saldo;
+        Factura.dia_em = dia;
+        Factura.mes_em = mes;
+        Factura.anio_em = año;
+        Factura.id_inmueble = apto.id;
+
+        createFactura(Factura)
+    });
+
+}
 
 
 export default Crud
