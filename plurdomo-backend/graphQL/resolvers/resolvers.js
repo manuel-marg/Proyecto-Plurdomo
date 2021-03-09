@@ -60,7 +60,7 @@ const resolvers = {
 
         //-----------------PAGO---------------
         async getPagos(root, args, { models }) {
-            return await models.pago.findAll({ where: { active: true, pagado: false } })
+            return await models.pago.findAll({ where: { active: true, pagado: false, pendiente: false } })
         },
         async getHistoricoPagos(root, args, { models }) {
             return await models.pago.findAll({ where: { active: true, pagado: true } })
