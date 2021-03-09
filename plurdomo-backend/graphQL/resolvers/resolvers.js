@@ -60,7 +60,16 @@ const resolvers = {
 
         //-----------------PAGO---------------
         async getPagos(root, args, { models }) {
-            return await models.pago.findAll({ where: { active: true } })
+            return await models.pago.findAll({ where: { active: true, pagado: false } })
+        },
+        async getHistoricoPagos(root, args, { models }) {
+            return await models.pago.findAll({ where: { active: true, pagado: true } })
+        },
+        async getPagosPen(root, args, { models }) {
+            return await models.pago.findAll({ where: { active: true, pendiente: true } })
+        },
+        async getPagados(root, args, { models }) {
+            return await models.pago.findAll({ where: { active: true, pendiente: false } })
         },
         async getPago(root, args, { models }) {
             return await models.pago.findByPk(args.id)
@@ -128,11 +137,23 @@ const resolvers = {
         },
 
         //----------------PAGO-----------------------
-        async createPago(root, { monto, dia, mes, anio, id_factura, pendiente, active }, { models }) {
-            return await models.pago.create({ monto, dia, mes, anio, id_factura, pendiente, active })
+        async createPago(root, { monto, dia, mes, anio, id_factura, pendiente, pagado, active }, { models }) {
+            return await models.pago.create({ monto, dia, mes, anio, id_factura, pendiente, pagado, active })
         },
-        async updatePago(root, { id, monto, dia, mes, anio, id_factura, pendiente, active }, { models }) {
-            await models.pago.update({ monto, dia, mes, anio, id_factura, pendiente, active }, { where: { id: id } });
+        async updatePago(root, { id, monto, dia, mes, anio, id_factura, pendiente, pagado, active }, { models }) {
+            await models.pago.update({ monto, dia, mes, anio, id_factura, pendiente, pagado, active }, { where: { id: id } });
+            return models.pago.findByPk(id)
+        },
+        async checkPago(root, { id }, { models }) {
+            await models.pago.update({ pagado: true }, { where: { id: id } });
+            return models.pago.findByPk(id)
+        },
+        async uncheckPago(root, { id }, { models }) {
+            await models.pago.update({ pagado: false }, { where: { id: id } });
+            return models.pago.findByPk(id)
+        },
+        async Pagar(root, { id }, { models }) {
+            await models.pago.update({ pendiente: false }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
 

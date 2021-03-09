@@ -68,6 +68,7 @@ type Pago{
     anio: Int!
     id_factura: Int!
     pendiente: Boolean!
+    pagado: Boolean!
     active: Boolean!
 }
 
@@ -119,6 +120,9 @@ type Query{
     getInstrumento(id: Int!): Instrumento_pago
 
     getPagos: [Pago],
+    getHistoricoPagos: [Pago],
+    getPagosPen: [Pago],
+    getPagados: [Pago],
     getPago(id: Int!): Pago
 
     getFacturas: [Factura],
@@ -145,8 +149,11 @@ type Mutation{
     createInstrumento(tipo: String!, referencia: String!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_pago: Int!, active: Boolean!): Instrumento_pago!
     deleteInstrumento(id: Int!): Instrumento_pago!
 
-    createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, active: Boolean!): Pago!
-    updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, active: Boolean!): Pago!
+    createPago(monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, pagado: Boolean!, active: Boolean!): Pago!
+    updatePago(id: Int!, monto: Float!, dia: Int!, mes: Int!, anio: Int!, id_factura: Int!, pendiente: Boolean!, pagado: Boolean!, active: Boolean!): Pago!
+    checkPago(id: Int!): Pago!
+    uncheckPago(id: Int!): Pago!
+    Pagar(id: Int!): Pago!
     
 
     createFactura(nombre: String!,gastos_comunes: String, gastos_nocomunes: String, deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, historico: Boolean!, active: Boolean!): Factura!
