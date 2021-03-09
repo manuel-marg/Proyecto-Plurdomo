@@ -156,6 +156,14 @@ const resolvers = {
             await models.pago.update({ pendiente: false }, { where: { id: id } });
             return models.pago.findByPk(id)
         },
+        async ocultarFactura(root, { id }, { models }) {
+            await models.factura.update({ historico: true }, { where: { id: id } });
+            return models.factura.findByPk(id)
+        },
+        async desocultarFactura(root, { id }, { models }) {
+            await models.factura.update({ historico: false }, { where: { id: id } });
+            return models.factura.findByPk(id)
+        },
 
         //---------------FACTURA------------------
         async createFactura(root, { nombre, gastos_comunes, gastos_nocomunes, deuda_total, alicuota, saldo, id_inmueble, dia_em, mes_em, anio_em, n_factura, historico, active }, { models }) {

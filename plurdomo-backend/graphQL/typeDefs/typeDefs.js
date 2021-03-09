@@ -154,6 +154,9 @@ type Mutation{
     checkPago(id: Int!): Pago!
     uncheckPago(id: Int!): Pago!
     Pagar(id: Int!): Pago!
+
+    ocultarFactura(id: Int!): Factura!
+    desocultarFactura(id: Int!): Factura!
     
 
     createFactura(nombre: String!,gastos_comunes: String, gastos_nocomunes: String, deuda_total: Float,alicuota: Float ,saldo: Float,id_inmueble: Int!,dia_em: Int!,mes_em: Int!, anio_em: Int!,n_factura: Int!, historico: Boolean!, active: Boolean!): Factura!
