@@ -1,3 +1,19 @@
+CREATE DATABASE IF NOT EXISTS plurdomo;
+
+USE plurdomo;
+
+CREATE TABLE IF NOT EXISTS propietarios (
+    id int auto_increment,
+    nombre varchar(255) not null,
+    apellido varchar(255) not null,
+    email varchar(255) not null,
+    cedula varchar(255) not null,
+    telefono varchar(255) not null,
+    clave varchar(255) not null,
+    administrador boolean not null,
+    active boolean not null,
+    primary key(id)
+);
 
 CREATE TABLE IF NOT EXISTS inmuebles (
     id int auto_increment,
