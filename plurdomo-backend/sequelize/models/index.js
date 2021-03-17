@@ -16,6 +16,7 @@ const models = {
     gasto: sequelize.import('./gasto'),
     factura: sequelize.import('./factura'),
     genera_gasto: sequelize.import('./genera_gasto'),
+    otorga: sequelize.import('./otorga'),
 
 }
 

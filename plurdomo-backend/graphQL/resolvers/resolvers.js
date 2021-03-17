@@ -81,6 +81,11 @@ const resolvers = {
             return await models.genera_gasto.findAll({ where: { active: true } })
         },
 
+        //------------OTORGA--------------
+        async getOtorgados(root, args, { models }) {
+            return await models.otorgas.findAll({ where: { active: true } })
+        },
+
         //-----------------FACTURA---------------
         async getFacturas(root, args, { models }) {
             return await models.factura.findAll({ where: { active: true } })
@@ -182,6 +187,15 @@ const resolvers = {
         async deleteGenerar_Gasto(root, { id }, { models }) {
             await models.genera_gasto.update({ active:false }, { where: { id_gasto: id } });
             return models.genera_gasto.findByPk(id)
+        },
+
+        //------------OTORGA--------------
+        async generarOtorgado(root, { id_gasto_referenciado, id_factura_referenciado, monto_alicuota, active }, { models }) {
+            return await models.otorgas.create({ id_gasto_referenciado, id_factura_referenciado, monto_alicuota, active })
+        },
+        async deleteOtorgado(root, { id }, { models }) {
+            await models.otorgas.update({ active:false }, { where: { id_gasto_referenciado: id } });
+            return models.otorgas.findByPk(id)
         },
     }
 }
