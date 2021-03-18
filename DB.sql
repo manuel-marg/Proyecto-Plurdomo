@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS inmuebles (
     tipo varchar(255) not null,
     id_condominio int not null,
     active boolean not null,
-    primary key(id)
+    primary key(id, id_condominio, id_propietario)
 );
 
 CREATE TABLE IF NOT EXISTS condominios (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS instrumento_pagos (
     anio int not null,
     id_pago int not null,
     active boolean not null,
-    primary key(id)
+    primary key(id, id_pago)
 );
 
 CREATE TABLE IF NOT EXISTS pagos (
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS pagos (
     pendiente boolean not null,
     pagado boolean not null,
     active boolean not null,
-    primary key(id)
+    primary key(id, id_factura)
 );
 
 CREATE TABLE IF NOT EXISTS gastos (
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS facturas (
     id_inmueble int not null,
     historico boolean not null,
     active boolean not null,
-    primary key(id)
+    primary key(id, id_inmueble)
 );
 
 CREATE TABLE IF NOT EXISTS otorgas (
@@ -103,27 +103,60 @@ CREATE TABLE IF NOT EXISTS otorgas (
     id_factura_referenciado int not null,
     monto_alicouta float not null,
     active boolean not null,
-    KEY id_gasto_referenciado (id_gasto_referenciado),
-	KEY id_factura_referenciado (id_factura_referenciado),
-	CONSTRAINT gastos_fk_1 FOREIGN KEY (id_gasto_referenciado) REFERENCES gastos (id),
-	CONSTRAINT facturas_fk_1 FOREIGN KEY (id_factura_referenciado) REFERENCES facturas (id)
-    
+    primary key(id_gasto_referenciado, id_factura_referenciado)
 );
 
 CREATE TABLE IF NOT EXISTS genera_gastos (
     id_gasto int not null,
     id_inmueble int not null,
     active boolean not null,
-    KEY id_gasto (id_gasto),
-	KEY id_inmueble (id_inmueble),
-	CONSTRAINT gastos_fk_2 FOREIGN KEY (id_gasto) REFERENCES gastos (id),
-	CONSTRAINT inmuebles_fk_1 FOREIGN KEY (id_inmueble) REFERENCES inmuebles (id)
+	primary key(id_gasto, id_inmueble)
 );
 
-ALTER TABLE inmuebles ADD foreign key(id_propietario) references propietarios(id);
-ALTER TABLE instrumento_pagos ADD foreign key(id_pago) references pagos(id);
-ALTER TABLE pagos ADD foreign key(id_factura) references facturas(id);
-ALTER TABLE facturas ADD foreign key(id_inmueble) references inmuebles(id);
-ALTER TABLE inmuebles ADD foreign key(id_condominio) references condominios(id);
+ALTER TABLE inmuebles ADD CONSTRAINT FK_InmueblesCondominios FOREIGN KEY (id_condominio) REFERENCES condominios(id);
+ALTER TABLE facturas ADD CONSTRAINT FK_FacturasInmuebles FOREIGN KEY (id_inmueble) REFERENCES inmuebles(id);
+ALTER TABLE pagos ADD CONSTRAINT FK_PagosFacturas FOREIGN KEY (id_factura) REFERENCES facturas(id);
+ALTER TABLE instrumento_pagos ADD CONSTRAINT FK_InstrumentosPagos FOREIGN KEY (id_pago) REFERENCES pagos(id);
+ALTER TABLE inmuebles ADD CONSTRAINT FK_InmueblesPropietarios FOREIGN KEY (id_propietario) REFERENCES propietarios(id);
+ALTER TABLE genera_gastos ADD CONSTRAINT FK_Genera_gastosGastos FOREIGN KEY (id_gasto) REFERENCES gastos(id);
+ALTER TABLE genera_gastos ADD CONSTRAINT FK_Genera_gastosInmueble FOREIGN KEY (id_inmueble) REFERENCES inmuebles(id);
+ALTER TABLE otorgas ADD CONSTRAINT FK_OtorgasGasto FOREIGN KEY (id_gasto_referenciado) REFERENCES gastos(id);
+ALTER TABLE otorgas ADD CONSTRAINT FK_OtorgasFactura FOREIGN KEY (id_factura_referenciado) REFERENCES facturas(id);
+
+-- DROP DATABASE IF EXISTS plurdomo;
+
+
+
+
+SELECT * FROM inmuebles WHERE id_propietario IS NOT NULL;
+SELECT * FROM inmuebles WHERE id_inmueble IS NOT NULL;
+SELECT * FROM inmuebles WHERE tipo = 'apto';
+SELECT * FROM inmuebles WHERE tipo = 'casa';
+SELECT * FROM inmuebles WHERE tipo = 'edificio';
+SELECT * FROM gastos WHERE tipo = 'Comun';
+SELECT * FROM gastos WHERE tipo = 'No Comun';
+SELECT * FROM genera_gastos WHERE id_gasto = '1';
+SELECT * FROM genera_gastos WHERE id_gasto = '1' AND id_inmueble="1";
+SELECT * FROM pagos WHERE id_factura = '1' AND pendiente="1" AND pagado="0";
+SELECT * FROM inmuebles INNER JOIN propietarios ON inmuebles.id_propietario = propietarios.id;
+SELECT * FROM genera_gastos INNER JOIN gastos ON genera_gastos.id_gasto = gastos.id;
+SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = inmuebles.id;
+SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='apto';
+SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='casa';
+SELECT * FROM pagos WHERE pendiente = '1';
+SELECT * FROM pagos WHERE pendiente = '0';
+SELECT * FROM pagos INNER JOIN facturas ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='casa';
+
+truncate table condominios;
+truncate table facturas;
+truncate table gastos;
+truncate table genera_gastos;
+truncate table inmuebles;
+truncate table instrumentos_pagos;
+truncate table pagos;
+truncate table propietarios;
+-- SELECT * FROM gastos;
+SELECT * FROM facturas;
+-- SELECT * FROM facturas;
 
 -- DROP DATABASE plurdomo; 
