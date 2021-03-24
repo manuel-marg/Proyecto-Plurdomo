@@ -14,7 +14,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                                 <div className="input-group-prepend">
                                     <span className="input-group-text">Tipo</span>
                                 </div>
-                                <select className="custom-select" onChange={TipoTabla} id="TipoDeTabla">
+                                <select className="custom-select" onChange={(e) => TipoTabla(propietarios) } id="TipoDeTabla">
                                     <option selected>Seleccione...</option>
                                     <option value="aptos">Aptos</option>
                                     <option value="casas">Casas</option>
@@ -63,7 +63,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                             <td className="text-center">{casa.numero}</td>
                             <td className="text-center">{casa.alicuota}</td>
                             <td className="text-center">{casa.saldo}</td>
-                            <td className="text-center">{casa.id_propietario}</td>
+                            <td className="text-center" id={casa.id + '' + casa.id_propietario}></td>
                             <td className="text-center">
                                 <a href={"#EditarCasa" + casa.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
                                       |  
@@ -111,7 +111,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
             <td className="text-center">{apto.id_inmueble}</td>
             <td className="text-center">{apto.alicuota}</td>
             <td className="text-center">{apto.saldo}</td>
-            <td className="text-center">{apto.id_propietario}</td>
+            <td className="text-center" id={apto.id + '' + apto.id_propietario}></td>
             <td className="text-center">
                 <a href={"#EditarApto" + apto.id} className="text-primary" data-toggle="modal"><i className="fas fa-edit"></i></a>
                       |  
@@ -141,7 +141,7 @@ const InmuebleCRUD = ({ edificios , aptos ,  casas , propietarios}) => (
                                     <span className="input-group-text" style={{width: '120px'}}>Propietario</span>
                                 </div>
                                 <select className="custom-select" id="AddPropietario">
-                                    <option value="null" selected>Ninguno</option>
+                                    <option value="null" selected>Seleccione una opcion...</option>
                                         {/* Imprimiendo los los propiertarios */}  
                                         {propietarios && propietarios.map(propietario =>
                                             <option value={propietario.id}>{propietario.cedula} - {propietario.nombre} {propietario.apellido}</option>
@@ -413,7 +413,8 @@ function Tipo() { // Esta funcion funciona para mostrar el resto de los inputs e
     }
 }
 
-function TipoTabla() { // Esta funcion funciona para mostrar la tabla de casas o aptos
+function TipoTabla(propietarios) { // Esta funcion funciona para mostrar la tabla de casas o aptos
+    propietarios.forEach(CargarPropietario);
     var TipoDeTabla = (document.querySelector("#TipoDeTabla")as HTMLInputElement).value;
     // Oculto los div antes de mostrar el que corresponde 
     (document.querySelector("#TablaCasas")as HTMLInputElement).style.display = 'none';
@@ -426,20 +427,35 @@ function TipoTabla() { // Esta funcion funciona para mostrar la tabla de casas o
     }
 }
 
+function CargarPropietario(propietario) { 
+    console.log(propietario)
+    var i;
+    for (i = 0; i < 100; i++) {
+        if(document.getElementById(i + '' + propietario.id) != null){
+            document.getElementById(i + '' + propietario.id).innerHTML = propietario.nombre + ' ' + propietario.apellido;
+        }
+    }
+}
+
 
 async function Agregar() { // Funcion para agregar
-    var inmueble = {alicuota: "", saldo:"", id_propietario:"", nombreCasa: "", numeroCasa: "" ,pisoApto: "", numeroApto: "" , id_inmueble: "" , active: true};  // Creo un Objeto propietario
+    console.clear();
+    var inmueble = {alicuota: "", saldo:"", id_propietario:"0", nombreCasa: "", numeroCasa: "" ,pisoApto: "", numeroApto: "" , id_inmueble: "" , active: true};  // Creo un Objeto propietario
     inmueble.alicuota = (document.getElementById("AddAlicuota") as HTMLInputElement).value; 
     inmueble.saldo = (document.getElementById("AddSaldo") as HTMLInputElement).value;
-    inmueble.id_propietario = null;
     inmueble.nombreCasa = (document.getElementById("AddNombreCasa") as HTMLInputElement).value;
     inmueble.numeroCasa = (document.getElementById("AddNumeroCasa") as HTMLInputElement).value;
     inmueble.pisoApto = (document.getElementById("AddPisoApto") as HTMLInputElement).value;
     inmueble.numeroApto = (document.getElementById("AddNumeroApto") as HTMLInputElement).value;
     inmueble.id_inmueble = (document.getElementById("AddEdificioApto") as HTMLInputElement).value;
     inmueble.id_propietario = (document.getElementById("AddPropietario") as HTMLInputElement).value;
+    if (inmueble.id_propietario === null){
+        inmueble.id_propietario = "0";
+    }
+    console.log(inmueble.id_propietario)
     var tipo = (document.querySelector("#AddTipo")as HTMLInputElement).value; // Puede ser Casa o Apto
-    if( inmueble.id_propietario == "null"){
+    if( inmueble.id_propietario = "0"){
+        console.log("Entramos")
         // Sabiendo que en "tipo" esta el tipo que seleccionaron el formulario entonces muestro el que corresponde
         if (tipo == "Casa"){
             fetch('http://localhost:4000/graphql', {
@@ -447,7 +463,7 @@ async function Agregar() { // Funcion para agregar
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: `
                     mutation{
-                        createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, tipo: "casa" , saldo: ${inmueble.saldo}, active:true){
+                        createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, id_propietario: 1, tipo: "casa" , saldo: ${inmueble.saldo}, id_condominio: 1 , active:true){
                         id
                         alicuota
                         numero
@@ -471,7 +487,7 @@ async function Agregar() { // Funcion para agregar
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: `
                     mutation{
-                        createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_inmueble: ${inmueble.id_inmueble}, active:true){
+                        createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_propietario: 1, id_inmueble: ${inmueble.id_inmueble},id_condominio: 1, active:true){
                         id
                         alicuota
                         numero
@@ -499,7 +515,7 @@ async function Agregar() { // Funcion para agregar
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
                 mutation{
-                    createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, id_propietario: ${inmueble.id_propietario} , tipo: "casa" , saldo: ${inmueble.saldo}, active:true){
+                    createInmueble(alicuota: ${inmueble.alicuota}, nombre: "${inmueble.nombreCasa}", numero: ${inmueble.numeroCasa}, id_propietario: ${inmueble.id_propietario} , id_condominio: 1, tipo: "casa" , saldo: ${inmueble.saldo}, active:true){
                     id
                     alicuota
                     numero
@@ -523,7 +539,7 @@ async function Agregar() { // Funcion para agregar
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query: `
                 mutation{
-                    createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_propietario: ${inmueble.id_propietario}, id_inmueble: ${inmueble.id_inmueble}, active:true){
+                    createInmueble(alicuota: ${inmueble.alicuota}, piso: ${inmueble.pisoApto}, numero: ${inmueble.numeroApto}, tipo: "apto" , saldo: ${inmueble.saldo}, id_propietario: ${inmueble.id_propietario}, id_inmueble: ${inmueble.id_inmueble}, id_condominio: 1, active:true){
                     id
                     alicuota
                     numero
@@ -548,6 +564,7 @@ async function Agregar() { // Funcion para agregar
 }
 
 function ModificarApto(id) { // Funcion para modificar
+    console.clear();
     var apto = {alicuota:"", saldo:"", edificio:"" , piso: "", numero: "" , id_propietario:""};
     apto.alicuota = (document.getElementById(`${id + "alicuota"}`) as HTMLInputElement).value; 
     apto.saldo = (document.getElementById(`${id + "saldo"}`) as HTMLInputElement).value; 
@@ -608,6 +625,7 @@ function ModificarApto(id) { // Funcion para modificar
 }
 
 function ModificarCasa(id) { // Funcion para modificar
+    console.clear();
     var casa = {alicuota:"", saldo:"", nombre: "", numero: "" ,  id_propietario:""};
     casa.alicuota = (document.getElementById(`${id + "alicuota"}`) as HTMLInputElement).value; 
     casa.saldo = (document.getElementById(`${id + "saldo"}`) as HTMLInputElement).value; 
@@ -666,12 +684,13 @@ function ModificarCasa(id) { // Funcion para modificar
 }
 
 function Eliminar(id) { // Funcion para editar
+    console.clear();
     fetch('http://localhost:4000/graphql', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: `
         mutation{
-            updateInmueble(id: ${id} , active: false){
+            updateInmueble(id: ${id} , id_condominio: 1, id_propietario: 1, alicuota: 0, tipo: "N/A", active: false){
             id
             alicuota
             numero

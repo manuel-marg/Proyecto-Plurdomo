@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS plurdomo;
+
 CREATE DATABASE IF NOT EXISTS plurdomo;
 
 USE plurdomo;
@@ -26,7 +28,7 @@ CREATE TABLE IF NOT EXISTS inmuebles (
     id_propietario int,
     id_inmueble int,
     tipo varchar(255) not null,
-    id_condominio int not null,
+    id_condominio int,
     active boolean not null,
     primary key(id, id_condominio, id_propietario)
 );
@@ -122,12 +124,13 @@ ALTER TABLE genera_gastos ADD CONSTRAINT FK_Genera_gastosGastos FOREIGN KEY (id_
 ALTER TABLE genera_gastos ADD CONSTRAINT FK_Genera_gastosInmueble FOREIGN KEY (id_inmueble) REFERENCES inmuebles(id);
 ALTER TABLE otorgas ADD CONSTRAINT FK_OtorgasGasto FOREIGN KEY (id_gasto_referenciado) REFERENCES gastos(id);
 ALTER TABLE otorgas ADD CONSTRAINT FK_OtorgasFactura FOREIGN KEY (id_factura_referenciado) REFERENCES facturas(id);
-
--- DROP DATABASE IF EXISTS plurdomo;
-
-
+INSERT INTO condominios (nombre, municipio, estado, codigo_urb, active) VALUES ('Condominio Plurdomo', 'Sucre', 'Miranda', '5421', 1);
+INSERT INTO propietarios (nombre, apellido, email, cedula, telefono, clave, administrador, active) VALUES ('Sin Propietario', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 0, 1);
 
 
+
+
+/*
 SELECT * FROM inmuebles WHERE id_propietario IS NOT NULL;
 SELECT * FROM inmuebles WHERE id_inmueble IS NOT NULL;
 SELECT * FROM inmuebles WHERE tipo = 'apto';
@@ -146,7 +149,6 @@ SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = 
 SELECT * FROM pagos WHERE pendiente = '1';
 SELECT * FROM pagos WHERE pendiente = '0';
 SELECT * FROM pagos INNER JOIN facturas ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='casa';
-
 truncate table condominios;
 truncate table facturas;
 truncate table gastos;
@@ -155,8 +157,8 @@ truncate table inmuebles;
 truncate table instrumentos_pagos;
 truncate table pagos;
 truncate table propietarios;
--- SELECT * FROM gastos;
+SELECT * FROM gastos;
 SELECT * FROM facturas;
--- SELECT * FROM facturas;
-
--- DROP DATABASE plurdomo; 
+SELECT * FROM facturas;
+DROP DATABASE plurdomo; 
+*/

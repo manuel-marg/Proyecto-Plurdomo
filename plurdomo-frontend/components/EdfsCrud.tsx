@@ -142,7 +142,7 @@ function AgregarEdf() { // Funcion para agregar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
         mutation{
-            createInmueble(nombre: "${edf.nombre}", tipo: "edificio" , alicuota: 100 , active:true){
+            createInmueble(nombre: "${edf.nombre}", tipo: "edificio" , alicuota: 100 ,id_condominio: 1, id_propietario: 1, active:true){
             id
             alicuota
             numero
@@ -170,7 +170,7 @@ function Modificar(edf) { // Funcion para modificar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateInmueble(id: ${edf.id} , nombre: "${edf.nombre}", tipo: "edificio" , active:true){
+        updateInmueble(id: ${edf.id} , nombre: "${edf.nombre}", tipo: "edificio" , id_propietario: 1, id_condominio: 1, active:true){
             id
             alicuota
             numero
@@ -197,7 +197,7 @@ function Eliminar(edf) { // Funcion para editar
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: `
     mutation{
-        updateInmueble(id: ${edf.id} , nombre: "${edf.nombre}", tipo: "edificio" , active:false){
+        updateInmueble(id: ${edf.id} , nombre: "${edf.nombre}", alicuota: 0, tipo: "edificio" , id_propietario: 1 , id_condominio: 1, active:false){
             id
             alicuota
             numero

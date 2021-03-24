@@ -23,6 +23,7 @@ type Inmueble{
     saldo: Float
     id_propietario: Int
     id_inmueble: Int
+    id_condominio: Int
     tipo: String!
     active: Boolean!
 }
@@ -145,8 +146,8 @@ type Mutation{
     createPropietario(nombre: String!, apellido: String!, email: String!, cedula: String!, telefono: String!, clave: String!, administrador: Boolean!, active: Boolean!): Propietario!
     updatePropietario(id: Int!, nombre: String!, apellido: String!, email: String!, cedula: String!, telefono: String!, clave: String!, administrador: Boolean!, active: Boolean!): Propietario!
 
-    createInmueble(alicuota: Float!, numero: Int, nombre: String, piso:Int, saldo: Float, id_propietario: Int, id_inmueble: Int, tipo: String!, active: Boolean!): Inmueble!
-    updateInmueble(id: Int!,alicuota: Float!, numero: Int, nombre: String, piso:Int, saldo: Float, id_propietario: Int, id_inmueble: Int, tipo: String!, active: Boolean!): Inmueble!
+    createInmueble(alicuota: Float!, numero: Int, nombre: String, piso:Int, saldo: Float, id_propietario: Int, id_inmueble: Int, id_condominio: Int, tipo: String!, active: Boolean!): Inmueble!
+    updateInmueble(id: Int!,alicuota: Float!, numero: Int, nombre: String, piso:Int, saldo: Float, id_propietario: Int, id_inmueble: Int, id_condominio: Int, tipo: String!, active: Boolean!): Inmueble!
 
     createCondominio(nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!
     updateCondominio(id: Int!, nombre: String!, municipio: String!, estado: String!, codigo_urb: String!, active: Boolean!): Condominio!

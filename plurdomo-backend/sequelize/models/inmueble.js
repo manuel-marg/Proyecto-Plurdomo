@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        id_condominio: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
         tipo: {
             type: DataTypes.STRING,
             allowNull: false

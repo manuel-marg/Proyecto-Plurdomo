@@ -1,7 +1,7 @@
 const resolvers = {
 
     Query: {
-        //------------PROPIETARIOS---------------
+        //------------PROPIETARIOS-----------------
         async getPropietarios(root, args, { models }) {
             return await models.propietario.findAll({ where: { active: true } });
         },
@@ -65,7 +65,7 @@ const resolvers = {
         async getHistoricoPagos(root, args, { models }) {
             return await models.pago.findAll({ where: { active: true, pagado: true } })
         },
-        
+
         async getPagosPen(root, args, { models }) {
             return await models.pago.findAll({ where: { active: true, pendiente: true } })
         },
@@ -106,8 +106,8 @@ const resolvers = {
         },
 
         //----------------INMUEBLE----------------
-        async createInmueble(root, { alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, tipo, active }, { models }) {
-            return await models.inmueble.create({ alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, tipo, active })
+        async createInmueble(root, { alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, id_condominio, tipo, active }, { models }) {
+            return await models.inmueble.create({ alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, id_condominio, tipo, active })
         },
         async updateInmueble(root, { id, alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, tipo, active }, { models }) {
             await models.inmueble.update({ alicuota, numero, nombre, piso, saldo, id_propietario, id_inmueble, tipo, active }, { where: { id: id } });
@@ -138,7 +138,7 @@ const resolvers = {
             return await models.instrumento_pago.create({ tipo, referencia, monto, dia, mes, anio, id_pago, active })
         },
         async deleteInstrumento(root, { id }, { models }) {
-            await models.instrumento_pago.update({ active:false }, { where: { id: id } });
+            await models.instrumento_pago.update({ active: false }, { where: { id: id } });
             return models.instrumento_pago.findByPk(id)
         },
 
@@ -185,7 +185,7 @@ const resolvers = {
             return await models.genera_gasto.create({ id_gasto, id_inmueble, active })
         },
         async deleteGenerar_Gasto(root, { id }, { models }) {
-            await models.genera_gasto.update({ active:false }, { where: { id_gasto: id } });
+            await models.genera_gasto.update({ active: false }, { where: { id_gasto: id } });
             return models.genera_gasto.findByPk(id)
         },
 
@@ -194,7 +194,7 @@ const resolvers = {
             return await models.otorgas.create({ id_gasto_referenciado, id_factura_referenciado, monto_alicuota, active })
         },
         async deleteOtorgado(root, { id }, { models }) {
-            await models.otorgas.update({ active:false }, { where: { id_gasto_referenciado: id } });
+            await models.otorgas.update({ active: false }, { where: { id_gasto_referenciado: id } });
             return models.otorgas.findByPk(id)
         },
     }
