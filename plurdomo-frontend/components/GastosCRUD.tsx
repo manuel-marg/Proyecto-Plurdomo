@@ -519,7 +519,7 @@ async function getPropietarios() {
         return { propietarios: respuesta.data.getPropietarios}
 }
 
-async function createFactura(Factura) {
+async function createFactura(Factura, gastosDelInmueble, gastos) {
     const res = await fetch('http://localhost:4000/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -567,6 +567,32 @@ async function createFactura(Factura) {
         ` }),
         }) 
         const respuestaPago = await resPago.json()
+        
+
+        gastosDelInmueble.forEach( function(gastoID) {
+            gastos.forEach( function(gastoInfo) {
+                if(gastoID.id_gasto == gastoInfo.id){
+                    
+                    const LlenarMaestroDetalle = fetch('http://localhost:4000/graphql', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: `
+                          mutation{
+                            generarOtorgado(id_gasto_referenciado: ${gastoID.id_gasto}, id_factura_referenciado: ${facturaGuardada.id}, monto_alicouta: ${gastoInfo.monto*facturaGuardada.alicuota}, active: true){
+                              id_gasto_referenciado
+                              id_factura_referenciado
+                              monto_alicouta
+                              active
+                            }
+                          }
+                        ` }),
+                        })  
+                    
+                }
+            });
+        });
+    
+
         return { respuestaFinal: respuesta.data.createPago}
 }
 
@@ -683,7 +709,7 @@ async function GenerarFacturas(gastos , casas , aptos) {
         Factura.anio_em = año;
         Factura.id_inmueble = casa.id;
 
-        createFactura(Factura)
+        createFactura(Factura, gastosDelInmueble, gastos)
     });
 
 
@@ -763,7 +789,7 @@ async function GenerarFacturas(gastos , casas , aptos) {
         Factura.anio_em = año;
         Factura.id_inmueble = apto.id;
 
-        createFactura(Factura)
+        createFactura(Factura, gastosDelInmueble, gastos)
     });
 
     // Finalmente colocamos los gastos con historico true

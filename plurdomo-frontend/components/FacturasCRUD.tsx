@@ -30,11 +30,9 @@ const FacturaCrud = ({ facturas,condominios }) => (
                             <th>N° Factura</th>
                             <th>ID Inmueble</th>
                             <th>Deuda Total</th>
-                            <th>Dia</th>
-                            <th>Mes</th>
-                            <th>Año</th>
+                            <th>Fecha</th>
                             <th className="text-center">Detalles</th>
-                            <th className="text-center">Ocultar</th>
+                            <th className="text-center">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,14 +42,12 @@ const FacturaCrud = ({ facturas,condominios }) => (
                                 <td>{factura.n_factura}</td>
                                 <td>{factura.id_inmueble}</td>
                                 <td>{factura.deuda_total}</td>
-                                <td>{factura.dia_em}</td>
-                                <td>{factura.mes_em}</td>
-                                <td>{factura.anio_em}</td>
+                                <td>{factura.dia_em}-{factura.mes_em}-{factura.anio_em}</td>
                                 <td className="text-center">
-                                    <a href={"#detalles" + factura.id} className="text-primary" data-toggle="modal"><i className="fas fa-eye"></i></a>
+                                    <a href={"#detalles" + factura.id} className="text-secondary align-middle" data-toggle="modal"><i className="fas fa-eye"></i></a>
                                 </td>
                                 <td className="text-center">
-                                    <input type="button" onClick={(e) => OcultarFactura( factura.id )} data-dismiss="modal" className="btn btn-primary" value="Ocultar" />
+                                    <input type="button" onClick={(e) => OcultarFactura( factura.id )} data-dismiss="modal" className="btn btn-sm btn-outline-secondary" value="Pagado" />
                                 </td>
                         </tr>
                                                     )}
@@ -65,7 +61,7 @@ const FacturaCrud = ({ facturas,condominios }) => (
 {/* DETALLES --> Creación de un Modal con los detalles por cada factura del CRUD */}
 {facturas && facturas.map(factura =>
     <div key={factura.id} id={"detalles" + factura.id} className="modal fade">
-        <div className="modal-dialog modal-xl">
+        <div className="modal-dialog">
             <div className="modal-content">
                 <form>
                     <div className="modal-header">
@@ -75,15 +71,15 @@ const FacturaCrud = ({ facturas,condominios }) => (
 
                     <div className="modal-body">
                         <div className="col-xs-5 col-xs-offset-2 text-left">
-                            <div className="panel panel-default font-weight-bold">
+                            <div className="panel panel-default">
                                 <div>
                                     <div key={condominios.id}>
-                                        <div>{condominios.nombre}</div>
-                                        <div>{condominios.municipio}, {condominios.estado}</div>
+                                        <div><b>Nombre del condominio:</b> {condominios.nombre}</div>
+                                        <div><b>Dirección:</b> {condominios.municipio}, {condominios.estado}</div>
                                     </div>
                                 </div>
-                                <div>Fecha: {factura.dia_em}/{factura.mes_em}/{factura.anio_em}</div>
-                                <div>ID Inmueble: {factura.id_inmueble}</div>
+                                <div><b>Fecha:</b> {factura.dia_em}/{factura.mes_em}/{factura.anio_em}</div>
+                                <div><b>ID Inmueble:</b> {factura.id_inmueble}</div>
                             </div>
                         </div>
 
@@ -116,7 +112,7 @@ const FacturaCrud = ({ facturas,condominios }) => (
 
 
                     <div className="modal-footer">
-                    <input type="button" className="btn btn-outline-primary" data-dismiss="modal" defaultValue="Salir" />
+                    <input type="button" className="btn btn-outline-secondary" data-dismiss="modal" defaultValue="Salir" />
                     </div>
                 </form>
             </div>

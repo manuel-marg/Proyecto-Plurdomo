@@ -190,8 +190,8 @@ const resolvers = {
         },
 
         //------------OTORGA--------------
-        async generarOtorgado(root, { id_gasto_referenciado, id_factura_referenciado, monto_alicuota, active }, { models }) {
-            return await models.otorgas.create({ id_gasto_referenciado, id_factura_referenciado, monto_alicuota, active })
+        async generarOtorgado(root, { id_gasto_referenciado, id_factura_referenciado, monto_alicouta, active }, { models }) {
+            return await models.otorga.create({ id_gasto_referenciado, id_factura_referenciado, monto_alicouta, active })
         },
         async deleteOtorgado(root, { id }, { models }) {
             await models.otorgas.update({ active: false }, { where: { id_gasto_referenciado: id } });

@@ -120,18 +120,6 @@ Inmuebles.getInitialProps = async (ctx) => {
       const respuestaPropietarios = await getPropietarios.json()
       const propietarios = await respuestaPropietarios.data.getPropietarios
 
-      setTimeout(() => {  console.log("World!"); 
-    
-      const r = casas.filter(({ id_propietario: idv }) => propietarios.every(({ id: idc }) => idv !== idc));
-      const newArr = casas.concat(r).map((v) => v.apellido ? v : { ...v, apellido: null });
-      
-      console.log(newArr);
-    
-    }, 2000);
-
-   
-
-
       return { edificios: edificios , aptos: aptos , casas: casas , propietarios: propietarios}
 }
   

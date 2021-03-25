@@ -174,7 +174,7 @@ type Mutation{
     generarGasto(id_gasto: Int!, id_inmueble: Int!, active: Boolean!): Genera_gasto!
     deleteGenerar_Gasto(id: Int!): Genera_gasto!
 
-    generarOtorgado(id_gasto_referenciado: Int!, id_factura_referenciado: Int!, monto_alicuota: Float!, active: Boolean!): Otorga!
+    generarOtorgado(id_gasto_referenciado: Int!, id_factura_referenciado: Int!, monto_alicouta: Float!, active: Boolean!): Otorga!
     deleteOtorgado(id: Int!): Otorga!
 }
 `
