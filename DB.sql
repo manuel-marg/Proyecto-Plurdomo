@@ -86,8 +86,8 @@ CREATE TABLE IF NOT EXISTS facturas (
     id int auto_increment,
     n_factura int not null,
     nombre varchar(255) not null,
-    gastos_comunes varchar(255) not null,
-    gastos_nocomunes varchar(255) not null,
+    gastos_comunes text(65535) not null,
+    gastos_nocomunes text(65535) not null,
     deuda_total float not null,
     alicuota float not null,
     saldo float not null,
@@ -124,41 +124,54 @@ ALTER TABLE genera_gastos ADD CONSTRAINT FK_Genera_gastosGastos FOREIGN KEY (id_
 ALTER TABLE genera_gastos ADD CONSTRAINT FK_Genera_gastosInmueble FOREIGN KEY (id_inmueble) REFERENCES inmuebles(id);
 ALTER TABLE otorgas ADD CONSTRAINT FK_OtorgasGasto FOREIGN KEY (id_gasto_referenciado) REFERENCES gastos(id);
 ALTER TABLE otorgas ADD CONSTRAINT FK_OtorgasFactura FOREIGN KEY (id_factura_referenciado) REFERENCES facturas(id);
+
 INSERT INTO condominios (nombre, municipio, estado, codigo_urb, active) VALUES ('Condominio Plurdomo', 'Sucre', 'Miranda', '5421', 1);
-INSERT INTO propietarios (nombre, apellido, email, cedula, telefono, clave, administrador, active) VALUES ('Sin Propietario', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 0, 1);
+INSERT INTO propietarios (nombre,apellido,email,cedula,telefono,clave,administrador,active) VALUES ('Javier', 'Jerez', 'javier@gmail.com', '28180653','04142046640','clave',0, 1);
+INSERT INTO propietarios (nombre,apellido,email,cedula,telefono,clave,administrador,active) VALUES ('David', 'Garcia', 'david@gmail.com', '28734568','04242566621','clave',0, 1);
+INSERT INTO propietarios (nombre,apellido,email,cedula,telefono,clave,administrador,active) VALUES ('Francisco', 'Jones', 'francisco@gmail.com', '27246739','04242554021','clave',0, 1);
+INSERT INTO propietarios (nombre,apellido,email,cedula,telefono,clave,administrador,active) VALUES ('Nelson', 'Casanova', 'nelson@gmail.com', '278345765','04161238475','clave',0, 1);
+INSERT INTO propietarios (nombre,apellido,email,cedula,telefono,clave,administrador,active) VALUES ('Gabriel', 'Belisario', 'gabriel@gmail.com', '27123945','0414123091734','clave',0, 1);
+INSERT INTO inmuebles (alicuota,numero,nombre,piso,saldo,id_propietario,id_inmueble,tipo,id_condominio,active) VALUES (0,null,'El Paramo',null,null,1,null,'edificio',1,1);
+INSERT INTO inmuebles (alicuota,numero,nombre,piso,saldo,id_propietario,id_inmueble,tipo,id_condominio,active) VALUES (0.69,1,'Los Samanes',null,0,1,null,'casa',1,1);
+INSERT INTO inmuebles (alicuota,numero,nombre,piso,saldo,id_propietario,id_inmueble,tipo,id_condominio,active) VALUES (0.345,11,null,1,0,1,1,'apto',1,1);
+INSERT INTO inmuebles (alicuota,numero,nombre,piso,saldo,id_propietario,id_inmueble,tipo,id_condominio,active) VALUES (0.345,22,null,2,0,1,1,'apto',1,1);
+INSERT INTO inmuebles (alicuota,numero,nombre,piso,saldo,id_propietario,id_inmueble,tipo,id_condominio,active) VALUES (0.345,33,null,3,0,1,1,'apto',1,1);
+INSERT INTO inmuebles (alicuota,numero,nombre,piso,saldo,id_propietario,id_inmueble,tipo,id_condominio,active) VALUES (0.345,44,null,4,0,1,1,'apto',1,1);
 
+UPDATE facturas SET mes_em='4' WHERE id='6';
+UPDATE facturas SET mes_em='4' WHERE id='7';
+UPDATE facturas SET mes_em='4' WHERE id='8';
+UPDATE facturas SET mes_em='4' WHERE id='9';
+UPDATE facturas SET mes_em='4' WHERE id='10';
+UPDATE inmuebles SET id_propietario='2' WHERE id='3';
+UPDATE inmuebles SET id_propietario='3' WHERE id='4';
+UPDATE inmuebles SET id_propietario='4' WHERE id='5';
+UPDATE inmuebles SET id_propietario='5' WHERE id='6';
 
-
-
-/*
-SELECT * FROM inmuebles WHERE id_propietario IS NOT NULL;
-SELECT * FROM inmuebles WHERE id_inmueble IS NOT NULL;
-SELECT * FROM inmuebles WHERE tipo = 'apto';
-SELECT * FROM inmuebles WHERE tipo = 'casa';
-SELECT * FROM inmuebles WHERE tipo = 'edificio';
-SELECT * FROM gastos WHERE tipo = 'Comun';
-SELECT * FROM gastos WHERE tipo = 'No Comun';
-SELECT * FROM genera_gastos WHERE id_gasto = '1';
-SELECT * FROM genera_gastos WHERE id_gasto = '1' AND id_inmueble="1";
-SELECT * FROM pagos WHERE id_factura = '1' AND pendiente="1" AND pagado="0";
-SELECT * FROM inmuebles INNER JOIN propietarios ON inmuebles.id_propietario = propietarios.id;
-SELECT * FROM genera_gastos INNER JOIN gastos ON genera_gastos.id_gasto = gastos.id;
-SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = inmuebles.id;
-SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='apto';
-SELECT * FROM genera_gastos INNER JOIN inmuebles ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='casa';
-SELECT * FROM pagos WHERE pendiente = '1';
-SELECT * FROM pagos WHERE pendiente = '0';
-SELECT * FROM pagos INNER JOIN facturas ON genera_gastos.id_inmueble = inmuebles.id WHERE tipo='casa';
-truncate table condominios;
-truncate table facturas;
-truncate table gastos;
-truncate table genera_gastos;
-truncate table inmuebles;
-truncate table instrumentos_pagos;
-truncate table pagos;
-truncate table propietarios;
+SELECT * FROM inmuebles;
+SELECT * FROM propietarios;
 SELECT * FROM gastos;
+SELECT * FROM genera_gastos;
+SELECT * FROM otorgas;
 SELECT * FROM facturas;
-SELECT * FROM facturas;
-DROP DATABASE plurdomo; 
-*/
+
+-- QUERY 1
+SELECT otorgas.id_factura_referenciado AS ID_Factura, SUM(otorgas.monto_alicouta) AS Suma_Gastos, facturas.deuda_total AS Deuda_Total_Factura
+FROM facturas
+JOIN otorgas
+ON facturas.id = otorgas.id_factura_referenciado
+GROUP BY id_factura_referenciado
+ORDER BY id_factura_referenciado;
+
+-- QUERY 2
+
+
+-- QUERY 3
+SELECT facturas.id AS Factura, facturas.mes_em AS Mes, facturas.deuda_total AS Deuda, facturas.id_inmueble AS Inmueble, inmuebles.id_propietario AS ID_Propietario, CONCAT(propietarios.nombre, ' ', propietarios.apellido) AS Propietario, propietarios.cedula AS Cedula, propietarios.telefono AS Telefono, propietarios.email AS Email
+FROM facturas
+JOIN inmuebles
+ON inmuebles.id = facturas.id_inmueble
+JOIN propietarios
+ON inmuebles.id_propietario = propietarios.id
+WHERE facturas.historico = 0
+ORDER BY facturas.id_inmueble;
